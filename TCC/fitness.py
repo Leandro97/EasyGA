@@ -19,7 +19,5 @@ def getFitness(function, chrom):
         values.append(("x" + str(i + 1), chrom[i]))
     
     result =  expr.subs(values)
-    #print(expr)
-    #print(result)
     return result
 
