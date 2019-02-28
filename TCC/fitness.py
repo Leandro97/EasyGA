@@ -1,23 +1,26 @@
+import setup as su
+from setup import geneNumber
 import sympy as sp
 from sympy import *
-import setup
-from setup import chrom as chrom
-aux = ""
 
-for i in range(1, len(chrom)):
-    aux += "x" + str(i) + ", "
+def init():
+    aux = ""
 
-aux += "x" + str(len(chrom))
-sym = aux + " = symbols('" + aux + "')"
-exec(sym)
+    for i in range(1, su.geneNumber):
+        aux += "x" + str(i) + ", "
+
+    aux += "x" + str(su.geneNumber)
+    sym = aux + " = symbols('" + aux + "')"
+    exec(sym)
 
 def getFitness(function, chrom):
     values = []
     expr = sympify(function)
 
-    for i in range(len(chrom)):
+    for i in range(su.geneNumber):
         values.append(("x" + str(i + 1), chrom[i]))
-    
-    result =  expr.subs(values)
+        
+    expr =  expr.subs(values)
+    result = float(expr.evalf())
     return result
 
