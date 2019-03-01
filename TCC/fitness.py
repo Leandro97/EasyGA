@@ -1,5 +1,6 @@
 import setup as su
 from setup import geneNumber
+
 import sympy as sp
 from sympy import *
 
@@ -13,14 +14,15 @@ def init():
     sym = aux + " = symbols('" + aux + "')"
     exec(sym)
 
-def getFitness(function, chrom):
+def getFitness(chrom):
     values = []
-    expr = sympify(function)
+    expr = sympify(su.function)
 
     for i in range(su.geneNumber):
         values.append(("x" + str(i + 1), chrom[i]))
         
     expr =  expr.subs(values)
     result = float(expr.evalf())
+    chrom[su.geneNumber] = result
     return result
 
