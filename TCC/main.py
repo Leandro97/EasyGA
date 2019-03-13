@@ -1,46 +1,48 @@
+'''
+Main file. here all the steps of the algorithm are done.
+'''
+
 import setup as su
 from setup import *
 import fitness as fit
+import operations as op
 
 import numpy as np
-import random as rd
 
 '''
 Population initialization. The array representing a individual has
 geneNumber + 1 genes because the last position stores its fitness
 '''
 def init():
-    su.currentGeneration = 1
+    fit.init()
 
     if su.geneType == 'float':
-        #'''Making the np.random.uniform inclusive'''
-        #maxValue = np.nextafter(su.geneMaxValue, su.geneMaxValue + 1)
-        
-        su.population = np.random.uniform(su.geneMinValue, su.geneMaxValue, (su.populationSize, su.geneNumber + 1))
+        #'''Making the np.random.uniform includes the upper limit'''
+        #maxValue = np.nextafter(su.geneMaxValue, su.geneMaxValue + 1)    
+        su.population = np.random.uniform(su.geneMinValue, su.geneMinValue, (su.populationSize, su.geneNumber + 1))
     else:
         su.population = np.random.randint(su.geneMinValue, su.geneMaxValue + 1, (su.populationSize, su.geneNumber + 1))
 
-    '''Calculating the fitnes of the initial population'''
-    fit.init()
+    '''Calculating the fitness of the initial population'''
     for chrom in su.population:
-        chrom[su.geneNumber] = fit.getFitness(chrom)
+        #Setting the user selected gene values
+        for gene in su.geneInit:
+            chrom[gene] = su.geneInit[gene]
+
+        chrom[-1] = fit.getFitness(chrom)
         
 '''Here all the steps of the algorithm take place'''
 def evolve():
     init()
+    #print(su.population)
+    #print('###')
+    op.crossover(su.population)
+    #print(su.population)
             
     #sel.init()
     #cross.nit()
-
-#TODO
-def mutation():
-    if su.geneType == 'int':
-        return rd.randint(su.geneMinValue, su.geneMaxValue + 1)
-    else:
-        return rd.unform(su.geneMinValue, su.geneMaxValue)
     
 evolve()
-print(su.population)
 
 '''
 for chrom in population:

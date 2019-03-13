@@ -17,12 +17,13 @@ def init():
 def getFitness(chrom):
     values = []
     expr = sympify(su.function)
+    geneNumber = len(chrom) - 1
 
     for i in range(su.geneNumber):
         values.append(("x" + str(i + 1), chrom[i]))
         
     expr =  expr.subs(values)
     result = float(expr.evalf())
-    chrom[su.geneNumber] = result
+    chrom[geneNumber] = result
     return result
 
