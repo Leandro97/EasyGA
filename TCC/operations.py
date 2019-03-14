@@ -13,6 +13,18 @@ def twoPoint(parent1, parent2):
 	end = su.sliceEnd
 	return np.concatenate([parent1[0:begin], parent2[begin:end+1], parent1[end+1:]])
 
+def mutation(chrom):
+	for i in range(len(chrom)):
+		k = rd.random()
+		if(k <= su.mutationRate):
+			if (su.geneType == 'int'): 
+		   		chrom[i] = rd.randint(su.geneMinValue, su.geneMaxValue + 1)
+			else:
+		   		chrom[i] = rd.unform(su.geneMinValue, su.geneMaxValue)
+	return chrom
+
+
+
 def crossover(population):
 	while(su.currentPopulationSize <= 2 * su.populationSize - 1):
 		index1 = rd.randint(0, su.populationSize - 1)
@@ -39,12 +51,4 @@ def crossover(population):
 			su.population = np.append(su.population, [child2], axis = 0)
 			su.currentPopulationSize += 1
 
-def mutation(chrom):
-	for i in range(len(chrom)):
-		k = rd.random()
-		if(k <= su.mutationRate):
-			if (su.geneType == 'int'): 
-		   		chrom[i] = rd.randint(su.geneMinValue, su.geneMaxValue + 1)
-			else:
-		   		chrom[i] = rd.unform(su.geneMinValue, su.geneMaxValue)
-	return chrom
+	su.population = np.asarray(sorted(su.population, key=lambda x: x[-1], reverse=True)) if(su.task == 'max') else np.asarray(sorted(su.population, key=lambda x: x[-1], reverse=False))

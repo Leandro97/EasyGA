@@ -37,17 +37,9 @@ def evolve():
     #print(su.population)
     #print('###')
     op.crossover(su.population)
-    #print(su.population)
+    print(su.population)
             
     #sel.init()
     #cross.nit()
     
 evolve()
-
-'''
-for chrom in population:
-    #fit.getFitness(function, chrom)
-    fit.getFitness(function, chrom)
-    print(chrom)
-'''
-

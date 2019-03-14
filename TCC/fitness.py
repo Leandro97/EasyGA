@@ -13,6 +13,8 @@ def init():
     aux += "x" + str(su.geneNumber)
     sym = aux + " = symbols('" + aux + "')"
     exec(sym)
+    
+    su.function = "Abs(" + str(su.target) + " - (" + su.function + "))"
 
 def getFitness(chrom):
     values = []
