@@ -1,5 +1,6 @@
 import setup as su
 import fitness as fit
+import selection as sel
 from setup import currentPopulationSize, sliceBegin, sliceEnd
 import numpy as np
 import random as rd
@@ -18,7 +19,7 @@ def mutation(chrom):
 		k = rd.random()
 		if(k <= su.mutationRate):
 			if (su.geneType == 'int'): 
-		   		chrom[i] = rd.randint(su.geneMinValue, su.geneMaxValue + 1)
+		   		chrom[i] = rd.randint(su.geneMinValue, su.geneMaxValue)
 			else:
 		   		chrom[i] = rd.unform(su.geneMinValue, su.geneMaxValue)
 	return chrom
@@ -51,4 +52,14 @@ def crossover(population):
 			su.population = np.append(su.population, [child2], axis = 0)
 			su.currentPopulationSize += 1
 
-	su.population = np.asarray(sorted(su.population, key=lambda x: x[-1], reverse=True)) if(su.task == 'max') else np.asarray(sorted(su.population, key=lambda x: x[-1], reverse=False))
+	su.currentPopulationSize = su.populationSize
+
+	su.population = order(su.population)
+
+def order(population):
+	if(su.task == 'max'):	
+		return np.asarray(sorted(su.population, key=lambda x: x[-1], reverse=True))
+	elif(su.task == 'min'):	 
+		return np.asarray(sorted(su.population, key=lambda x: x[-1], reverse=False))
+	else:
+		return np.asarray(sorted(su.population, key=lambda x: fit.target(x), reverse=False))

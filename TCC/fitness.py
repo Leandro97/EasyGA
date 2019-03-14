@@ -13,19 +13,30 @@ def init():
     aux += "x" + str(su.geneNumber)
     sym = aux + " = symbols('" + aux + "')"
     exec(sym)
-    
-    su.function = "Abs(" + str(su.target) + " - (" + su.function + "))"
 
 def getFitness(chrom):
     values = []
     expr = sympify(su.function)
+
     geneNumber = len(chrom) - 1
 
     for i in range(su.geneNumber):
         values.append(("x" + str(i + 1), chrom[i]))
-        
+            
     expr =  expr.subs(values)
     result = float(expr.evalf())
-    chrom[geneNumber] = result
     return result
 
+def target(chrom):
+    function = "Abs(" + str(su.target) + " - (" + su.function + "))"
+    values = []
+    expr = sympify(function)
+
+    geneNumber = len(chrom) - 1
+
+    for i in range(su.geneNumber):
+        values.append(("x" + str(i + 1), chrom[i]))
+            
+    expr =  expr.subs(values)
+    result = float(expr.evalf())
+    return result
