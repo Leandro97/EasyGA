@@ -45,8 +45,6 @@ def evolve():
         su.champion = su.population[0][-1]
         op.crossover(su.population)
 
-        su.population = su.population[:su.populationSize]
-
         if(su.population[0][-1] == su.champion):
             counter += 1
         else:
@@ -58,9 +56,9 @@ def evolve():
         print("###")
 
         if(counter == su.plateau or su.champion == su.target) : break
+        su.population = su.population[:su.populationSize]
         su.currentGeneration += 1
 
     file.write("Last generation: " + str(su.currentGeneration - 1) + "\n\n")
 
 evolve()
-

@@ -16,15 +16,32 @@ def init():
 
 def getFitness(chrom):
     values = []
-    expr = sympify(su.function)
+    expr = sympify("x1")
+    result = 0
 
-    geneNumber = len(chrom) - 1
+    #sintax error
+    try:
+        expr = sympify(su.function)
+    except SympifyError:
+        print("There is something wrong with the function '{}'. Type a new function: ".format(su.function))
+        su.function = input()
+        getFitness(chrom)
 
     for i in range(su.geneNumber):
         values.append(("x" + str(i + 1), chrom[i]))
             
     expr =  expr.subs(values)
-    result = float(expr.evalf())
+
+    #unknow variables
+    try:
+        result = float(expr.evalf())
+    except TypeError:
+        print("There are unknow variables in the function '{}'.".format(su.function))
+        print("The variables must be x1, x2, x3, ..., xn. Type a new function: ")
+        su.function = input()
+        getFitness(chrom)
+
+
     return result
 
 def target(chrom):

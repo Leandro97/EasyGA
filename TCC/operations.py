@@ -21,7 +21,7 @@ def mutation(chrom):
 			if (su.geneType == 'int'): 
 		   		chrom[i] = rd.randint(su.geneMinValue, su.geneMaxValue)
 			else:
-		   		chrom[i] = rd.unform(su.geneMinValue, su.geneMaxValue)
+		   		chrom[i] = rd.uniform(su.geneMinValue, su.geneMaxValue)
 	return chrom
 
 
