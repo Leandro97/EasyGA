@@ -34,7 +34,7 @@ def init():
         chrom[-1] = fit.getFitness(chrom)
     
     su.currentGeneration = 1
-    su.champion = 0
+    su.champion = []
 
 '''Here all the steps of the algorithm take place'''
 def evolve():
@@ -42,20 +42,21 @@ def evolve():
     counter = 0
 
     while (su.currentGeneration <= su.maxGenerations):
-        su.champion = su.population[0][-1]
+        if len(su.champion) == 0:
+            su.champion = su.population[0]
         op.crossover(su.population)
 
-        if(su.population[0][-1] == su.champion):
+        if(su.population[0][-1] == su.champion[-1]):
             counter += 1
         else:
             counter = 0
-            su.champion = su.population[0][-1]
+            su.champion = su.population[0]
             file.write("Generation " + str(su.currentGeneration) + " - Champion: " + str(su.champion) + "\n")
 
         print(su.population)
         print("###")
 
-        if(counter == su.plateau or su.champion == su.target) : break
+        if(counter == su.plateau or su.champion[-1] == su.target) : break
         su.population = su.population[:su.populationSize]
         su.currentGeneration += 1
 

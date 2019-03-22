@@ -41,7 +41,6 @@ def getFitness(chrom):
         su.function = input()
         getFitness(chrom)
 
-
     return result
 
 def target(chrom):
