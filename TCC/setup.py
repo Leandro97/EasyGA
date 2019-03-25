@@ -31,7 +31,7 @@ sliceBegin = 2
 sliceEnd = 4
 
 selection = 'roulette' #'roulette' | 'tournament' | ???
-mutation = 'random' #'random' | ??? | ???
+mutation = 'uniform' #'uniform' | ??? | ???
 mutationRate = 0.25
 reinsertParents = True
 
@@ -39,4 +39,3 @@ reinsertParents = True
 experimentName = 'Test'
 saveGenerations = False
 saveGraphs = False
-

@@ -24,8 +24,6 @@ def mutation(chrom):
 		   		chrom[i] = rd.uniform(su.geneMinValue, su.geneMaxValue)
 	return chrom
 
-
-
 def crossover(population):
 	while(su.currentPopulationSize <= 2 * su.populationSize - 1):
 		index1 = rd.randint(0, su.populationSize - 1)
@@ -51,9 +49,8 @@ def crossover(population):
 
 			su.population = np.append(su.population, [child2], axis = 0)
 			su.currentPopulationSize += 1
-
+	print(su.currentPopulationSize)	
 	su.currentPopulationSize = su.populationSize
-
 	su.population = order(su.population)
 
 def order(population):
