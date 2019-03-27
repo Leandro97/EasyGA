@@ -17,11 +17,12 @@ geneInit = {}
 function = "x1 + x2 + x3 + x4 + x5 + x6"
 task = "max" #"max" | "min" | "target"
 target = 0
+totalFitness = 0
 
 #####Algorithm#####
 currentGeneration = 1
-populationSize = 10
-currentPopulationSize = 10
+populationSize = 4
+currentPopulationSize = 4
 maxGenerations = 50
 plateau = 20
 champion = 0

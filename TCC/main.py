@@ -1,11 +1,11 @@
 '''
 Main file. here all the steps of the algorithm are done.
 '''
-
 import setup as su
 from setup import *
 import fitness as fit
 import operations as op
+import selection as sel 
 
 import numpy as np
 
@@ -16,11 +16,11 @@ Population initialization. The array representing a individual has
 geneNumber + 1 genes because the last position stores its fitness
 '''
 def init():
+    #Initializing fitness function
     fit.init()
 
-    if su.geneType == 'float':
-        #'''Making the np.random.uniform includes the upper limit'''
-        #maxValue = np.nextafter(su.geneMaxValue, su.geneMaxValue + 1)    
+    '''Initial population starts the eproccess with random values'''
+    if su.geneType == 'float': 
         su.population = np.random.uniform(su.geneMinValue, su.geneMinValue, (su.populationSize, su.geneNumber + 1))
     else:
         su.population = np.random.randint(su.geneMinValue, su.geneMaxValue + 1, (su.populationSize, su.geneNumber + 1))
@@ -32,34 +32,53 @@ def init():
             chrom[gene] = su.geneInit[gene]
 
         chrom[-1] = fit.getFitness(chrom)
-    
+
+    su.population = op.order(su.population) #Ordering the individuals according to fitness
+    su.totalFitness = op.getTotalFitness() #Getting the sum of population's fitness
     su.currentGeneration = 1
     su.champion = []
 
+aux = 0
 '''Here all the steps of the algorithm take place'''
 def evolve():
+    global aux
+    last = 0 #Last generation where the champion changed
+    counter = 0 #Counts how many generations the champion remains the same
     init()
-    counter = 0
 
     while (su.currentGeneration <= su.maxGenerations):
+        #
         if len(su.champion) == 0:
             su.champion = su.population[0]
-        op.crossover(su.population)
 
+        op.crossover(su.population)
+        su.population = op.order(su.population)
+
+        #Verifying if champion changed
         if(su.population[0][-1] == su.champion[-1]):
             counter += 1
         else:
             counter = 0
             su.champion = su.population[0]
             file.write("Generation " + str(su.currentGeneration) + " - Champion: " + str(su.champion) + "\n")
-
-        print(su.population)
-        print("###")
-
-        if(counter == su.plateau or su.champion[-1] == su.target) : break
+            last = su.currentGeneration
+        
+        #Population returns to its initial size
         su.population = su.population[:su.populationSize]
+        su.currentPopulationSize = su.populationSize
         su.currentGeneration += 1
 
-    file.write("Last generation: " + str(su.currentGeneration - 1) + "\n\n")
+        #Verifying if max generation number or the targeted fitness were reached 
+        if(counter == su.plateau or su.champion[-1] == su.target) : 
+            break
 
-evolve()
+        #print("###")
+    file.write("\n")
+    return last
+
+#evolve()
+tests = 1
+for i in range(tests):
+    aux += evolve()
+
+print(aux/tests)
