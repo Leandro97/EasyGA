@@ -47,7 +47,6 @@ def evolve():
     init()
 
     while (su.currentGeneration <= su.maxGenerations):
-        #
         if len(su.champion) == 0:
             su.champion = su.population[0]
 
@@ -60,7 +59,7 @@ def evolve():
         else:
             counter = 0
             su.champion = su.population[0]
-            file.write("Generation " + str(su.currentGeneration) + " - Champion: " + str(su.champion) + "\n")
+            ##file.write("Generation " + str(su.currentGeneration) + " - Champion: " + str(su.champion) + "\n")
             last = su.currentGeneration
         
         #Population returns to its initial size
@@ -73,12 +72,14 @@ def evolve():
             break
 
         #print("###")
-    file.write("\n")
+    #file.write("\n")
     return last
 
-#evolve()
-tests = 1
+
+tests = 100
 for i in range(tests):
+    ##file.write("Simulation #{}\n".format(i + 1))
     aux += evolve()
 
-print(aux/tests)
+file.write(str(aux/tests) + "\n")
+print("DONE\n")

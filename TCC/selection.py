@@ -1,6 +1,7 @@
 import setup as su 
 import operations as op 
 import numpy as np
+import random as rd
 
 '''Stores the selection roulette'''
 probabilityArray = []
@@ -21,8 +22,17 @@ def init(population):
 	#print(su.population)
 
 def selectParent():
-	if(su.selection == "roulette"):
+	if(su.selection == "random"):
+		return random()
+	elif(su.selection == "roulette"):
 		return roulette()
+	else:
+		return tournament()
+
+
+'''Uniform selection'''
+def random():
+	return rd.randint(0, su.populationSize - 1)
 
 '''Roulette selection'''
 def roulette():
@@ -33,5 +43,6 @@ def roulette():
 		if(number < probabilityArray[i]): 
 			return i
 
+'''Tournament selection'''
 def tournament():
 	pass	
