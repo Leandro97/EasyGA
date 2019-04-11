@@ -11,11 +11,11 @@ def init(population):
 	global probabilityArray
 	previousProbability = 0
 	probabilityArray = []
-	su.totalFitness = op.getTotalFitness()
+	totalFitness = op.getTotalFitness()
 
 	if(su.selection == "roulette"):
 		for chrom in list(reversed(population)):
-			previousProbability += (chrom[-1] / su.totalFitness) #TODO: PROBLEM IF TOTALfITNESS == 0
+			previousProbability += (chrom[-1] / totalFitness) #TODO: PROBLEM IF TOTALfITNESS == 0
 			probabilityArray.append(previousProbability)
 
 	#print(probabilityArray)
@@ -42,6 +42,8 @@ def roulette():
 	for i in range(len(probabilityArray)):
 		if(number < probabilityArray[i]): 
 			return i
+
+	return len(probabilityArray) - 1
 
 '''Tournament selection'''
 def tournament():

@@ -59,7 +59,7 @@ def evolve():
         else:
             counter = 0
             su.champion = su.population[0]
-            ##file.write("Generation " + str(su.currentGeneration) + " - Champion: " + str(su.champion) + "\n")
+            file.write("Generation " + str(su.currentGeneration) + " - Champion: " + str(su.champion) + "\n")
             last = su.currentGeneration
         
         #Population returns to its initial size
@@ -67,19 +67,18 @@ def evolve():
         su.currentPopulationSize = su.populationSize
         su.currentGeneration += 1
 
-        #Verifying if max generation number or the targeted fitness were reached 
-        if(counter == su.plateau or su.champion[-1] == su.target) : 
-            break
+        #Verifying if max generation number was reached 
+        if(counter == su.plateau ): break
 
         #print("###")
-    #file.write("\n")
+    file.write("\n")
     return last
 
 
-tests = 100
+tests = 10
 for i in range(tests):
-    ##file.write("Simulation #{}\n".format(i + 1))
+    file.write("Simulation #{}\n".format(i + 1))
     aux += evolve()
 
-file.write(str(aux/tests) + "\n")
-print("DONE\n")
+#file.write(str(aux/tests) + "\n")
+print(su.population[0])

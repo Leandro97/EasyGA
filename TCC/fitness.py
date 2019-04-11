@@ -46,33 +46,3 @@ def getFitness(chrom):
         getFitness(chrom)
 
     return result
-
-'''Calculating error in the functions with defined target'''
-def target(chrom):
-    function = "Abs(" + str(su.target) + " - (" + su.function + "))"
-    values = []
-
-    #Looking for sintax errors
-    try:
-        expr = sympify(function)
-    except SympifyError:
-        print("There is something wrong with the function '{}'. Type a new function: ".format(su.function))
-        su.function = input()
-        getFitness(chrom)
-
-    for i in range(su.geneNumber):
-        values.append(("x" + str(i + 1), chrom[i]))
-            
-    expr =  expr.subs(values)
-    
-    #Looking for unknow variables
-    try:
-        #Evaluating function
-        result = float(expr.evalf())
-    except TypeError:
-        print("There are unknow variables in the function '{}'.".format(su.function))
-        print("The variables must be x1, x2, x3, ..., xn. Type a new function: ")
-        su.function = input()
-        getFitness(chrom)
-
-    return result

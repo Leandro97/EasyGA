@@ -7,8 +7,10 @@ import random as rd
 '''Calculates the total fitness of population'''
 def getTotalFitness():
 	aux = 0
+
 	for chrom in su.population:
 		aux += chrom[-1]
+
 	return aux
 
 '''One point crossover'''
@@ -20,6 +22,7 @@ def onePoint(parent1, parent2):
 def twoPoint(parent1, parent2):
 	begin = su.sliceBegin
 	end = su.sliceEnd
+
 	return np.concatenate([parent1[0:begin], parent2[begin:end+1], parent1[end+1:]])
 
 '''Mutation operators'''
@@ -84,7 +87,5 @@ def crossover(population):
 def order(population):
 	if(su.task == 'max'):	
 		return np.asarray(sorted(su.population, key=lambda x: x[-1], reverse=True))
-	elif(su.task == 'min'):	 
+	else:	 
 		return np.asarray(sorted(su.population, key=lambda x: x[-1], reverse=False))
-	else:
-		return np.asarray(sorted(su.population, key=lambda x: fit.target(x), reverse=False))

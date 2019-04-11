@@ -15,14 +15,13 @@ geneInit = {}
 
 #####Fitness Function#####
 function = "x1 + x2 + x3 + x4 + x5 + x6"
-task = "max" #"max" | "min" | "target"
-target = 0
+task = "min" #"max" | "min"
 totalFitness = 0
 
 #####Algorithm#####
 currentGeneration = 1
 populationSize = 20
-currentPopulationSize = 20
+currentPopulationSize = populationSize
 maxGenerations = 50
 plateau = 20
 champion = 0
