@@ -93,14 +93,26 @@ def evolve():
 def simulation(tests):
     global aux
     global file
+    best = []
+
     now = datetime.datetime.now()
     file = open(setName(now), "a") 
 
     for i in range(tests):
-        file.write("----- Simulation #{} -----\n".format(i + 1))
+        file.write("----- Simulation #{} -----\n\n".format(i + 1))
         aux += evolve()
 
-simulation(1)
+        if len(best) == 0: 
+            best = su.population[0]
+        elif(su.population[0][-1] > best[-1] and su.task == 'max'):
+            best = su.population[0]
+        elif(su.population[0][-1] < best[-1] and su.task == 'min'):
+            best = su.population[0]
+    
+    file.write('---------------------\n')
+    file.write('Best individual: {}\n'.format(best))
+
+simulation(10)
 
 #file.write(str(aux/tests) + "\n")
 print(su.population[0])
