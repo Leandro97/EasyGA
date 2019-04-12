@@ -6,10 +6,24 @@ from setup import *
 import fitness as fit
 import operations as op
 import selection as sel 
+import datetime
 
 import numpy as np
 
-file = open("output.txt", "a") 
+file = []
+
+def setName(now):
+    day = '{:02d}'.format(now.day)
+    month = '{:02d}'.format(now.month)
+    year = str(now.year)
+    date = day + '-' + month + '-' + year
+
+    hour = '{:02d}'.format(now.hour)
+    minute = '{:02d}'.format(now.minute)
+    time = hour + ':' + minute
+
+
+    return date + '.' + time + '.txt'
 
 '''
 Population initialization. The array representing a individual has
@@ -39,6 +53,7 @@ def init():
     su.champion = []
 
 aux = 0
+
 '''Here all the steps of the algorithm take place'''
 def evolve():
     global aux
@@ -74,11 +89,18 @@ def evolve():
     file.write("\n")
     return last
 
+'''Each time the user runs a scenario, this function is called'''
+def simulation(tests):
+    global aux
+    global file
+    now = datetime.datetime.now()
+    file = open(setName(now), "a") 
 
-tests = 10
-for i in range(tests):
-    file.write("Simulation #{}\n".format(i + 1))
-    aux += evolve()
+    for i in range(tests):
+        file.write("----- Simulation #{} -----\n".format(i + 1))
+        aux += evolve()
+
+simulation(1)
 
 #file.write(str(aux/tests) + "\n")
 print(su.population[0])

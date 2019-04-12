@@ -15,8 +15,11 @@ def init(population):
 
 	if(su.selection == "roulette"):
 		for chrom in list(reversed(population)):
-			previousProbability += (chrom[-1] / totalFitness) #TODO: PROBLEM IF TOTALfITNESS == 0
-			probabilityArray.append(previousProbability)
+			if (totalFitness != 0):
+				previousProbability += (chrom[-1] / totalFitness) #TODO: PROBLEM IF TOTALFITNESS == 0
+				probabilityArray.append(previousProbability)
+			else:
+				probabilityArray.append(0.5)
 
 	#print(probabilityArray)
 	#print(su.population)
@@ -37,7 +40,7 @@ def random():
 '''Roulette selection'''
 def roulette():
 	global probabilityArray
-	number = np.random.uniform(0,1)
+	number = np.random.uniform(0,1.1)
 	
 	for i in range(len(probabilityArray)):
 		if(number < probabilityArray[i]): 
