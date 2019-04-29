@@ -40,7 +40,7 @@ def mutation(chrom):
 
 '''Where the crossover is managed'''
 def crossover(population):
-	#Initializing roullete
+	#Initialising roullete
 	if(su.selection == "roulette"): sel.init(su.population)
 
 	#New childs are born until the current size of the population is equal to two times the initial size

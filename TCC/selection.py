@@ -6,7 +6,7 @@ import random as rd
 '''Stores the selection roulette'''
 probabilityArray = []
 
-'''Initializing selection roulette'''
+'''Initialising selection roulette'''
 def init(population):
 	global probabilityArray
 	previousProbability = 0

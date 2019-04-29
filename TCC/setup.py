@@ -6,11 +6,11 @@ the algorithm execution.
 
 population = []
 
-#####Chromossome structure#####
+#####Chromosome structure#####
 geneType = "int" #"float" | "int"
 geneNumber = 6
 geneMinValue = 0
-geneMaxValue = 25
+geneMaxValue = 5
 geneInit = {}
 
 #####Fitness Function#####

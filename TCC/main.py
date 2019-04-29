@@ -26,11 +26,11 @@ def setName(now):
     return date + '.' + time + '.txt'
 
 '''
-Population initialization. The array representing a individual has
+Population initialisation. The array representing a individual has
 geneNumber + 1 genes because the last position stores its fitness
 '''
 def init():
-    #Initializing fitness function
+    #Initialising fitness function
     fit.init()
 
     '''Initial population starts the eproccess with random values'''
