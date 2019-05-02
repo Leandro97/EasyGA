@@ -1,29 +1,17 @@
 '''
-Main file. here all the steps of the algorithm are done.
+
+Universidade Federal de Alagoas - UFAL
+Author: Leandro Martins de Freitas
+
 '''
 import setup as su
 from setup import *
 import fitness as fit
 import operations as op
 import selection as sel 
+import record as rec 
 import datetime
-
 import numpy as np
-
-file = []
-
-def setName(now):
-    day = '{:02d}'.format(now.day)
-    month = '{:02d}'.format(now.month)
-    year = str(now.year)
-    date = day + '-' + month + '-' + year
-
-    hour = '{:02d}'.format(now.hour)
-    minute = '{:02d}'.format(now.minute)
-    time = hour + ':' + minute
-
-
-    return date + '.' + time + '.txt'
 
 '''
 Population initialisation. The array representing a individual has
@@ -52,11 +40,8 @@ def init():
     su.currentGeneration = 1
     su.champion = []
 
-aux = 0
-
 '''Here all the steps of the algorithm take place'''
 def evolve():
-    global aux
     last = 0 #Last generation where the champion changed
     counter = 0 #Counts how many generations the champion remains the same
     init()
@@ -74,7 +59,7 @@ def evolve():
         else:
             counter = 0
             su.champion = su.population[0]
-            file.write("Generation " + str(su.currentGeneration) + " - Champion: " + str(su.champion) + "\n")
+            rec.write("Generation " + str(su.currentGeneration) + " - Champion: " + str(su.champion) + "\n")
             last = su.currentGeneration
         
         #Population returns to its initial size
@@ -86,21 +71,17 @@ def evolve():
         if(counter == su.plateau ): break
 
         #print("###")
-    file.write("\n")
-    return last
+    rec.write("\n")
 
 '''Each time the user runs a scenario, this function is called'''
 def simulation(tests):
-    global aux
-    global file
     best = []
 
-    now = datetime.datetime.now()
-    file = open(setName(now), "a") 
+    rec.newFile()
 
     for i in range(tests):
-        file.write("----- Simulation #{} -----\n\n".format(i + 1))
-        aux += evolve()
+        rec.write("----- Simulation #{} -----\n\n".format(i + 1))
+        evolve()
 
         if len(best) == 0: 
             best = su.population[0]
@@ -109,10 +90,10 @@ def simulation(tests):
         elif(su.population[0][-1] < best[-1] and su.task == 'min'):
             best = su.population[0]
     
-    file.write('---------------------\n')
-    file.write('Best individual: {}\n'.format(best))
+    rec.write('---------------------\n')
+    rec.write('Best individual: {}\n'.format(best))
+    rec.close()
 
 simulation(10)
 
-#file.write(str(aux/tests) + "\n")
 print(su.population[0])

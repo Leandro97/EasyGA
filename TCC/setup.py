@@ -23,7 +23,6 @@ populationSize = 20
 currentPopulationSize = populationSize
 maxGenerations = 50
 plateau = 20
-champion = 0
 
 crossover = 'onePoint' #'onePoint' | 'twoPoints'
 sliceBegin = 2
@@ -35,6 +34,5 @@ mutationRate = 0.25
 reinsertParents = True
 
 #####Results#####
-experimentName = 'Test'
 saveGenerations = False
 saveGraphs = False
