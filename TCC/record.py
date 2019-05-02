@@ -47,18 +47,3 @@ def write(text):
 
 def close():
 	file.close()
-
-
-#####Algorithm#####
-crossover = 'onePoint' #'onePoint' | 'twoPoints'
-sliceBegin = 2
-sliceEnd = 4
-
-selection = 'roulette' #'random' | 'roulette' | 'tournament'
-mutation = 'uniform' #'uniform' | ??? | ???
-mutationRate = 0.25
-
-#####Results#####
-experimentName = 'Test'
-saveGenerations = False
-saveGraphs = False
