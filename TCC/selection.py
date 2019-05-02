@@ -25,17 +25,10 @@ def init(population):
 	#print(su.population)
 
 def selectParent():
-	if(su.selection == "random"):
-		return random()
+	if(su.selection == "tournament"):
+		return tournament()
 	elif(su.selection == "roulette"):
 		return roulette()
-	else:
-		return tournament()
-
-
-'''Uniform selection'''
-def random():
-	return rd.randint(0, su.populationSize - 1)
 
 '''Roulette selection'''
 def roulette():
