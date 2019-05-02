@@ -33,5 +33,5 @@ mutation = 'uniform' #'uniform' | ??? | ???
 mutationRate = 0.25
 
 #####Results#####
-saveGenerations = False
+saveHeader = True
 saveGraphs = False
