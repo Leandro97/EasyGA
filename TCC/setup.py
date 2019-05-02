@@ -31,7 +31,6 @@ sliceEnd = 4
 selection = 'roulette' #'random' | 'roulette' | 'tournament'
 mutation = 'uniform' #'uniform' | ??? | ???
 mutationRate = 0.25
-reinsertParents = True
 
 #####Results#####
 saveGenerations = False

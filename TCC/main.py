@@ -38,28 +38,28 @@ def init():
     su.population = op.order(su.population) #Ordering the individuals according to fitness
     su.totalFitness = op.getTotalFitness() #Getting the sum of population's fitness
     su.currentGeneration = 1
-    su.champion = []
 
 '''Here all the steps of the algorithm take place'''
 def evolve():
+    champion = []
     last = 0 #Last generation where the champion changed
     counter = 0 #Counts how many generations the champion remains the same
     init()
 
     while (su.currentGeneration <= su.maxGenerations):
-        if len(su.champion) == 0:
-            su.champion = su.population[0]
+        if len(champion) == 0:
+            champion = su.population[0]
 
         op.crossover(su.population)
         su.population = op.order(su.population)
 
         #Verifying if champion changed
-        if(su.population[0][-1] == su.champion[-1]):
+        if(su.population[0][-1] == champion[-1]):
             counter += 1
         else:
             counter = 0
-            su.champion = su.population[0]
-            rec.write("Generation " + str(su.currentGeneration) + " - Champion: " + str(su.champion) + "\n")
+            champion = su.population[0]
+            rec.write("Generation " + str(su.currentGeneration) + " - Champion: " + str(champion) + "\n")
             last = su.currentGeneration
         
         #Population returns to its initial size
@@ -90,10 +90,10 @@ def simulation(tests):
         elif(su.population[0][-1] < best[-1] and su.task == 'min'):
             best = su.population[0]
     
-    rec.write('---------------------\n')
-    rec.write('Best individual: {}\n'.format(best))
+    rec.write('--------------------------\n')
+    rec.write('\n\n->Best individual: {}<-\n'.format(best))
     rec.close()
 
-simulation(10)
+simulation(4)
 
 print(su.population[0])
