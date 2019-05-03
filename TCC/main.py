@@ -49,11 +49,12 @@ def evolve():
     init()
 
     while (su.currentGeneration <= su.maxGenerations):
-        if len(champion) == 0:
-            champion = su.population[0]
-
         op.crossover(su.population)
         su.population = op.sort(su.population)
+
+        if len(champion) == 0:
+            champion = su.population[0]
+            rec.write("Generation " + str(su.currentGeneration) + " - Champion: " + str(champion) + "\n")
 
         #Verifying if champion changed
         if(su.population[0][-1] == champion[-1]):
@@ -89,10 +90,11 @@ def simulation(tests):
 
     for i in range(tests):
         rec.write("\n--------- Simulation #{} ---------\n\n".format(i + 1))
-        
+
         sim = {}
         sim['id'] = i + 1
         sim['last'], sim['champion'] = evolve()
+
         simList.append(sim)
 
     simList = sorted(simList, key=lambda sim: sim['last'])
@@ -101,6 +103,6 @@ def simulation(tests):
     rec.write('\n-> Best simulation: #{}. Champion: {} <-'.format(simList[0]['id'], simList[0]['champion']))
     rec.close()
 
-simulation(50)
+simulation(3)
 
 print(su.population[0])

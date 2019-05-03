@@ -21,11 +21,13 @@ def init(population):
 			else:
 				probabilityArray.append(0.5)
 
-	#print(probabilityArray)
+	print(probabilityArray)
 	#print(su.population)
 
 def selectParent():
-	if(su.selection == "tournament"):
+	if(su.selection == "uniform"):
+		return np.random.randint(0, su.populationSize)
+	elif(su.selection == "tournament"):
 		return tournament()
 	elif(su.selection == "roulette"):
 		return roulette()
