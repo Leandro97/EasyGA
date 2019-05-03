@@ -1,6 +1,6 @@
 '''
 
-Universidade Federal de Alagoas - UFAL
+Federal University of Alagoas - UFAL
 Author: Leandro Martins de Freitas
 
 '''
@@ -9,15 +9,17 @@ from setup import *
 import fitness as fit
 import operations as op
 import selection as sel 
-import record as rec 
+import record as rec  
 import datetime
 import numpy as np
+
 
 '''
 Population initialisation. The array representing a individual has
 geneNumber + 1 genes because the last position stores its fitness
 '''
 def init():
+    global simList
     #Initialising fitness function
     fit.init()
 
@@ -35,7 +37,7 @@ def init():
 
         chrom[-1] = fit.getFitness(chrom)
 
-    su.population = op.order(su.population) #Ordering the individuals according to fitness
+    su.population = op.sort(su.population) #Sorting the individuals according to fitness
     su.totalFitness = op.getTotalFitness() #Getting the sum of population's fitness
     su.currentGeneration = 1
 
@@ -51,7 +53,7 @@ def evolve():
             champion = su.population[0]
 
         op.crossover(su.population)
-        su.population = op.order(su.population)
+        su.population = op.sort(su.population)
 
         #Verifying if champion changed
         if(su.population[0][-1] == champion[-1]):
@@ -71,27 +73,32 @@ def evolve():
         if(counter == su.plateau ): break
 
         #print("###")
+    return last, champion
     rec.write("\n")
+
+def key(val):
+    return val['last']
 
 '''Each time the user runs a scenario, this function is called'''
 def simulation(tests):
-    best = []
+    simList = []
+    bestIndividual = []
+    bestSimulation = 0
 
     rec.newFile()
 
     for i in range(tests):
         rec.write("----- Simulation #{} -----\n\n".format(i + 1))
-        evolve()
+        
+        sim = {}
+        sim['id'] = i + 1
+        sim['last'], sim['champion'] = evolve()
+        simList.append(sim)
 
-        if len(best) == 0: 
-            best = su.population[0]
-        elif(su.population[0][-1] > best[-1] and su.task == 'max'):
-            best = su.population[0]
-        elif(su.population[0][-1] < best[-1] and su.task == 'min'):
-            best = su.population[0]
-    
+    simList = sorted(simList, key=lambda sim: sim['last'])
+
     rec.write('--------------------------\n')
-    rec.write('\n\n->Best individual: {}<-\n'.format(best))
+    rec.write('\n\n->Best simulation: #{}. Champion: {}<-\n'.format(simList[0]['id'], simList[0]['champion']))
     rec.close()
 
 simulation(4)

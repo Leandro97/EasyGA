@@ -83,8 +83,8 @@ def crossover(population):
 	#print(su.population)
 	#print('######')
 
-'''Ordering population in decrescent order, acording to the object task'''
-def order(population):
+'''Sorting population in decrescent order, acording to the object task'''
+def sort(population):
 	if(su.task == 'max'):	
 		return np.asarray(sorted(su.population, key=lambda x: x[-1], reverse=True))
 	else:	 
