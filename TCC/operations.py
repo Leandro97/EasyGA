@@ -16,16 +16,16 @@ def getTotalFitness():
 '''One point crossover'''
 def onePoint(parent1, parent2):
 	point = su.sliceBegin
-	return np.concatenate([parent1[0:point], parent2[point:]])
+	return np.concatenate([parent1[0:point], parent2[point:]]), np.concatenate([parent2[0:point], parent1[point:]])
 
 '''Two point crossover'''
 def twoPoint(parent1, parent2):
 	begin = su.sliceBegin
 	end = su.sliceEnd
 
-	return np.concatenate([parent1[0:begin], parent2[begin:end+1], parent1[end+1:]])
+	return np.concatenate([parent1[0:begin - 1], parent2[begin - 1:end], parent1[end:]]), np.concatenate([parent2[0:begin - 1], parent1[begin - 1:end], parent2[end:]])
 
-'''Mutation operators'''
+'''Mutation operator'''
 def mutation(chrom):
 	for i in range(len(chrom)):
 		k = rd.random()
@@ -60,25 +60,16 @@ def crossover(population):
 		
 		#print(su.population[index1], su.population[index2])
 
-		'''First child being born and mutated (acording to mutation rate)'''
-		child1 = onePoint(parent1, parent2) if su.sliceBegin == su.sliceEnd else twoPoint(parent1, parent2)
+		'''Childs being born and mutated'''
+		child1, child2 = onePoint(parent1, parent2) if su.sliceBegin == su.sliceEnd else twoPoint(parent1, parent2)
 		child1 = mutation(child1)
+		child2 = mutation(child2)
 		child1[-1] = fit.getFitness(child1) #Calculatin its fitness
+		child2[-1] = fit.getFitness(child2) #Calculatin its fitness
 
 		#Adding child to population 
-		su.population = np.append(su.population, [child1], axis = 0)
-		su.currentPopulationSize += 1
-
-		#Verifying population size
-		if(su.currentPopulationSize != 2 * su.populationSize):
-			'''Second child being born and mutated (acording to mutation rate)'''
-			child2 = onePoint(parent2, parent1) if su.sliceBegin == su.sliceEnd else twoPoint(parent2, parent1)
-			child2 = mutation(child2)
-			child2[-1] = fit.getFitness(child2)
-
-			#Adding child to population
-			su.population = np.append(su.population, [child2], axis = 0)
-			su.currentPopulationSize += 1
+		su.population = np.append(su.population, [child1, child2], axis = 0)
+		su.currentPopulationSize += 2
 			
 	#print(su.population)
 	#print('######')

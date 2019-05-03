@@ -88,7 +88,7 @@ def simulation(tests):
     rec.newFile()
 
     for i in range(tests):
-        rec.write("----- Simulation #{} -----\n\n".format(i + 1))
+        rec.write("\n--------- Simulation #{} ---------\n\n".format(i + 1))
         
         sim = {}
         sim['id'] = i + 1
@@ -97,10 +97,10 @@ def simulation(tests):
 
     simList = sorted(simList, key=lambda sim: sim['last'])
 
-    rec.write('--------------------------\n')
-    rec.write('\n\n->Best simulation: #{}. Champion: {}<-\n'.format(simList[0]['id'], simList[0]['champion']))
+    rec.write('\n---------------------------------\n')
+    rec.write('\n-> Best simulation: #{}. Champion: {} <-'.format(simList[0]['id'], simList[0]['champion']))
     rec.close()
 
-simulation(4)
+simulation(50)
 
 print(su.population[0])

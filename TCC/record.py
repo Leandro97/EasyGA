@@ -27,7 +27,7 @@ def newFile():
 
 	if(su.saveHeader):
 		'''Adding a heading to the file containing the setup chosen by the user'''
-		write("##########Setup##########\n\n")
+		write("##############Setup##############\n\n")
 
 		write("Function: '{}'\n".format(su.function))
 		write("Objective: '{}'\n\n".format(su.task))
@@ -42,7 +42,7 @@ def newFile():
 		write("Mutation strategy: '{}'\n".format(su.mutation))
 		write("Mutation rate: {}\n\n".format(su.mutationRate))
 
-		write("#########################\n\n")
+		write("#################################\n")
 
 def write(text):
 	file.write(text)
