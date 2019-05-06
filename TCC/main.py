@@ -101,9 +101,6 @@ def simulation(tests):
     simByChampion = sorted(simList, key=lambda sim: sim['champion'][-1])
     bestIndividual = simByChampion[0]
 
-    for champ in simByChampion:
-        print(champ['champion'][-1])
-
     rec.write('\n---------------------------------\n')
 
     #Verifying champion reached with less generations
