@@ -8,21 +8,18 @@ population = []
 
 #####Chromosome structure#####
 geneType = "int" #"float" | "int"
-#geneNumber = 6
-geneNumber = 2
-geneMinValue = -10
+geneNumber = 6
+geneMinValue = -5
 geneMaxValue = 5
 geneInit = {}
 
 #####Fitness Function#####
-#function = "x1 + x2 + x3 + x4 + x5 + x6"
-function = "x1 + x2"
-task = "max" #"max" | "min"
+function = "x1 + x2 + x3 + x4 + x5 + x6"
+task = "min" #"max" | "min"
 
 #####Algorithm#####
 currentGeneration = 1
-#populationSize = 20
-populationSize = 4
+populationSize = 20
 currentPopulationSize = populationSize
 maxGenerations = 50
 plateau = 10
@@ -37,4 +34,4 @@ mutationRate = 0.25
 
 #####Results#####
 saveHeader = True
-saveGraphs = False
+saveGraphs = True

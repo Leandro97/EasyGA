@@ -21,7 +21,17 @@ def init(population):
 			else:
 				probabilityArray.append(0.5)
 
-	print(probabilityArray)
+	#print(probabilityArray)
+
+	#normalizing probabilities in the [0.0, 1.0] interval
+	vmin, vmax = min(probabilityArray), max(probabilityArray)
+	for i, val in enumerate(probabilityArray):
+		if vmin != vmax:
+			probabilityArray[i] = (val - vmin) / (vmax - vmin)
+		else:
+			probabilityArray[i] = 1.0
+
+	#print(probabilityArray)
 	#print(su.population)
 
 def selectParent():

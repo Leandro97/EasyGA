@@ -53,7 +53,7 @@ def evolve():
         su.population = op.sort(su.population)
 
         if len(champion) == 0:
-            champion = su.population[0]
+            champion = list(su.population[0])
             rec.write("Generation " + str(su.currentGeneration) + " - Champion: " + str(champion) + "\n")
 
         #Verifying if champion changed
@@ -61,7 +61,7 @@ def evolve():
             counter += 1
         else:
             counter = 0
-            champion = su.population[0]
+            champion = list(su.population[0])
             rec.write("Generation " + str(su.currentGeneration) + " - Champion: " + str(champion) + "\n")
             last = su.currentGeneration
         
@@ -82,9 +82,9 @@ def key(val):
 
 '''Each time the user runs a scenario, this function is called'''
 def simulation(tests):
-    simList = []
-    bestIndividual = []
-    bestSimulation = 0
+    fitnessSum = 0
+    simList = []    
+    bestIndividual = {}
 
     rec.newFile()
 
@@ -95,14 +95,30 @@ def simulation(tests):
         sim['id'] = i + 1
         sim['last'], sim['champion'] = evolve()
 
+        fitnessSum += sim['champion'][-1]
         simList.append(sim)
 
-    simList = sorted(simList, key=lambda sim: sim['last'])
+    simByChampion = sorted(simList, key=lambda sim: sim['champion'][-1])
+    bestIndividual = simByChampion[0]
+
+    for champ in simByChampion:
+        print(champ['champion'][-1])
 
     rec.write('\n---------------------------------\n')
-    rec.write('\n-> Best simulation: #{}. Champion: {} <-'.format(simList[0]['id'], simList[0]['champion']))
+
+    #Verifying champion reached with less generations
+    for i in range(1, tests):
+        if(tests >= i + 1):
+            print(i)
+            if(bestIndividual['champion'][-1] == simByChampion[i]['champion'][-1]  and bestIndividual['last'] > simByChampion[i]['last']):
+                bestIndividual = simByChampion[i]
+            else:
+                break
+
+    rec.write('\n-> Best simulation: #{}. Champion: {} <-'.format(bestIndividual['id'], bestIndividual['champion']))
+    rec.write('\n-> Average fitness: {0:.2f} <-'.format(fitnessSum / tests))
     rec.close()
 
 simulation(3)
 
-print(su.population[0])
+print("Done!")
