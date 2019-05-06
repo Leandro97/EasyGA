@@ -106,16 +106,13 @@ def simulation(tests):
     #Verifying champion reached with less generations
     for i in range(1, tests):
         if(tests >= i + 1):
-            print(i)
             if(bestIndividual['champion'][-1] == simByChampion[i]['champion'][-1]  and bestIndividual['last'] > simByChampion[i]['last']):
                 bestIndividual = simByChampion[i]
-            else:
-                break
 
     rec.write('\n-> Best simulation: #{}. Champion: {} <-'.format(bestIndividual['id'], bestIndividual['champion']))
     rec.write('\n-> Average fitness: {0:.2f} <-'.format(fitnessSum / tests))
     rec.close()
 
-simulation(3)
+simulation(10)
 
 print("Done!")
