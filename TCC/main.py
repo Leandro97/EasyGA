@@ -12,7 +12,7 @@ import selection as sel
 import record as rec  
 import datetime
 import numpy as np
-
+import random as rd
 
 '''
 Population initialisation. The array representing a individual has
@@ -82,6 +82,9 @@ def key(val):
 
 '''Each time the user runs a scenario, this function is called'''
 def simulation(tests):
+    rd.seed(a = su.seed)
+    np.random.seed(seed = su.seed)
+
     fitnessSum = 0
     simList = []    
     bestIndividual = {}

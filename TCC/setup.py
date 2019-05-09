@@ -5,6 +5,7 @@ the algorithm execution.
 '''
 
 population = []
+seed = 5
 
 #####Chromosome structure#####
 geneType = "int" #"float" | "int"
