@@ -25,7 +25,7 @@ def init():
 
     '''Initial population starts the eproccess with random values'''
     if su.geneType == 'float': 
-        su.population = np.random.uniform(su.geneMinValue, su.geneMinValue, (su.populationSize, su.geneNumber + 1))
+        su.population = np.random.uniform(su.geneMinValue, su.geneMaxValue, (su.populationSize, su.geneNumber + 1))
     else:
         su.population = np.random.randint(su.geneMinValue, su.geneMaxValue + 1, (su.populationSize, su.geneNumber + 1))
 
@@ -101,8 +101,11 @@ def simulation(tests):
         fitnessSum += sim['champion'][-1]
         simList.append(sim)
 
-    simByChampion = sorted(simList, key=lambda sim: sim['champion'][-1])
+
+    reverse = True if(su.task == 'max') else False    
+    simByChampion = sorted(simList, key=lambda sim: sim['champion'][-1], reverse = reverse)
     bestIndividual = simByChampion[0]
+    print(simByChampion)
 
     rec.write('\n---------------------------------\n')
 
@@ -116,6 +119,6 @@ def simulation(tests):
     rec.write('\n-> Average fitness: {0:.2f} <-'.format(fitnessSum / tests))
     rec.close()
 
-simulation(10)
+simulation(3)
 
 print("Done!")
