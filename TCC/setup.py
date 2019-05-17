@@ -10,7 +10,7 @@ seed = None
 #####Chromosome structure#####
 geneType = "int" #"float" | "int"
 geneNumber = 6
-geneMinValue = -5
+geneMinValue = 0
 geneMaxValue = 5
 geneInit = {}
 
@@ -20,12 +20,12 @@ task = "max" #"max" | "min"
 
 #####Algorithm#####
 currentGeneration = 1
-populationSize = 20
+populationSize = 4
 currentPopulationSize = populationSize
 maxGenerations = 50
 plateau = 10
 
-crossover = 'onePoint' #'onePoint' | 'twoPoints'
+crossover = 'twoPoint' #'onePoint' | 'twoPoint'
 sliceBegin = 2
 sliceEnd = 4
 

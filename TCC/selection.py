@@ -16,12 +16,10 @@ def init(population):
 	if(su.selection == "roulette"):
 		for chrom in list(reversed(population)):
 			if (totalFitness != 0):
-				previousProbability += (chrom[-1] / totalFitness) #TODO: PROBLEM IF TOTALFITNESS == 0
+				previousProbability += (chrom[-1] / totalFitness) 
 				probabilityArray.append(previousProbability)
 			else:
 				probabilityArray.append(0.5)
-
-	#print(probabilityArray)
 
 	#normalizing probabilities in the [0.0, 1.0] interval
 	vmin, vmax = min(probabilityArray), max(probabilityArray)
@@ -30,9 +28,6 @@ def init(population):
 			probabilityArray[i] = (val - vmin) / (vmax - vmin)
 		else:
 			probabilityArray[i] = 1.0
-
-	#print(probabilityArray)
-	#print(su.population)
 
 def selectParent():
 	if(su.selection == "uniform"):
@@ -45,12 +40,15 @@ def selectParent():
 '''Roulette selection'''
 def roulette():
 	global probabilityArray
-	number = np.random.uniform(0,1.1)
+	chance = np.random.uniform(0,1.1)
 	
+	print(probabilityArray)
 	for i in range(len(probabilityArray)):
-		if(number < probabilityArray[i]): 
+		if(probabilityArray[i] > chance):
+			print(chance) 
 			return i
 
+	print(chance)
 	return len(probabilityArray) - 1
 
 '''Tournament selection'''

@@ -50,6 +50,7 @@ def evolve():
 
     while (su.currentGeneration <= su.maxGenerations):
         op.crossover(su.population)
+        print("---")
         su.population = op.sort(su.population)
 
         if len(champion) == 0:
@@ -105,7 +106,6 @@ def simulation(tests):
     reverse = True if(su.task == 'max') else False    
     simByChampion = sorted(simList, key=lambda sim: sim['champion'][-1], reverse = reverse)
     bestIndividual = simByChampion[0]
-    print(simByChampion)
 
     rec.write('\n---------------------------------\n')
 
@@ -119,6 +119,6 @@ def simulation(tests):
     rec.write('\n-> Average fitness: {0:.2f} <-'.format(fitnessSum / tests))
     rec.close()
 
-simulation(3)
+simulation(1)
 
 print("Done!")

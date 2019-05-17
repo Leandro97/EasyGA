@@ -41,13 +41,14 @@ def mutation(chrom):
 '''Where the crossover is managed'''
 def crossover(population):
 	#Initialising roullete
-	if(su.selection == "roulette"): sel.init(su.population)
+	sel.init(su.population)
 
 	#New childs are born until the current size of the population is equal to two times the initial size
-	while(su.currentPopulationSize <= 2 * su.populationSize - 1):
+	while(su.currentPopulationSize <= 2 * su.populationSize):
 		#Choosing first parent
 		index1 = sel.selectParent()
 		parent1 = population[index1]
+		print("Parent #1: ", index1, parent1)
 
 		#The loop is necessary to prevent the two parents of being the same
 		while(True):
@@ -57,17 +58,16 @@ def crossover(population):
 			if(index1 != index2): 
 				parent2 = population[index2]
 				break
-		
+		print("Parent #2: ", index2, parent2)
 		#print(su.population[index1], su.population[index2])
 
 		'''Childs being born and mutated'''
 		child1, child2 = onePoint(parent1, parent2) if su.sliceBegin == su.sliceEnd else twoPoint(parent1, parent2)
-		child1 = mutation(child1)
-		child2 = mutation(child2)
-		child1[-1] = fit.getFitness(child1) #Calculatin its fitness
-		child2[-1] = fit.getFitness(child2) #Calculatin its fitness
+		child1, child2 = mutation(child1), mutation(child2)
+		child1[-1], child2[-1] = fit.getFitness(child1), fit.getFitness(child2) #Calculatin its fitness
 
 		#Adding child to population 
+		print(su.population[0:su.populationSize])
 		su.population = np.append(su.population, [child1, child2], axis = 0)
 		su.currentPopulationSize += 2
 			
