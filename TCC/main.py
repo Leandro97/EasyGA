@@ -44,13 +44,13 @@ def init():
 '''Here all the steps of the algorithm take place'''
 def evolve():
     champion = []
-    last = 0 #Last generation where the champion changed
+    last = 1 #Last generation where the champion changed
     counter = 0 #Counts how many generations the champion remains the same
     init()
 
     while (su.currentGeneration <= su.maxGenerations):
         op.crossover(su.population)
-        print("---")
+        #print("---")
         su.population = op.sort(su.population)
 
         if len(champion) == 0:
@@ -115,10 +115,11 @@ def simulation(tests):
             if(bestIndividual['champion'][-1] == simByChampion[i]['champion'][-1]  and bestIndividual['last'] > simByChampion[i]['last']):
                 bestIndividual = simByChampion[i]
 
-    rec.write('\n-> Best simulation: #{}. Champion: {} <-'.format(bestIndividual['id'], bestIndividual['champion']))
+    rec.write('\n-> Best simulation: #{}. <-'.format(bestIndividual['id']))
+    rec.write('\n-> Champion: {}. Reached in {} generation. <-'.format(bestIndividual['champion'], rec.ordinal(bestIndividual['last'])))
     rec.write('\n-> Average fitness: {0:.2f} <-'.format(fitnessSum / tests))
     rec.close()
 
-simulation(1)
+simulation(3)
 
 print("Done!")

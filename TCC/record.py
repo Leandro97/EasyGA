@@ -44,8 +44,24 @@ def newFile():
 
 		write("#################################\n")
 
+'''This function returns a ordinal number used on report of best simulation'''
+def ordinal(number):
+	number = str(number)
+
+	print(number[-1])
+	if(number[-1] == '0'):
+		return number + 'st'
+	if(number[-1] == '2'):
+		return number + 'nd'
+	if(number[-1] == '3'):
+		return number + 'rd'
+	else :
+		return number + 'th'
+
+'''Writing on file'''
 def write(text):
 	file.write(text)
 
+'''Closing file'''
 def close():
 	file.close()

@@ -48,7 +48,7 @@ def crossover(population):
 		#Choosing first parent
 		index1 = sel.selectParent()
 		parent1 = population[index1]
-		print("Parent #1: ", index1, parent1)
+		#print("Parent #1: ", index1, parent1)
 
 		#The loop is necessary to prevent the two parents of being the same
 		while(True):
@@ -58,7 +58,7 @@ def crossover(population):
 			if(index1 != index2): 
 				parent2 = population[index2]
 				break
-		print("Parent #2: ", index2, parent2)
+		#print("Parent #2: ", index2, parent2)
 		#print(su.population[index1], su.population[index2])
 
 		'''Childs being born and mutated'''
@@ -67,7 +67,7 @@ def crossover(population):
 		child1[-1], child2[-1] = fit.getFitness(child1), fit.getFitness(child2) #Calculatin its fitness
 
 		#Adding child to population 
-		print(su.population[0:su.populationSize])
+		#print(su.population[0:su.populationSize])
 		su.population = np.append(su.population, [child1, child2], axis = 0)
 		su.currentPopulationSize += 2
 			

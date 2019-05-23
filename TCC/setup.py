@@ -20,19 +20,19 @@ task = "max" #"max" | "min"
 
 #####Algorithm#####
 currentGeneration = 1
-populationSize = 4
+populationSize = 20
 currentPopulationSize = populationSize
 maxGenerations = 50
-plateau = 10
+plateau = 20
 
 crossover = 'twoPoint' #'onePoint' | 'twoPoint'
 sliceBegin = 2
 sliceEnd = 4
 
-selection = 'roulette' #'uniform' | 'roulette' | 'tournament'
+selection = 'uniform' #'uniform' | 'roulette' | 'tournament'
 mutation = 'uniform' #'uniform' | ??? | ???
 mutationRate = 0.25
 
 #####Results#####
-saveHeader = True
+saveHeader = False
 saveGraphs = True

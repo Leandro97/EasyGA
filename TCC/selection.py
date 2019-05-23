@@ -8,6 +8,8 @@ probabilityArray = []
 
 '''Initialising selection roulette'''
 def init(population):
+	if su.selection != 'roulette': return
+	
 	global probabilityArray
 	previousProbability = 0
 	probabilityArray = []
@@ -42,13 +44,13 @@ def roulette():
 	global probabilityArray
 	chance = np.random.uniform(0,1.1)
 	
-	print(probabilityArray)
+	#print(probabilityArray)
 	for i in range(len(probabilityArray)):
 		if(probabilityArray[i] > chance):
-			print(chance) 
+			#print(chance) 
 			return i
 
-	print(chance)
+	#print(chance)
 	return len(probabilityArray) - 1
 
 '''Tournament selection'''
