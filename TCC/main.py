@@ -21,7 +21,6 @@ geneNumber + 1 genes because the last position stores its fitness
 def init():
     global simList
     #Initialising fitness function
-    fit.init()
 
     '''Initial population starts the eproccess with random values'''
     if su.geneType == 'float': 
@@ -78,8 +77,6 @@ def evolve():
     return last, champion
     rec.write("\n")
 
-def key(val):
-    return val['last']
 
 '''Each time the user runs a scenario, this function is called'''
 def simulation(tests):
@@ -103,6 +100,7 @@ def simulation(tests):
         simList.append(sim)
 
 
+    #Ordering the simulations by fitness
     reverse = True if(su.task == 'max') else False    
     simByChampion = sorted(simList, key=lambda sim: sim['champion'][-1], reverse = reverse)
     bestIndividual = simByChampion[0]
@@ -112,7 +110,7 @@ def simulation(tests):
     #Verifying champion reached with less generations
     for i in range(1, tests):
         if(tests >= i + 1):
-            if(bestIndividual['champion'][-1] == simByChampion[i]['champion'][-1]  and bestIndividual['last'] > simByChampion[i]['last']):
+            if(bestIndividual['champion'][-1] == simByChampion[i]['champion'][-1] and bestIndividual['last'] > simByChampion[i]['last']):
                 bestIndividual = simByChampion[i]
 
     rec.write('\n-> Best simulation: #{}. <-'.format(bestIndividual['id']))

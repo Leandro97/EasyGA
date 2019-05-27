@@ -10,7 +10,7 @@ seed = None
 #####Chromosome structure#####
 geneType = "int" #"float" | "int"
 geneNumber = 6
-geneMinValue = 0
+geneMinValue = -5
 geneMaxValue = 5
 geneInit = {}
 
@@ -22,7 +22,7 @@ task = "max" #"max" | "min"
 currentGeneration = 1
 populationSize = 20
 currentPopulationSize = populationSize
-maxGenerations = 50
+maxGenerations = 10
 plateau = 20
 
 crossover = 'twoPoint' #'onePoint' | 'twoPoint'
@@ -34,5 +34,5 @@ mutation = 'uniform' #'uniform' | ??? | ???
 mutationRate = 0.25
 
 #####Results#####
-saveHeader = False
+saveHeader = True
 saveGraphs = True

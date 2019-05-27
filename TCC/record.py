@@ -48,8 +48,7 @@ def newFile():
 def ordinal(number):
 	number = str(number)
 
-	print(number[-1])
-	if(number[-1] == '0'):
+	if(number[-1] == '1'):
 		return number + 'st'
 	if(number[-1] == '2'):
 		return number + 'nd'
