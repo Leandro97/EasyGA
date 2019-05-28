@@ -20,9 +20,8 @@ geneNumber + 1 genes because the last position stores its fitness
 '''
 def init():
     global simList
-    #Initialising fitness function
 
-    '''Initial population starts the eproccess with random values'''
+    '''Initial population starts the proccess with random values'''
     if su.geneType == 'float': 
         su.population = np.random.uniform(su.geneMinValue, su.geneMaxValue, (su.populationSize, su.geneNumber + 1))
     else:
@@ -30,10 +29,6 @@ def init():
 
     '''Calculating the fitness of the initial population'''
     for chrom in su.population:
-        #Setting the user selected gene values
-        for gene in su.geneInit:
-            chrom[gene] = su.geneInit[gene]
-
         chrom[-1] = fit.getFitness(chrom)
 
     su.population = op.sort(su.population) #Sorting the individuals according to fitness
@@ -105,14 +100,13 @@ def simulation(tests):
     simByChampion = sorted(simList, key=lambda sim: sim['champion'][-1], reverse = reverse)
     bestIndividual = simByChampion[0]
 
-    rec.write('\n---------------------------------\n')
-
     #Verifying champion reached with less generations
     for i in range(1, tests):
         if(tests >= i + 1):
             if(bestIndividual['champion'][-1] == simByChampion[i]['champion'][-1] and bestIndividual['last'] > simByChampion[i]['last']):
                 bestIndividual = simByChampion[i]
 
+    rec.write('\n---------------------------------\n')
     rec.write('\n-> Best simulation: #{}. <-'.format(bestIndividual['id']))
     rec.write('\n-> Champion: {}. Reached in {} generation. <-'.format(bestIndividual['champion'], rec.ordinal(bestIndividual['last'])))
     rec.write('\n-> Average fitness: {0:.2f} <-'.format(fitnessSum / tests))

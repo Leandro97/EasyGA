@@ -12,26 +12,25 @@ geneType = "int" #"float" | "int"
 geneNumber = 6
 geneMinValue = -5
 geneMaxValue = 5
-geneInit = {}
 
 #####Fitness Function#####
-function = "x1 + x2 + x3 + x4 + x5 + x6"
+function = "x1**3 + (x2 + x3 + x4) * (x5 - x6 + 10)"
 task = "max" #"max" | "min"
 
 #####Algorithm#####
 currentGeneration = 1
 populationSize = 20
 currentPopulationSize = populationSize
-maxGenerations = 10
+maxGenerations = 50
 plateau = 20
 
 crossover = 'twoPoint' #'onePoint' | 'twoPoint'
 sliceBegin = 2
 sliceEnd = 4
 
-selection = 'uniform' #'uniform' | 'roulette' | 'tournament'
+selection = 'roulette' #'uniform' | 'roulette' | 'tournament'
 mutation = 'uniform' #'uniform' | ??? | ???
-mutationRate = 0.25
+mutationRate = 0.15
 
 #####Results#####
 saveHeader = True

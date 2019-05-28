@@ -59,6 +59,7 @@ def crossover(population):
 				parent2 = population[index2]
 				break
 		#print("Parent #2: ", index2, parent2)
+		#print("***")
 		#print(su.population[index1], su.population[index2])
 
 		'''Childs being born and mutated'''
