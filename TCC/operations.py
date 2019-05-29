@@ -40,8 +40,11 @@ def mutation(chrom):
 
 '''Where the crossover is managed'''
 def crossover(population):
+	newPopulation = []
+
 	#Initialising roullete
-	sel.init(su.population)
+	if su.selection == 'roulette': 
+		sel.init(su.population)
 
 	#New childs are born until the current size of the population is equal to two times the initial size
 	while(su.currentPopulationSize <= 2 * su.populationSize):
@@ -68,16 +71,20 @@ def crossover(population):
 		child1[-1], child2[-1] = fit.getFitness(child1), fit.getFitness(child2) #Calculatin its fitness
 
 		#Adding child to population 
-		#print(su.population[0:su.populationSize])
-		su.population = np.append(su.population, [child1, child2], axis = 0)
+		#su.population = np.append(su.population, [child1, child2], axis = 0)
+		newPopulation.append(child1)
+		newPopulation.append(child2)
 		su.currentPopulationSize += 2
-			
+	
+	#saving best individual of current generation
+	if(su.elitism):
+		su.population = np.append(newPopulation, [su.population[0]], axis = 0)
 	#print(su.population)
 	#print('######')
 
 '''Sorting population in decrescent order, acording to the object task'''
 def sort(population):
 	if(su.task == 'max'):	
-		return np.asarray(sorted(su.population, key=lambda x: x[-1], reverse=True))
+		return np.asarray(sorted(su.population, key=lambda x: x[-1], reverse=True))[0:su.populationSize]
 	else:	 
-		return np.asarray(sorted(su.population, key=lambda x: x[-1], reverse=False))
+		return np.asarray(sorted(su.population, key=lambda x: x[-1], reverse=False))[0:su.populationSize]

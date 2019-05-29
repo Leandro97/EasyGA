@@ -5,7 +5,7 @@ the algorithm execution.
 '''
 
 population = []
-seed = None
+seed = 1
 
 #####Chromosome structure#####
 geneType = "int" #"float" | "int"
@@ -20,9 +20,12 @@ task = "max" #"max" | "min"
 #####Algorithm#####
 currentGeneration = 1
 populationSize = 20
+#populationSize = 6
 currentPopulationSize = populationSize
 maxGenerations = 50
+#maxGenerations = 20
 plateau = 20
+elitism = True
 
 crossover = 'twoPoint' #'onePoint' | 'twoPoint'
 sliceBegin = 2

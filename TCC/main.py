@@ -61,7 +61,6 @@ def evolve():
             last = su.currentGeneration
         
         #Population returns to its initial size
-        su.population = su.population[:su.populationSize]
         su.currentPopulationSize = su.populationSize
         su.currentGeneration += 1
 
@@ -112,6 +111,6 @@ def simulation(tests):
     rec.write('\n-> Average fitness: {0:.2f} <-'.format(fitnessSum / tests))
     rec.close()
 
-simulation(3)
+simulation(10)
 
 print("Done!")
