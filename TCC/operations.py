@@ -46,6 +46,7 @@ def crossover(population):
 	if su.selection == 'roulette': 
 		sel.init(su.population)
 
+	#print(su.population)
 	#New childs are born until the current size of the population is equal to two times the initial size
 	while(su.currentPopulationSize <= 2 * su.populationSize):
 		#Choosing first parent
@@ -69,6 +70,9 @@ def crossover(population):
 		child1, child2 = onePoint(parent1, parent2) if su.sliceBegin == su.sliceEnd else twoPoint(parent1, parent2)
 		child1, child2 = mutation(child1), mutation(child2)
 		child1[-1], child2[-1] = fit.getFitness(child1), fit.getFitness(child2) #Calculatin its fitness
+
+		if su.geneType == 'float':
+			child1, child2 = [round(value, 2) for value in child1], [round(value, 2) for value in child2] #rounding values
 
 		#Adding child to population 
 		#su.population = np.append(su.population, [child1, child2], axis = 0)

@@ -6,15 +6,15 @@ the algorithm execution.
 
 population = []
 seed = 1
-
 #####Chromosome structure#####
 geneType = "int" #"float" | "int"
 geneNumber = 6
-geneMinValue = -5
-geneMaxValue = 5
+geneMinValue = -10
+geneMaxValue = 10
 
 #####Fitness Function#####
-function = "x1**3 + (x2 + x3 + x4) * (x5 - x6 + 10)"
+#function = "x1**3 + (x2 + x3 + x4) * (x5 - x6 + 10)"
+function = "x1 + x2 + x3 + x4 + x5 + x6"
 task = "max" #"max" | "min"
 
 #####Algorithm#####
@@ -38,3 +38,4 @@ mutationRate = 0.15
 #####Results#####
 saveHeader = True
 saveGraphs = True
+saveLog = False

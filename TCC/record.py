@@ -21,6 +21,9 @@ def setName(now):
 
 '''Opening file'''
 def newFile():
+	if not su.saveLog:
+		return
+
 	global file
 	now = datetime.datetime.now()
 	file = open(setName(now), "a") 
@@ -58,9 +61,20 @@ def ordinal(number):
 		return number + 'th'
 
 '''Writing on file'''
-def write(text):
-	file.write(text)
+def write(log):
+	if not su.saveLog:
+		return
+
+	for entry in log:
+		file.write(entry)
 
 '''Closing file'''
-def close():
+def close(bestIndividual, fitnessSum, tests):
+	if not su.saveLog:
+		return
+
+	file.write('\n---------------------------------\n')
+	file.write('\n-> Best simulation: #{}. <-'.format(bestIndividual['id']))
+	file.write('\n-> Champion: {}. Reached in {} generation. <-'.format(bestIndividual['champion'], ordinal(bestIndividual['last'])))
+	file.write('\n-> Average fitness: {0:.2f} <-'.format(fitnessSum / tests))
 	file.close()

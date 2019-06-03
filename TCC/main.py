@@ -29,6 +29,9 @@ def init():
 
     '''Calculating the fitness of the initial population'''
     for chrom in su.population:
+        if  su.geneType == 'float':
+            chrom = [round(value, 2) for value in chrom]
+
         chrom[-1] = fit.getFitness(chrom)
 
     su.population = op.sort(su.population) #Sorting the individuals according to fitness
@@ -38,6 +41,7 @@ def init():
 '''Here all the steps of the algorithm take place'''
 def evolve():
     champion = []
+    log = [] #this array will store the progression of best individual
     last = 1 #Last generation where the champion changed
     counter = 0 #Counts how many generations the champion remains the same
     init()
@@ -49,7 +53,7 @@ def evolve():
 
         if len(champion) == 0:
             champion = list(su.population[0])
-            rec.write("Generation " + str(su.currentGeneration) + " - Champion: " + str(champion) + "\n")
+            log.append("Generation " + str(su.currentGeneration) + " - Champion: " + str(champion) + "\n")
 
         #Verifying if champion changed
         if(su.population[0][-1] == champion[-1]):
@@ -57,7 +61,7 @@ def evolve():
         else:
             counter = 0
             champion = list(su.population[0])
-            rec.write("Generation " + str(su.currentGeneration) + " - Champion: " + str(champion) + "\n")
+            log.append("Generation " + str(su.currentGeneration) + " - Champion: " + str(champion) + "\n")
             last = su.currentGeneration
         
         #Population returns to its initial size
@@ -68,12 +72,13 @@ def evolve():
         if(counter == su.plateau ): break
 
         #print("###")
+    rec.write(log)
     return last, champion
-    rec.write("\n")
 
 
 '''Each time the user runs a scenario, this function is called'''
 def simulation(tests):
+    log = []
     rd.seed(a = su.seed)
     np.random.seed(seed = su.seed)
 
@@ -105,11 +110,7 @@ def simulation(tests):
             if(bestIndividual['champion'][-1] == simByChampion[i]['champion'][-1] and bestIndividual['last'] > simByChampion[i]['last']):
                 bestIndividual = simByChampion[i]
 
-    rec.write('\n---------------------------------\n')
-    rec.write('\n-> Best simulation: #{}. <-'.format(bestIndividual['id']))
-    rec.write('\n-> Champion: {}. Reached in {} generation. <-'.format(bestIndividual['champion'], rec.ordinal(bestIndividual['last'])))
-    rec.write('\n-> Average fitness: {0:.2f} <-'.format(fitnessSum / tests))
-    rec.close()
+    rec.close(bestIndividual, fitnessSum, tests)
 
 simulation(10)
 
