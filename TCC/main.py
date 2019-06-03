@@ -14,6 +14,7 @@ import datetime
 import numpy as np
 import random as rd
 
+log = [] #this array will store the progression of best individual
 '''
 Population initialisation. The array representing a individual has
 geneNumber + 1 genes because the last position stores its fitness
@@ -40,8 +41,8 @@ def init():
 
 '''Here all the steps of the algorithm take place'''
 def evolve():
+    global log
     champion = []
-    log = [] #this array will store the progression of best individual
     last = 1 #Last generation where the champion changed
     counter = 0 #Counts how many generations the champion remains the same
     init()
@@ -72,13 +73,11 @@ def evolve():
         if(counter == su.plateau ): break
 
         #print("###")
-    rec.write(log)
     return last, champion
-
 
 '''Each time the user runs a scenario, this function is called'''
 def simulation(tests):
-    log = []
+    global log
     rd.seed(a = su.seed)
     np.random.seed(seed = su.seed)
 
@@ -86,10 +85,10 @@ def simulation(tests):
     simList = []    
     bestIndividual = {}
 
-    rec.newFile()
+    fileName = rec.newFile()
 
     for i in range(tests):
-        rec.write("\n--------- Simulation #{} ---------\n\n".format(i + 1))
+        log.append("\n--------- Simulation #{} ---------\n\n".format(i + 1))
 
         sim = {}
         sim['id'] = i + 1
@@ -110,7 +109,7 @@ def simulation(tests):
             if(bestIndividual['champion'][-1] == simByChampion[i]['champion'][-1] and bestIndividual['last'] > simByChampion[i]['last']):
                 bestIndividual = simByChampion[i]
 
-    rec.close(bestIndividual, fitnessSum, tests)
+    rec.close(bestIndividual, fitnessSum, tests, log)
 
 simulation(10)
 

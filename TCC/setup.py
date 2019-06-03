@@ -5,7 +5,7 @@ the algorithm execution.
 '''
 
 population = []
-seed = 1
+seed = None
 #####Chromosome structure#####
 geneType = "int" #"float" | "int"
 geneNumber = 6
@@ -36,6 +36,6 @@ mutation = 'uniform' #'uniform' | ??? | ???
 mutationRate = 0.15
 
 #####Results#####
-saveHeader = True
+saveHeader = False
 saveGraphs = True
-saveLog = False
+saveLog = True
