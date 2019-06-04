@@ -18,43 +18,37 @@ def selectParent():
 def init(population):
 	#This array stores the probability of choosing a individual 
 	global probabilityArray
-	probabilityArray = []
-	aux = [] #Auxiliar array. It stores the fitness of the population
-	newArray = []
-
-	for chrom in population:
-		aux.append(chrom[-1])
+	probabilityArray = [0.1]
 	
-	minV, maxV = min(aux), max(aux)
-	#Normalazing fitness
-	for fit in aux:
+	if su.task == 'min':
+		minV, maxV = population[0][-1], population[-1][-1]
+	else:
+		minV, maxV = population[-1][-1], population[0][-1]
+
+	#Normalizing fitness
+	for i in range(1, su.populationSize):
 		if(minV != maxV):
-				newValue = (fit - minV) / (maxV- minV) if (su.task == "min") else (fit - maxV) / (minV- maxV)
+			newValue = (population[i][-1] - minV) / (maxV - minV) if (su.task == "min") else (population[i][-1] - maxV) / (minV - maxV)
 		else:
 			newValue = 1.0
-		newArray.append(round(newValue, 2))
+		#Calculating selection probability 
+		probabilityArray.append(round(newValue + probabilityArray[i - 1], 2))
 
-	#Calculating selection probability 
-	probabilityArray.append(0.0)
-	for i in range(1, su.populationSize):
-		probabilityArray.append(round(newArray[i] + probabilityArray[i - 1], 2))
-
-	minV, maxV = min(probabilityArray), max(probabilityArray)
 	#Normalizing probabilities
+	minV, maxV = probabilityArray[0], probabilityArray[-1]
 	for i in range(su.populationSize):
 		probabilityArray[i] = round((probabilityArray[i] - minV) / (maxV - minV), 2)
 		probabilityArray[i] = 0.1 if (probabilityArray[i] == 0) else probabilityArray[i]
-
+		
 '''Roulette selection'''
 def roulette():
 	global probabilityArray
 	chance = np.random.uniform(0,1)
-	populationSize = len(probabilityArray)
 
 	#If the random number is lesser than the probability, the chromosome is chosen 
-	for i in range(populationSize):
+	for i in range(su.populationSize):
 		if chance < probabilityArray[i]:
-			return populationSize - i - 1
+			return su.populationSize - i - 1
 	return 0
 
 '''Tournament selection'''

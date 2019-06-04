@@ -4,15 +4,6 @@ import selection as sel
 import numpy as np
 import random as rd
 
-'''Calculates the total fitness of population'''
-def getTotalFitness():
-	aux = 0
-
-	for chrom in su.population:
-		aux += chrom[-1]
-
-	return aux
-
 '''One point crossover'''
 def onePoint(parent1, parent2):
 	point = su.sliceBegin

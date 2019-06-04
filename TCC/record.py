@@ -54,28 +54,26 @@ def close(bestIndividual, fitnessSum, tests, log):
 	if not su.saveLog:
 		return
 
-	if(su.saveHeader):
-		'''Adding a heading to the file containing the setup chosen by the user'''
-		write("##############Setup##############\n\n")
+	'''Adding a heading to the file containing the setup chosen by the user'''
+	write("##############Setup##############\n\n")
+	write("Function: '{}'\n".format(su.function))
+	write("Objective: '{}'\n\n".format(su.task))
 
-		write("Function: '{}'\n".format(su.function))
-		write("Objective: '{}'\n\n".format(su.task))
+	write("Maximum population size: {}\n".format(su.populationSize))
+	write("Maximum number of generations: {}\n".format(su.maxGenerations))
+	write("Plateau: {}\n\n".format(su.plateau))
 
-		write("Maximum population size: {}\n".format(su.populationSize))
-		write("Maximum number of generations: {}\n".format(su.maxGenerations))
-		write("Plateau: {}\n\n".format(su.plateau))
-
-		crossover = 'one point' if (su.crossover == 'onePoint') else 'two point'
-		write("Crossover strategy: '{}'\n".format(su.crossover))
-		write("Selection strategy: '{}'\n".format(su.selection))
-		write("Mutation strategy: '{}'\n".format(su.mutation))
-		write("Mutation rate: {}\n\n".format(su.mutationRate))
-
+	crossover = 'one point' if (su.crossover == 'onePoint') else 'two point'
+	write("Crossover strategy: '{}'\n".format(su.crossover))
+	write("Selection strategy: '{}'\n".format(su.selection))
+	write("Mutation strategy: '{}'\n".format(su.mutation))
+	write("Mutation rate: {}\n\n".format(su.mutationRate))
 	write("#################################\n")
-	file.write('\n-> Best simulation: #{}. <-'.format(bestIndividual['id']))
-	file.write('\n-> Champion: {}. Reached in {} generation. <-'.format(bestIndividual['champion'], ordinal(bestIndividual['last'])))
-	file.write('\n-> Average fitness: {0:.2f} <-\n'.format(fitnessSum / tests))
-	file.write('\n#################################\n')
+
+	write('\n-> Best simulation: #{}. <-'.format(bestIndividual['id']))
+	write('\n-> Champion: {}. Reached in {} generation. <-'.format(bestIndividual['champion'], ordinal(bestIndividual['last'])))
+	write('\n-> Average fitness: {0:.2f} <-\n'.format(fitnessSum / tests))
+	write('\n#################################\n')
 
 	write(log)
 	file.close()

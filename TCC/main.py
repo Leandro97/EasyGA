@@ -36,7 +36,6 @@ def init():
         chrom[-1] = fit.getFitness(chrom)
 
     su.population = op.sort(su.population) #Sorting the individuals according to fitness
-    su.totalFitness = op.getTotalFitness() #Getting the sum of population's fitness
     su.currentGeneration = 1
 
 '''Here all the steps of the algorithm take place'''
@@ -111,6 +110,6 @@ def simulation(tests):
 
     rec.close(bestIndividual, fitnessSum, tests, log)
 
-simulation(10)
+simulation(5)
 
 print("Done!")

@@ -5,11 +5,11 @@ the algorithm execution.
 '''
 
 population = []
-seed = None
+seed = 3
 #####Chromosome structure#####
 geneType = "int" #"float" | "int"
 geneNumber = 6
-geneMinValue = -10
+geneMinValue = 0
 geneMaxValue = 10
 
 #####Fitness Function#####
@@ -19,11 +19,11 @@ task = "max" #"max" | "min"
 
 #####Algorithm#####
 currentGeneration = 1
-populationSize = 20
-#populationSize = 6
+#populationSize = 20
+populationSize = 6
 currentPopulationSize = populationSize
-maxGenerations = 50
-#maxGenerations = 20
+#maxGenerations = 50
+maxGenerations = 20
 plateau = 20
 elitism = True
 
@@ -36,6 +36,5 @@ mutation = 'uniform' #'uniform' | ??? | ???
 mutationRate = 0.15
 
 #####Results#####
-saveHeader = False
 saveGraphs = True
 saveLog = True
