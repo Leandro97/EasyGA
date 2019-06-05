@@ -5,7 +5,7 @@ the algorithm execution.
 '''
 
 population = []
-seed = 3
+seed = None
 #####Chromosome structure#####
 geneType = "int" #"float" | "int"
 geneNumber = 6
@@ -19,11 +19,11 @@ task = "max" #"max" | "min"
 
 #####Algorithm#####
 currentGeneration = 1
-#populationSize = 20
-populationSize = 6
+populationSize = 20
+#populationSize = 6
 currentPopulationSize = populationSize
-#maxGenerations = 50
-maxGenerations = 20
+maxGenerations = 40
+#maxGenerations = 20
 plateau = 20
 elitism = True
 
@@ -37,4 +37,4 @@ mutationRate = 0.15
 
 #####Results#####
 saveGraphs = True
-saveLog = True
+saveLog = False

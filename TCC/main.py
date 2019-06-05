@@ -10,6 +10,7 @@ import fitness as fit
 import operations as op
 import selection as sel 
 import record as rec  
+import plotter as plt  
 import datetime
 import numpy as np
 import random as rd
@@ -42,6 +43,7 @@ def init():
 def evolve():
     global log
     champion = []
+    fitnessHistory = [] #stores a (generation, fitness) pair. Will be used on plotting
     last = 1 #Last generation where the champion changed
     counter = 0 #Counts how many generations the champion remains the same
     init()
@@ -54,6 +56,7 @@ def evolve():
         if len(champion) == 0:
             champion = list(su.population[0])
             log.append("Generation " + str(su.currentGeneration) + " - Champion: " + str(champion) + "\n")
+            fitnessHistory.append((su.currentGeneration, champion[-1]))
 
         #Verifying if champion changed
         if(su.population[0][-1] == champion[-1]):
@@ -63,7 +66,7 @@ def evolve():
             champion = list(su.population[0])
             log.append("Generation " + str(su.currentGeneration) + " - Champion: " + str(champion) + "\n")
             last = su.currentGeneration
-        
+            fitnessHistory.append((su.currentGeneration, champion[-1]))
         #Population returns to its initial size
         su.currentPopulationSize = su.populationSize
         su.currentGeneration += 1
@@ -72,11 +75,12 @@ def evolve():
         if(counter == su.plateau ): break
 
         #print("###")
-    return last, champion
+    return last, champion, fitnessHistory
 
 '''Each time the user runs a scenario, this function is called'''
 def simulation(tests):
     global log
+    generationHistory = []
     rd.seed(a = su.seed)
     np.random.seed(seed = su.seed)
 
@@ -91,10 +95,12 @@ def simulation(tests):
 
         sim = {}
         sim['id'] = i + 1
-        sim['last'], sim['champion'] = evolve()
+        #preciso resolver isso. Devo realmente salvar o histórico de cada simulação?
+        sim['last'], sim['champion'], sim['history'] = evolve()
 
         fitnessSum += sim['champion'][-1]
         simList.append(sim)
+        generationHistory.append((sim['id'], sim['last']))
 
 
     #Ordering the simulations by fitness
@@ -108,7 +114,9 @@ def simulation(tests):
             if(bestIndividual['champion'][-1] == simByChampion[i]['champion'][-1] and bestIndividual['last'] > simByChampion[i]['last']):
                 bestIndividual = simByChampion[i]
 
-    rec.close(bestIndividual, fitnessSum, tests, log)
+    rec.close(bestIndividual, fitnessSum, tests, log) #saving simulation report
+    #plt.plot(bestIndividual['history'], 'fit') #plotting graphs
+    plt.plot(generationHistory, 'gen') #plotting graphs
 
 simulation(5)
 
