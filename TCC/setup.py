@@ -6,33 +6,35 @@ the algorithm execution.
 
 population = []
 seed = None
-
 #####Chromosome structure#####
 geneType = "int" #"float" | "int"
 geneNumber = 6
-geneMinValue = -5
-geneMaxValue = 5
-geneInit = {}
+geneMinValue = 0
+geneMaxValue = 10
 
 #####Fitness Function#####
+#function = "x1**3 + (x2 + x3 + x4) * (x5 - x6 + 10)"
 function = "x1 + x2 + x3 + x4 + x5 + x6"
 task = "max" #"max" | "min"
 
 #####Algorithm#####
 currentGeneration = 1
 populationSize = 20
+#populationSize = 6
 currentPopulationSize = populationSize
-maxGenerations = 50
-plateau = 10
+maxGenerations = 40
+#maxGenerations = 20
+plateau = 20
+elitism = True
 
-crossover = 'onePoint' #'onePoint' | 'twoPoints'
+crossover = 'twoPoint' #'onePoint' | 'twoPoint'
 sliceBegin = 2
 sliceEnd = 4
 
 selection = 'roulette' #'uniform' | 'roulette' | 'tournament'
 mutation = 'uniform' #'uniform' | ??? | ???
-mutationRate = 0.25
+mutationRate = 0.15
 
 #####Results#####
-saveHeader = True
 saveGraphs = True
+saveLog = False

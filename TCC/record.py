@@ -21,31 +21,59 @@ def setName(now):
 
 '''Opening file'''
 def newFile():
+	if not su.saveLog:
+		return
+
 	global file
-	now = datetime.datetime.now()
-	file = open(setName(now), "a") 
+	name = datetime.datetime.now()
+	file = open(setName(name), "a") 
 
-	if(su.saveHeader):
-		'''Adding a heading to the file containing the setup chosen by the user'''
-		write("##############Setup##############\n\n")
+'''This function returns a ordinal number used on report of best simulation'''
+def ordinal(number):
+	number = str(number)
 
-		write("Function: '{}'\n".format(su.function))
-		write("Objective: '{}'\n\n".format(su.task))
+	if(number[-1] == '1'):
+		return number + 'st'
+	if(number[-1] == '2'):
+		return number + 'nd'
+	if(number[-1] == '3'):
+		return number + 'rd'
+	else :
+		return number + 'th'
 
-		write("Maximum population size: {}\n".format(su.populationSize))
-		write("Maximum number of generations: {}\n".format(su.maxGenerations))
-		write("Plateau: {}\n\n".format(su.plateau))
+'''Writing on file'''
+def write(log):
+	if not su.saveLog:
+		return
 
-		crossover = 'one point' if (su.crossover == 'onePoint') else 'two point'
-		write("Crossover strategy: '{}'\n".format(su.crossover))
-		write("Selection strategy: '{}'\n".format(su.selection))
-		write("Mutation strategy: '{}'\n".format(su.mutation))
-		write("Mutation rate: {}\n\n".format(su.mutationRate))
+	for entry in log:
+		file.write(entry)
 
-		write("#################################\n")
+'''Closing file'''
+def close(bestIndividual, fitnessSum, tests, log):
+	if not su.saveLog:
+		return
 
-def write(text):
-	file.write(text)
+	'''Adding a heading to the file containing the setup chosen by the user'''
+	write("##############Setup##############\n\n")
+	write("Function: '{}'\n".format(su.function))
+	write("Objective: '{}'\n\n".format(su.task))
 
-def close():
+	write("Maximum population size: {}\n".format(su.populationSize))
+	write("Maximum number of generations: {}\n".format(su.maxGenerations))
+	write("Plateau: {}\n\n".format(su.plateau))
+
+	crossover = 'one point' if (su.crossover == 'onePoint') else 'two point'
+	write("Crossover strategy: '{}'\n".format(su.crossover))
+	write("Selection strategy: '{}'\n".format(su.selection))
+	write("Mutation strategy: '{}'\n".format(su.mutation))
+	write("Mutation rate: {}\n\n".format(su.mutationRate))
+	write("#################################\n")
+
+	write('\n-> Best simulation: #{}. <-'.format(bestIndividual['id']))
+	write('\n-> Champion: {}. Reached in {} generation. <-'.format(bestIndividual['champion'], ordinal(bestIndividual['last'])))
+	write('\n-> Average fitness: {0:.2f} <-\n'.format(fitnessSum / tests))
+	write('\n#################################\n')
+
+	write(log)
 	file.close()
