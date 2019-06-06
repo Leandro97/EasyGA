@@ -115,8 +115,8 @@ def simulation(tests):
                 bestIndividual = simByChampion[i]
 
     rec.close(bestIndividual, fitnessSum, tests, log) #saving simulation report
-    #plt.plot(bestIndividual['history'], 'fit') #plotting graphs
-    plt.plot(generationHistory, 'gen') #plotting graphs
+    plt.plotFitness(bestIndividual['history']) #plotting graphs
+    #plt.plotGenerations(generationHistory) #plotting graphs
 
 simulation(5)
 

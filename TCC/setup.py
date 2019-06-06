@@ -5,16 +5,17 @@ the algorithm execution.
 '''
 
 population = []
-seed = None
+seed = 3
 #####Chromosome structure#####
 geneType = "int" #"float" | "int"
+#geneNumber = 3
 geneNumber = 6
-geneMinValue = 0
-geneMaxValue = 10
+geneMinValue = -100
+geneMaxValue = 100
 
 #####Fitness Function#####
-#function = "x1**3 + (x2 + x3 + x4) * (x5 - x6 + 10)"
-function = "x1 + x2 + x3 + x4 + x5 + x6"
+#function = "x1 + x2 + x3"
+function = "x1 - x2 + x3 - x4 + x5 - x6"
 task = "max" #"max" | "min"
 
 #####Algorithm#####
@@ -22,7 +23,7 @@ currentGeneration = 1
 populationSize = 20
 #populationSize = 6
 currentPopulationSize = populationSize
-maxGenerations = 40
+maxGenerations = 50
 #maxGenerations = 20
 plateau = 20
 elitism = True
