@@ -19,16 +19,15 @@ def plotFitness(history):
 	plt.xlabel('Geração')				
 	plt.ylabel('Aptidão do melhor indivíduo')
 
-	xa = x[0]
-	xb = x[-1]
-	xMean = math.floor((xb - xa) / 4)
+	xMean = math.floor((x[-1] - x[0]) / 4)
+	yMean = math.floor((y[-1] - y[0]) / 4)
 
-	ya = y[0]
-	yb = y[-1]
-	yMean = math.floor((yb - ya) / 4)
+	for i in range(5):
+		xTick.append(x[0] + xMean * i)
+		yTick.append(y[0] + yMean * i)
 
-	xTick = [xa, xa + xMean, xa + 2*xMean, xb - xMean, xb]
-	yTick = [ya, ya + yMean, ya + 2*yMean, yb - yMean, yb]
+	xTick.append(x[-1])
+	yTick.append(y[-1])
 
 	plt.xticks(xTick)
 	plt.yticks(yTick)
@@ -49,18 +48,15 @@ def plotGenerations(history):
 	plt.xlabel('Simulação')				
 	plt.ylabel('Número de gerações')
 
-	xa = x[0]
-	xb = x[-1]
-	xMean = math.floor((xb - xa) / 4)
-
 	ya = min(y)
 	yb = max(y)
-	yMean = math.floor((yb - ya) / 4)
+	yMean = math.ceil((yb - ya) / 4)
+	yTick = [ya, ya + yMean, ya + 2*yMean, ya + 3*yMean, yb]
 
-	xTick = [xa, xa + xMean, xa + 2*xMean, xb - xMean, xb]
-	yTick = [ya, ya + yMean, ya + 2*yMean, yb - yMean, yb]
+	for i in range(4):
+		yTick.append(ya + yMean * i)
+	yTick.append(max(y))
 
-	print(yTick)
-	plt.xticks(xTick)
+	plt.xticks(x)
 	plt.yticks(yTick)
 	plt.show()

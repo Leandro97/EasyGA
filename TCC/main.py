@@ -116,7 +116,7 @@ def simulation(tests):
 
     rec.close(bestIndividual, fitnessSum, tests, log) #saving simulation report
     plt.plotFitness(bestIndividual['history']) #plotting graphs
-    #plt.plotGenerations(generationHistory) #plotting graphs
+    plt.plotGenerations(generationHistory) #plotting graphs
 
 simulation(5)
 

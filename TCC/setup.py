@@ -5,13 +5,13 @@ the algorithm execution.
 '''
 
 population = []
-seed = 3
+seed = None
 #####Chromosome structure#####
 geneType = "int" #"float" | "int"
 #geneNumber = 3
 geneNumber = 6
-geneMinValue = -100
-geneMaxValue = 100
+geneMinValue = -8
+geneMaxValue = 10
 
 #####Fitness Function#####
 #function = "x1 + x2 + x3"
