@@ -37,5 +37,5 @@ mutation = 'uniform' #'uniform' | ??? | ???
 mutationRate = 0.15
 
 #####Results#####
-saveGraphs = True
+saveGraphs = False
 saveLog = True

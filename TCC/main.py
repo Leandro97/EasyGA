@@ -46,15 +46,15 @@ def evolve():
     counter = 0 #Counts how many generations the champion remains the same
     init()
 
+    #Recording first generation
+    champion = list(su.population[0])
+    log.append("Generation " + str(su.currentGeneration) + " - Champion: " + str(champion) + "\n")
+    fitnessHistory.append((su.currentGeneration, champion[-1]))
+    su.currentGeneration += 1
+
     while (su.currentGeneration <= su.maxGenerations):
         op.crossover(su.population)
-        #print("---")
         su.population = op.sort(su.population)
-
-        if len(champion) == 0:
-            champion = list(su.population[0])
-            log.append("Generation " + str(su.currentGeneration) + " - Champion: " + str(champion) + "\n")
-            fitnessHistory.append((su.currentGeneration, champion[-1]))
 
         #Verifying if champion changed
         if(su.population[0][-1] == champion[-1]):
@@ -65,6 +65,7 @@ def evolve():
             log.append("Generation " + str(su.currentGeneration) + " - Champion: " + str(champion) + "\n")
             last = su.currentGeneration
             fitnessHistory.append((su.currentGeneration, champion[-1]))
+      
         #Population returns to its initial size
         su.currentPopulationSize = su.populationSize
         su.currentGeneration += 1
