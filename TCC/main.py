@@ -21,8 +21,6 @@ Population initialisation. The array representing a individual has
 geneNumber + 1 genes because the last position stores its fitness
 '''
 def init():
-    global simList
-
     '''Initial population starts the proccess with random values'''
     if su.geneType == 'float': 
         su.population = np.random.uniform(su.geneMinValue, su.geneMaxValue, (su.populationSize, su.geneNumber + 1))
@@ -72,7 +70,7 @@ def evolve():
         su.currentGeneration += 1
 
         #Verifying if max generation number was reached 
-        if(counter == su.plateau ): break
+        if(counter == su.plateau): break
 
         #print("###")
     return last, champion, fitnessHistory
@@ -95,13 +93,11 @@ def simulation(tests):
 
         sim = {}
         sim['id'] = i + 1
-        #preciso resolver isso. Devo realmente salvar o histórico de cada simulação?
         sim['last'], sim['champion'], sim['history'] = evolve()
 
         fitnessSum += sim['champion'][-1]
         simList.append(sim)
         generationHistory.append((sim['id'], sim['last']))
-
 
     #Ordering the simulations by fitness
     reverse = True if(su.task == 'max') else False    
@@ -113,11 +109,12 @@ def simulation(tests):
         if(tests >= i + 1):
             if(bestIndividual['champion'][-1] == simByChampion[i]['champion'][-1] and bestIndividual['last'] > simByChampion[i]['last']):
                 bestIndividual = simByChampion[i]
+            else:
+                break
 
     rec.close(bestIndividual, fitnessSum, tests, log) #saving simulation report
     plt.plotFitness(bestIndividual['history']) #plotting graphs
     plt.plotGenerations(generationHistory) #plotting graphs
 
 simulation(5)
-
 print("Done!")

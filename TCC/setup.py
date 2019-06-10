@@ -16,7 +16,7 @@ geneMaxValue = 10
 #####Fitness Function#####
 #function = "x1 + x2 + x3"
 function = "x1 - x2 + x3 - x4 + x5 - x6"
-task = "max" #"max" | "min"
+task = "max" #'Smax' | 'min'
 
 #####Algorithm#####
 currentGeneration = 1
@@ -38,4 +38,4 @@ mutationRate = 0.15
 
 #####Results#####
 saveGraphs = True
-saveLog = False
+saveLog = True

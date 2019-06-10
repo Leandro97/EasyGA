@@ -31,7 +31,7 @@ def plotFitness(history):
 
 	plt.xticks(xTick)
 	plt.yticks(yTick)
-	plt.show()
+	#plt.show()
 
 def plotGenerations(history):
 	xTick = []
