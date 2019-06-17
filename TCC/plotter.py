@@ -1,8 +1,8 @@
 import math
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
-from matplotlib.ticker import (MultipleLocator, FormatStrFormatter,
-                               AutoMinorLocator)
+from matplotlib.ticker import (MultipleLocator, FormatStrFormatter, AutoMinorLocator)
+import setup as su
 
 def plotFitness(history):
 	xTick = []
@@ -10,14 +10,20 @@ def plotFitness(history):
 	x, y = zip(*history)
 
 	fig, ax = plt.subplots(1,1)
-	ax.plot(x, y, marker='o')
+	ax.plot(x, y, marker = 'o')
 
 	#setting grid for better visualization
-	ax.yaxis.grid(True, which='major')
+	ax.yaxis.grid(True, which="major")
 
-	plt.title('Progressão do melhor indivíduo')
-	plt.xlabel('Geração')				
-	plt.ylabel('Aptidão do melhor indivíduo')
+	#Setting title and subtitle
+	plt.suptitle("Progressão do melhor indivíduo")
+	if(su.task == "min"):
+		plt.title("Minimizando função", fontsize = 8)
+	else:
+		plt.title("Maximizando função", fontsize = 8)
+
+	plt.xlabel("Geração")				
+	plt.ylabel("Aptidão do melhor indivíduo")
 
 	xMean = math.floor((x[-1] - x[0]) / 4)
 	yMean = math.floor((y[-1] - y[0]) / 4)
@@ -31,7 +37,7 @@ def plotFitness(history):
 
 	plt.xticks(xTick)
 	plt.yticks(yTick)
-	#plt.show()
+	plt.show()
 
 def plotGenerations(history):
 	xTick = []
@@ -39,14 +45,20 @@ def plotGenerations(history):
 	x, y = zip(*history)
 
 	fig, ax = plt.subplots(1,1)
-	ax.plot(x, y, marker='o')
+	ax.plot(x, y, marker="o")
 
 	#setting grid for better visualization
-	ax.yaxis.grid(True, which='major')
+	ax.yaxis.grid(True, which="major")
 
-	plt.title('Simulações x Gerações Alcançadas')
-	plt.xlabel('Simulação')				
-	plt.ylabel('Número de gerações')
+	#Setting title and subtitle
+	plt.suptitle("Simulações x Gerações Alcançadas")
+	if(su.task == "min"):
+		plt.title("Minimizando função", fontsize = 8)
+	else:
+		plt.title("Maximizando função", fontsize = 8)
+
+	plt.xlabel("Simulação")				
+	plt.ylabel("Número de gerações")
 
 	ya = min(y)
 	yb = max(y)

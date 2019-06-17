@@ -38,7 +38,7 @@ def binaryFitness(chrom):
     #Evaluating function
     result = eval(aux)
 
-
+    #
     if(value > su.varMaxValue or value < su.varMinValue):
         if su.task == "max":
             result = -10000000000

@@ -30,7 +30,7 @@ def init():
         minV = len(bin(abs(su.varMinValue))) - 1
         maxV = len(bin(abs(su.varMaxValue))) - 1
         su.geneNumber = max(minV, maxV)
-        
+
         '''
             Binary representation => [s,b1,b2,b3,...,f]
             s => signal (1 to negative, 0 to positive)
