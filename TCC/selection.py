@@ -20,7 +20,7 @@ def init(population):
 	global probabilityArray
 	probabilityArray = [0.1]
 	
-	if su.task == 'min':
+	if su.task == "min":
 		minV, maxV = population[0][-1], population[-1][-1]
 	else:
 		minV, maxV = population[-1][-1], population[0][-1]

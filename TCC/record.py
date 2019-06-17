@@ -17,7 +17,7 @@ def setName(now):
     second = '{:02d}'.format(now.second)
     time = hour + ':' + minute + ':' + second
 
-    return date + '.' + time + '.txt'
+    return date + '.' + time + ".txt"
 
 '''Opening file'''
 def newFile():
@@ -26,20 +26,20 @@ def newFile():
 
 	global file
 	name = datetime.datetime.now()
-	file = open(setName(name), "a") 
+	file = open(setName(name), 'a') 
 
 '''This function returns a ordinal number used on report of best simulation'''
 def ordinal(number):
 	number = str(number)
 
 	if(number[-1] == '1'):
-		return number + 'st'
+		return number + "st"
 	if(number[-1] == '2'):
-		return number + 'nd'
+		return number + "nd"
 	if(number[-1] == '3'):
-		return number + 'rd'
+		return number + "rd"
 	else :
-		return number + 'th'
+		return number + "th"
 
 '''Writing on file'''
 def write(log):
@@ -70,10 +70,10 @@ def close(bestIndividual, fitnessSum, tests, log):
 	write("Mutation rate: {}\n\n".format(su.mutationRate))
 	write("#################################\n")
 
-	write('\n-> Best simulation: #{}. <-'.format(bestIndividual['id']))
-	write('\n-> Champion: {}. Reached in {} generation. <-'.format(bestIndividual['champion'], ordinal(bestIndividual['last'])))
-	write('\n-> Average fitness: {0:.2f} <-\n'.format(fitnessSum / tests))
-	write('\n#################################\n')
+	write("\n-> Best simulation: #{}. <-".format(bestIndividual['id']))
+	write("\n-> Champion: {}. Reached in {} generation. <-".format(bestIndividual['champion'], ordinal(bestIndividual['last'])))
+	write("\n-> Average fitness: {0:.2f} <-\n".format(fitnessSum / tests))
+	write("\n#################################\n")
 
 	write(log)
 	file.close()

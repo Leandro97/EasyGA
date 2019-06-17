@@ -21,12 +21,14 @@ def mutation(chrom):
 	for i in range(len(chrom)):
 		k = rd.random()
 		if(k <= su.mutationRate):
-			num = min(su.geneMaxValue, max(su.geneMinValue, rd.gauss(0, 5)))
+			num = min(su.varMaxValue, max(su.varMinValue, rd.gauss(0, 5)))
 
-			if (su.geneType == 'int'): 
-		   		chrom[i] = rd.randint(su.geneMinValue, su.geneMaxValue)
+			if (su.geneType == "int"): 
+		   		chrom[i] = rd.randint(su.varMinValue, su.varMaxValue)
+			elif (su.geneType == "float"):
+		   		chrom[i] = rd.uniform(su.varMinValue, su.varMaxValue)
 			else:
-		   		chrom[i] = rd.uniform(su.geneMinValue, su.geneMaxValue)
+		   		chrom[i] = 0 if chrom[i] == 1 else 1
 	return chrom
 
 '''Where the crossover is managed'''
@@ -34,7 +36,7 @@ def crossover(population):
 	newPopulation = []
 
 	#Initialising roullete
-	if su.selection == 'roulette': 
+	if su.selection == "roulette": 
 		sel.init(su.population)
 
 	#print(su.population)
@@ -62,7 +64,7 @@ def crossover(population):
 		child1, child2 = mutation(child1), mutation(child2)
 		child1[-1], child2[-1] = fit.getFitness(child1), fit.getFitness(child2) #Calculatin its fitness
 
-		if su.geneType == 'float':
+		if su.geneType == "float":
 			child1, child2 = [round(value, 2) for value in child1], [round(value, 2) for value in child2] #rounding values
 
 		#Adding child to population 
@@ -79,7 +81,7 @@ def crossover(population):
 
 '''Sorting population in decrescent order, acording to the object task'''
 def sort(population):
-	if(su.task == 'max'):	
+	if(su.task == "max"):	
 		return np.asarray(sorted(su.population, key=lambda x: x[-1], reverse=True))[0:su.populationSize]
 	else:	 
 		return np.asarray(sorted(su.population, key=lambda x: x[-1], reverse=False))[0:su.populationSize]

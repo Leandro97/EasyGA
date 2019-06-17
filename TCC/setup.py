@@ -7,35 +7,35 @@ the algorithm execution.
 population = []
 seed = None
 #####Chromosome structure#####
-geneType = "int" #"float" | "int"
+geneType = "int" #"float" | "int" | "bin"
 #geneNumber = 3
 geneNumber = 6
-geneMinValue = -8
-geneMaxValue = 10
+varMinValue = -10
+varMaxValue = 20
 
 #####Fitness Function#####
-#function = "x1 + x2 + x3"
+#function = "x1 + x1**2"
 function = "x1 - x2 + x3 - x4 + x5 - x6"
-task = "max" #'Smax' | 'min'
+task = "min" #"Smax" | "min"
 
 #####Algorithm#####
 currentGeneration = 1
-populationSize = 20
-#populationSize = 6
+#populationSize = 20
+populationSize = 6
 currentPopulationSize = populationSize
-maxGenerations = 50
-#maxGenerations = 20
+#maxGenerations = 50
+maxGenerations = 20
 plateau = 20
 elitism = True
 
-crossover = 'twoPoint' #'onePoint' | 'twoPoint'
+crossover = "twoPoint" #"onePoint" | "twoPoint"
 sliceBegin = 2
 sliceEnd = 4
 
-selection = 'roulette' #'uniform' | 'roulette' | 'tournament'
-mutation = 'uniform' #'uniform' | ??? | ???
+selection = "roulette" #"uniform" | "roulette" | "tournament"
+mutation = "uniform" #"uniform" | ??? | ???
 mutationRate = 0.15
 
 #####Results#####
-saveGraphs = False
-saveLog = True
+saveGraphs = True
+saveLog = False

@@ -23,9 +23,22 @@ geneNumber + 1 genes because the last position stores its fitness
 def init():
     '''Initial population starts the proccess with random values'''
     if su.geneType == 'float': 
-        su.population = np.random.uniform(su.geneMinValue, su.geneMaxValue, (su.populationSize, su.geneNumber + 1))
+        su.population = np.random.uniform(su.varMinValue, su.varMaxValue, (su.populationSize, su.geneNumber + 1))
+    elif su.geneType == 'int':
+        su.population = np.random.randint(su.varMinValue, su.varMaxValue + 1, (su.populationSize, su.geneNumber + 1))
     else:
-        su.population = np.random.randint(su.geneMinValue, su.geneMaxValue + 1, (su.populationSize, su.geneNumber + 1))
+        minV = len(bin(abs(su.varMinValue))) - 1
+        maxV = len(bin(abs(su.varMaxValue))) - 1
+        su.geneNumber = max(minV, maxV)
+        
+        '''
+            Binary representation => [s,b1,b2,b3,...,f]
+            s => signal (1 to negative, 0 to positive)
+            bn => n-th bit
+            f => fitness
+        '''
+        su.population = np.random.randint(0, 2, (su.populationSize, su.geneNumber + 1))
+
 
     '''Calculating the fitness of the initial population'''
     for chrom in su.population:
@@ -34,6 +47,7 @@ def init():
 
         chrom[-1] = fit.getFitness(chrom)
 
+    #print(su.population)
     su.population = op.sort(su.population) #Sorting the individuals according to fitness
     su.currentGeneration = 1
 
