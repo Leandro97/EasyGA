@@ -1,12 +1,10 @@
-import setup as su
 import math as math
-from setup import geneNumber, function
 from math import *
 
 '''Calculating fitness on multidimension functions'''
-def getFitness(chrom):
+def getFitness(chrom, su):
     if su.geneType == "bin":
-        return binaryFitness(chrom)     
+        return binaryFitness(chrom, su)     
 
     aux = su.function
     for i in range(su.geneNumber):
@@ -20,7 +18,7 @@ def getFitness(chrom):
     result = eval(aux)
     return result
 
-def binaryFitness(chrom):
+def binaryFitness(chrom, su):
     aux = su.function
     binaryVal = ''
 

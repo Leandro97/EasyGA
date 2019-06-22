@@ -1,7 +1,6 @@
 '''Here the file operations are done'''
-import setup as su
-from setup import *
 import datetime
+import time
 
 file = []
 
@@ -20,13 +19,13 @@ def setName(now):
     return date + '.' + time + ".txt"
 
 '''Opening file'''
-def newFile():
+def newFile(su):
 	if not su.saveLog:
 		return
 
 	global file
 	name = datetime.datetime.now()
-	file = open(setName(name), 'a') 
+	file = open(setName(name), 'w') 
 
 '''This function returns a ordinal number used on report of best simulation'''
 def ordinal(number):
@@ -43,14 +42,11 @@ def ordinal(number):
 
 '''Writing on file'''
 def write(log):
-	if not su.saveLog:
-		return
-
 	for entry in log:
 		file.write(entry)
 
 '''Closing file'''
-def close(bestIndividual, fitnessSum, tests, log):
+def close(bestIndividual, average, log, su):
 	if not su.saveLog:
 		return
 
@@ -72,8 +68,9 @@ def close(bestIndividual, fitnessSum, tests, log):
 
 	write("\n-> Best simulation: #{}. <-".format(bestIndividual['id']))
 	write("\n-> Champion: {}. Reached in {} generation. <-".format(bestIndividual['champion'], ordinal(bestIndividual['last'])))
-	write("\n-> Average fitness: {0:.2f} <-\n".format(fitnessSum / tests))
+	write("\n-> Average fitness: {0:.2f} <-\n".format(average))
 	write("\n#################################\n")
 
 	write(log)
 	file.close()
+	time.sleep(1)

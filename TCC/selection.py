@@ -1,4 +1,3 @@
-import setup as su 
 import operations as op 
 import numpy as np
 import random as rd
@@ -6,29 +5,29 @@ import random as rd
 '''Stores the selection roulette'''
 probabilityArray = []
 
-def selectParent():
+def selectParent(su):
 	if(su.selection == "uniform"):
 		return np.random.randint(0, su.populationSize)
 	elif(su.selection == "roulette"):
-		return roulette()
+		return roulette(su)
 	elif(su.selection == "tournament"):
 		return tournament()
 
 '''Initialising selection roulette'''
-def init(population):
+def init(su):
 	#This array stores the probability of choosing a individual 
 	global probabilityArray
 	probabilityArray = [0.1]
 	
 	if su.task == "min":
-		minV, maxV = population[0][-1], population[-1][-1]
+		minV, maxV = su.population[0][-1], su.population[-1][-1]
 	else:
-		minV, maxV = population[-1][-1], population[0][-1]
+		minV, maxV = su.population[-1][-1], su.population[0][-1]
 
 	#Normalizing fitness
 	for i in range(1, su.populationSize):
 		if(minV != maxV):
-			newValue = (population[i][-1] - minV) / (maxV - minV) if (su.task == "min") else (population[i][-1] - maxV) / (minV - maxV)
+			newValue = (su.population[i][-1] - minV) / (maxV - minV) if (su.task == "min") else (su.population[i][-1] - maxV) / (minV - maxV)
 		else:
 			newValue = 1.0
 		#Calculating selection probability 
@@ -41,7 +40,7 @@ def init(population):
 		probabilityArray[i] = 0.1 if (probabilityArray[i] == 0) else probabilityArray[i]
 		
 '''Roulette selection'''
-def roulette():
+def roulette(su):
 	global probabilityArray
 	chance = np.random.uniform(0,1)
 
