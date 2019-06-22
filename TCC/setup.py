@@ -8,7 +8,9 @@ from dataclasses import dataclass
 @dataclass
 class Setup:
 	population = None
-	seed: int = 4	
+	seed: int = None
+	enabled: bool = True
+	
 	#####Chromosome structure#####
 	geneType: str = "int" #"float" | "int" | "bin"
 	#geneNumber = 3
@@ -39,5 +41,6 @@ class Setup:
 	mutationRate: float = 0.15
 
 	#####Results#####
+	bestFitness: float = 0
 	saveGraphs: bool = True
 	saveLog: bool = False
