@@ -16,7 +16,8 @@ def getFitness(chrom, su):
 
     #Evaluating function
     result = eval(aux)
-    return result
+    chrom[-1] = result
+    return chrom
 
 def binaryFitness(chrom, su):
     aux = su.function
@@ -30,19 +31,35 @@ def binaryFitness(chrom, su):
     if(chrom[0] == 1):
         value *= -1
 
+    #Verifying limits of bit string
+    if(value < su.varMinValue or value > su.varMaxValue):
+
+        if(value < su.varMinValue):
+            value = su.varMinValue
+        else:
+            value = su.varMaxValue
+
+        bAux = bin(value)
+        signal = bAux[0]
+        bAux = bAux[3:] if(signal == '-') else bAux[2:]
+        chrom[0] = 1 if(signal == '-') else 0
+
+        #Now the chromossome is capped at one of the limits
+        counter = 0
+        for i in range(1, su.geneNumber):
+            if(i < su.geneNumber - len(bAux)):
+                chrom[i] = 0
+            else:
+                chrom[i] = bAux[counter]
+                counter += 1
+
     #Replacing values
     aux = aux.replace('x1', '(' + str(value) + ')')
 
     #Evaluating function
     result = eval(aux)
+    chrom[-1] = result
 
-    #
-    if(value > su.varMaxValue or value < su.varMinValue):
-        if su.task == "max":
-            result = -10000000000
-        else:
-            result = 10000000000
-
-    return result
+    return chrom
 
         
