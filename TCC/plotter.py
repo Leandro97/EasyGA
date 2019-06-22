@@ -5,6 +5,7 @@ from matplotlib.ticker import (MultipleLocator, FormatStrFormatter, AutoMinorLoc
 import setup as su
 import numpy as np
 
+'''Returns the limits of x and y axis used on plotting'''
 def getLimits(history):
 	xb = xe = yb = ye = None
 
@@ -26,10 +27,12 @@ def getLimits(history):
 
 	return xb, xe, yb, ye
 
+'''Plotting the progression of best inidviual for each setup'''
 def plotFitness(history, su):	
 	if not su.saveGraphs:
 		return 
 
+	#Creating panel
 	fig, ax = plt.subplots(1,1)
 	xTick = []
 	yTick = []
@@ -51,30 +54,34 @@ def plotFitness(history, su):
 	else:
 		plt.title("Maximizando função", fontsize = 8)
 
+	#Setting axis label	
 	plt.xlabel("Geração")				
 	plt.ylabel("Aptidão do melhor indivíduo")
 
 	xMean = math.floor((xe - xb) / 4)
 	yMean = math.floor((ye - yb) / 4)
 
-	for i in range(5):
+	for i in range(4):
 		xTick.append(xb + xMean * i)
 		yTick.append(yb + yMean * i)
 
 	xTick.append(xe)
 	yTick.append(ye)
 
+	#Setting legend position
 	box = ax.get_position()
 	ax.set_position([box.x0, box.y0, box.width 	* 0.75, box.height])
 	plt.legend(loc = 'upper left', bbox_to_anchor=(1, 1))
 	plt.xticks(xTick)
 	plt.yticks(yTick)
-	#plt.show()
+	plt.show()
 
+'''Plotting generations reached for each setup'''
 def plotGenerations(history, su):
 	if not su.saveGraphs:
 		return 
 
+	#Creating panel
 	fig, ax = plt.subplots(1,1)
 	xTick = []
 	yTick = []
@@ -96,16 +103,14 @@ def plotGenerations(history, su):
 	else:
 		plt.title("Maximizando função", fontsize = 8)
 
+	#Setting axis label
 	plt.xlabel("Simulação")				
 	plt.ylabel("Número de gerações")
 
 	yMean = math.ceil((ye - yb) / 4)
 	yTick = [yb, yb + yMean, yb + 2*yMean, yb + 3*yMean, ye]
 
-	for i in range(4):
-		yTick.append(yb + yMean * i)
-	yTick.append(ye)
-
+	#Setting legend position
 	box = ax.get_position()
 	ax.set_position([box.x0, box.y0, box.width 	* 0.75, box.height])
 	plt.legend(loc = 'upper left', bbox_to_anchor=(1, 1))

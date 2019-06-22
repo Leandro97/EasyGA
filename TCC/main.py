@@ -22,6 +22,9 @@ aux2 = [] #stores generation history of all setups
 
 '''Each time the user runs a scenario, this function is called'''
 def simulation(tests, su):
+    if not su.enabled:
+        return
+
     global aux1
     global aux2
     global log
@@ -99,7 +102,7 @@ def evolve(su):
         su.currentPopulationSize = su.populationSize
         su.currentGeneration += 1
 
-        #Verifying if max generation number was reached 
+        #Verifying if plateu was reached 
         if(counter == su.plateau): break
 
         #print("###")
@@ -134,7 +137,7 @@ def init(su):
         if  su.geneType == 'float':
             chrom = [round(value, 2) for value in chrom]
 
-        chrom[-1] = fit.getFitness(chrom, su)
+        chrom = fit.getFitness(chrom, su)
 
     su.population = op.sort(su) #Sorting the individuals according to fitness
     su.currentGeneration = 1
@@ -142,8 +145,12 @@ def init(su):
 
 su1 = setup.Setup()
 su2 = setup.Setup()
-su2.selection = "uniform"
 su3 = setup.Setup()
+
+su1.enabled = True
+su2.enabled = True
+su3.enabled = True
+su2.selection = "uniform"
 su3.plateau = 3
 
 simulation(5, su1)

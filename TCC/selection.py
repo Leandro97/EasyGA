@@ -5,6 +5,7 @@ import random as rd
 '''Stores the selection roulette'''
 probabilityArray = []
 
+'''Selection interface'''
 def selectParent(su):
 	if(su.selection == "uniform"):
 		return np.random.randint(0, su.populationSize)

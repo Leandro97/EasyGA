@@ -66,6 +66,7 @@ def close(bestIndividual, average, log, su):
 	write("Mutation rate: {}\n\n".format(su.mutationRate))
 	write("#################################\n")
 
+	'''Simulation result'''
 	write("\n-> Best simulation: #{}. <-".format(bestIndividual['id']))
 	write("\n-> Champion: {}. Reached in {} generation. <-".format(bestIndividual['champion'], ordinal(bestIndividual['last'])))
 	write("\n-> Average fitness: {0:.2f} <-\n".format(average))
