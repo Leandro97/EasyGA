@@ -7,28 +7,25 @@ from dataclasses import dataclass
 
 @dataclass
 class Setup:
-	population = None
 	seed: int = None
 	enabled: bool = True
+	population = None
 	
 	#####Chromosome structure#####
 	geneType: str = "int" #"float" | "int" | "bin"
-	#geneNumber = 3
 	geneNumber: int = 6
 	varMinValue: int = -10
 	varMaxValue: int = 20
 
 	#####Fitness Function#####
-	#function: str = "x1 + x1**2"
-	function: str = "x1 - x2 + x3 - x4 + x5 - x6"
+	#function: str = "x1 + (2*x1 - 25)**2"
+	function: str = "x1 - x2 + x3 - x4**2 + 3*(x5 - x6)"
 	task: str = "max" #"max" | "min"
 
 	#####Algorithm#####
 	currentGeneration: int = 1
-	#populationSize: int = 20
 	populationSize: int = 6
 	currentPopulationSize: int = populationSize
-	#maxGenerations: int = 50
 	maxGenerations: int = 20
 	plateau: int = 20
 
@@ -42,5 +39,5 @@ class Setup:
 
 	#####Results#####
 	bestFitness: float = 0
-	saveGraphs: bool = True
+	showGraphs: bool = True
 	saveLog: bool = False

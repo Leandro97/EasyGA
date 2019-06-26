@@ -29,7 +29,7 @@ def getLimits(history):
 
 '''Plotting the progression of best inidviual for each setup'''
 def plotFitness(history, su):	
-	if not su.saveGraphs:
+	if not su.showGraphs:
 		return 
 
 	#Creating panel
@@ -74,11 +74,11 @@ def plotFitness(history, su):
 	plt.legend(loc = 'upper left', bbox_to_anchor=(1, 1))
 	plt.xticks(xTick)
 	plt.yticks(yTick)
-	plt.show()
+	#plt.show()
 
 '''Plotting generations reached for each setup'''
 def plotGenerations(history, su):
-	if not su.saveGraphs:
+	if not su.showGraphs:
 		return 
 
 	#Creating panel

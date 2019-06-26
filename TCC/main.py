@@ -80,7 +80,7 @@ def evolve(su):
 
     #Recording first generation
     champion = list(su.population[0])
-    log.append("Generation " + str(su.currentGeneration) + " - Champion: " + str(champion) + "\n")
+    log.append("Generation " + str(su.currentGeneration) + " - Champion: " + str([round(value, 2) for value in champion]) + "\n")
     fitnessHistory.append((su.currentGeneration, champion[-1]))
     su.currentGeneration += 1
 
@@ -143,20 +143,23 @@ def init(su):
     su.currentGeneration = 1
 '''###################'''
 
-su1 = setup.Setup()
-su2 = setup.Setup()
-su3 = setup.Setup()
+def main(enable1, enable2, enable3):
+    #Setting random seed for all setups
+    seed = rd.randint(0, 6)
+    su1 = setup.Setup(seed, enable1)
+    su2 = setup.Setup(seed, enable2)
+    su3 = setup.Setup(seed, enable3)
 
-su1.enabled = True
-su2.enabled = True
-su3.enabled = True
-su2.selection = "uniform"
-su3.plateau = 3
+    su2.selection = "uniform"
+    su3.populationSize = 10
+    su3.maxGenerations = 50
 
-simulation(5, su1)
-simulation(5, su2)
-simulation(5, su3)
+    simulation(5, su1)
+    simulation(5, su2)
+    simulation(5, su3)
 
-plt.plotFitness(aux1, su1) #plotting graphs
-plt.plotGenerations(aux2, su1) #plotting graphs
-print("Done!")
+    plt.plotFitness(aux1, su1) #plotting graphs
+    plt.plotGenerations(aux2, su1) #plotting graphs
+    print("Done!")
+
+main(True, True, True)

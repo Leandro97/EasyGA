@@ -3,10 +3,14 @@ import selection as sel
 import numpy as np
 import random as rd
 
+#TODO verificar se estratétigas de crosover estão funcionando corretamente
+
 '''One point crossover'''
 def onePoint(parent1, parent2, su):
 	point = su.sliceBegin
 	return np.concatenate([parent1[0:point], parent2[point:]]), np.concatenate([parent2[0:point], parent1[point:]])
+
+	#1 2 3 4 | 5 6 7 8 => 
 
 '''Two point crossover'''
 def twoPoint(parent1, parent2, su):
@@ -15,6 +19,7 @@ def twoPoint(parent1, parent2, su):
 
 	return np.concatenate([parent1[0:begin - 1], parent2[begin - 1:end], parent1[end:]]), np.concatenate([parent2[0:begin - 1], parent1[begin - 1:end], parent2[end:]])
 
+	#1 2 3 4 | 5 6 7 8 =>
 '''Mutation operator'''
 def mutation(chrom, su):
 	for i in range(len(chrom)):
