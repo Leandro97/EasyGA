@@ -33,11 +33,12 @@ def plotFitness(history, task):
 	xTick = []
 	yTick = []
 	xb, xe, yb, ye = getLimits(history)
-	count = 1
+	marker = ['o', 's', '^', 'd', 'P']
+	count = 0
 
 	for entry in history:
 		x, y = zip(*entry)
-		ax.plot(x, y, marker = 'o', label = "Configuração {}".format(count))
+		ax.plot(x, y, marker = marker[count % 5], label = "Configuração {}".format(count + 1))
 		count += 1
 
 	#Setting grid for better visualization
@@ -79,11 +80,12 @@ def plotGenerations(history, task):
 	xTick = []
 	yTick = []
 	xb, xe, yb, ye = getLimits(history)
-	count = 1
+	marker = ['o', 's', '^', 'd', 'P']
+	count = 0
 
 	for entry in history:
 		x, y = zip(*entry)
-		ax.plot(x, y, marker = 'o', label = "Configuração {}".format(count))
+		ax.plot(x, y, marker = marker[count % 5], label = "Configuração {}".format(count + 1))
 		count += 1
 
 	#setting grid for better visualization
