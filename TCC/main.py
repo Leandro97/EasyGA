@@ -158,8 +158,8 @@ def main(enable1, enable2, enable3):
     simulation(5, su2)
     simulation(5, su3)
 
-    plt.plotFitness(aux1, su1) #plotting graphs
-    plt.plotGenerations(aux2, su1) #plotting graphs
+    plt.plotFitness(aux1, su1.task) #plotting graphs
+    plt.plotGenerations(aux2, su1.task) #plotting graphs
     print("Done!")
 
 main(True, True, True)

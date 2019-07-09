@@ -2,7 +2,6 @@ import math
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 from matplotlib.ticker import (MultipleLocator, FormatStrFormatter, AutoMinorLocator)
-import setup as su
 import numpy as np
 
 '''Returns the limits of x and y axis used on plotting'''
@@ -28,10 +27,7 @@ def getLimits(history):
 	return xb, xe, yb, ye
 
 '''Plotting the progression of best inidviual for each setup'''
-def plotFitness(history, su):	
-	if not su.showGraphs:
-		return 
-
+def plotFitness(history, task):	
 	#Creating panel
 	fig, ax = plt.subplots(1,1)
 	xTick = []
@@ -49,7 +45,7 @@ def plotFitness(history, su):
 
 	#Setting title and subtitle
 	plt.suptitle("Progressão do melhor indivíduo", x = 0.43)
-	if(su.task == "min"):
+	if(task == "min"):
 		plt.title("Minimizando função", fontsize = 8)
 	else:
 		plt.title("Maximizando função", fontsize = 8)
@@ -77,10 +73,7 @@ def plotFitness(history, su):
 	#plt.show()
 
 '''Plotting generations reached for each setup'''
-def plotGenerations(history, su):
-	if not su.showGraphs:
-		return 
-
+def plotGenerations(history, task):
 	#Creating panel
 	fig, ax = plt.subplots(1,1)
 	xTick = []
@@ -98,7 +91,7 @@ def plotGenerations(history, su):
 
 	#Setting title and subtitle
 	plt.suptitle("Simulações x Gerações Alcançadas", x = 0.43)
-	if(su.task == "min"):
+	if(task == "min"):
 		plt.title("Minimizando função", fontsize = 8)
 	else:
 		plt.title("Maximizando função", fontsize = 8)

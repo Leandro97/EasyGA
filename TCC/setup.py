@@ -39,5 +39,4 @@ class Setup:
 
 	#####Results#####
 	bestFitness: float = 0
-	showGraphs: bool = True
 	saveLog: bool = False
