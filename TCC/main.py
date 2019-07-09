@@ -147,10 +147,11 @@ def main(enable1, enable2, enable3):
     #Setting random seed for all setups
     seed = rd.randint(0, 6)
     su1 = setup.Setup(seed, enable1)
+    
     su2 = setup.Setup(seed, enable2)
-    su3 = setup.Setup(seed, enable3)
-
     su2.selection = "uniform"
+
+    su3 = setup.Setup(seed, enable3)
     su3.populationSize = 10
     su3.maxGenerations = 50
 
