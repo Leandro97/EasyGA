@@ -16,10 +16,13 @@ class Setup:
 	geneNumber: int = 6
 	varMinValue: int = -10
 	varMaxValue: int = 20
+	varDomain = None
 
 	#####Fitness Function#####
 	#function: str = "x1 + (2*x1 - 25)**2"
 	function: str = "x1 - x2 + x3 - x4**2 + 3*(x5 - x6)"
+	#function: str = "x1 - x2"
+
 	task: str = "max" #"max" | "min"
 
 	#####Algorithm#####
@@ -39,4 +42,4 @@ class Setup:
 
 	#####Results#####
 	bestFitness: float = 0
-	saveLog: bool = False
+	saveLog: bool = True

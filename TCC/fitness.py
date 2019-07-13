@@ -1,5 +1,6 @@
 import math as math
 from math import *
+import random as rd
 
 '''Calculating fitness on multidimension functions'''
 def getFitness(chrom, su):
@@ -33,11 +34,7 @@ def binaryFitness(chrom, su):
 
     #Verifying limits of bit string
     if(value < su.varMinValue or value > su.varMaxValue):
-
-        if(value < su.varMinValue):
-            value = su.varMinValue
-        else:
-            value = su.varMaxValue
+        value = rd.randint(su.varMinValue, su.varMaxValue + 1)
 
         bAux = bin(value)
         signal = bAux[0]

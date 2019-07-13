@@ -1,44 +1,24 @@
-'''
-
-Federal University of Alagoas - UFAL
-Author: Leandro Martins de Freitas
-
-'''
-'''HISTÓRICO DE SIMULAÇÕES DEVE FAZER PARTE DA CLASSE SETUP'''
-
-import setup
-import fitness as fit
-import operations as op
-import selection as sel 
-import record as rec  
-import plotter as plt  
-import setupManager as suManager
-import datetime
-import numpy as np
-import random as rd
-
 log = [] #this array will store the progression of best individual
-plotFitnessLog = [] #stores best individual history of all setups
-plotGenerationLog = [] #stores generation history of all setups
+aux1 = [] #stores best individual history of all setups
+aux2 = [] #stores generation history of all setups
 
 '''Each time the user runs a scenario, this function is called'''
 def simulation(tests, su):
-    global plotFitnessLog
-    global plotGenerationLog
-    global log
-
     if not su.enabled:
         return
 
+    global aux1
+    global aux2
+    global log
     su.population = []
     log = []
     generationHistory = []
-    simList = []    
-    bestIndividual = {}
-
     rd.seed(a = su.seed)
     np.random.seed(seed = su.seed)
+
     fitnessSum = 0
+    simList = []    
+    bestIndividual = {}
 
     fileName = rec.newFile(su)
 
@@ -54,7 +34,8 @@ def simulation(tests, su):
         generationHistory.append((sim['id'], sim['last']))
 
     #Ordering the simulations by fitness
-    simByChampion = sorted(simList, key = lambda sim: sim['champion'][-1], reverse = True if(su.task == 'max') else False)
+    reverse = True if(su.task == 'max') else False    
+    simByChampion = sorted(simList, key=lambda sim: sim['champion'][-1], reverse = reverse)
     bestIndividual = simByChampion[0]
 
     #Verifying champion reached with less generations
@@ -67,8 +48,8 @@ def simulation(tests, su):
 
     average = fitnessSum / tests
     rec.close(bestIndividual, average, log, su) #saving simulation report
-    plotFitnessLog.append(bestIndividual['history'])
-    plotGenerationLog.append(generationHistory)
+    aux1.append(bestIndividual['history'])
+    aux2.append(generationHistory)
 
 '''Here all the steps of the algorithm take place'''
 def evolve(su):
@@ -111,33 +92,25 @@ def evolve(su):
 
 '''
 Population initialisation. The array representing a individual has
-geneNumber + 1 genes because the last position stores its fitness.
-In binary strings, the first bit stores the signal: 1 if negative,
-0 if positive
+geneNumber + 1 genes because the last position stores its fitness
 '''
 def init(su):
-
-    su.varDomain = {0:[0, 10], 1:[1, 5], 2:[1, 5], 3:[-1, 3], 4:[10, 50], 5:[1, 5]}
-    su.population = []
     '''Initial population starts the proccess with random values'''
     if su.geneType == 'float': 
-        for i in range(su.populationSize):
-            su.population.append([])
-            for j in range(su.geneNumber):
-                su.population[i].append(rd.uniform(su.varDomain[j][0], su.varDomain[j][1]))
-            su.population[i].append(0)
-        #su.population = np.random.uniform(su.varMinValue, su.varMaxValue, (su.populationSize, su.geneNumber + 1))
+        su.population = np.random.uniform(su.varMinValue, su.varMaxValue, (su.populationSize, su.geneNumber + 1))
     elif su.geneType == 'int':
-        for i in range(su.populationSize):
-            su.population.append([])
-            for j in range(su.geneNumber):
-                su.population[i].append(rd.randint(su.varDomain[j][0], su.varDomain[j][1]))
-            su.population[i].append(0)
-        #su.population = np.random.randint(su.varMinValue, su.varMaxValue + 1, (su.populationSize, su.geneNumber + 1))
+        su.population = np.random.randint(su.varMinValue, su.varMaxValue + 1, (su.populationSize, su.geneNumber + 1))
     else:
         minV = len(bin(abs(su.varMinValue))) - 1
         maxV = len(bin(abs(su.varMaxValue))) - 1
         su.geneNumber = max(minV, maxV)
+
+        '''
+            Binary representation => [s,b1,b2,b3,...,f]
+            s => signal (1 to negative, 0 to positive)
+            bn => n-th bit
+            f => fitness
+        '''
         su.population = np.random.randint(0, 2, (su.populationSize, su.geneNumber + 1))
 
 
@@ -150,16 +123,3 @@ def init(su):
 
     su.population = op.sort(su) #Sorting the individuals according to fitness
     su.currentGeneration = 1
-
-def main():
-    setupQuantity = 3 
-    setupList = suManager.createSetups(setupQuantity)
-
-    for entry in setupList:
-        simulation(5, entry)
-
-    plt.plotFitness(plotFitnessLog, setupList[0].task) #plotting graphs
-    plt.plotGenerations(plotGenerationLog, setupList[0].task) #plotting graphs
-    print("Done!")
-
-main()

@@ -22,15 +22,15 @@ def twoPoint(parent1, parent2, su):
 	#1 2 3 4 | 5 6 7 8 =>
 '''Mutation operator'''
 def mutation(chrom, su):
-	for i in range(len(chrom)):
+	for i in range(su.geneNumber):
 		k = rd.random()
 		if(k <= su.mutationRate):
 			num = min(su.varMaxValue, max(su.varMinValue, rd.gauss(0, 5)))
 
 			if (su.geneType == "int"): 
-		   		chrom[i] = rd.randint(su.varMinValue, su.varMaxValue)
+		   		chrom[i] = rd.randint(su.varDomain[i][0], su.varDomain[i][1])
 			elif (su.geneType == "float"):
-		   		chrom[i] = rd.uniform(su.varMinValue, su.varMaxValue)
+		   		chrom[i] = rd.uniform(su.varDomain[i][0], su.varDomain[i][1])
 			else:
 		   		chrom[i] = 0 if chrom[i] == 1 else 1
 	return chrom
