@@ -117,7 +117,7 @@ In binary strings, the first bit stores the signal: 1 if negative,
 '''
 def init(su):
 
-    su.varDomain = {0:[0, 10], 1:[1, 5], 2:[1, 5], 3:[-1, 3], 4:[10, 50], 5:[1, 5]}
+    su.varDomain = [[0, 10], [1, 5], [1, 5], [-1, 3], [10, 50], [1, 5]]
     su.population = []
     '''Initial population starts the proccess with random values'''
     if su.geneType == 'float': 
