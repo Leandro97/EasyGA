@@ -22,17 +22,10 @@ def twoPoint(parent1, parent2, su):
 	#1 2 3 4 | 5 6 7 8 =>
 '''Mutation operator'''
 def mutation(chrom, su):
-	for i in range(su.geneNumber):
+	for i in range(len(chrom) - 1):
 		k = rd.random()
 		if(k <= su.mutationRate):
-			num = min(su.varMaxValue, max(su.varMinValue, rd.gauss(0, 5)))
-
-			if (su.geneType == "int"): 
-		   		chrom[i] = rd.randint(su.varDomain[i][0], su.varDomain[i][1])
-			elif (su.geneType == "float"):
-		   		chrom[i] = rd.uniform(su.varDomain[i][0], su.varDomain[i][1])
-			else:
-		   		chrom[i] = 0 if chrom[i] == 1 else 1
+			chrom[i] = 0 if chrom[i] == 1 else 1
 	return chrom
 
 '''Crossover management'''
@@ -51,14 +44,14 @@ def crossover(su):
 		parent1 = su.population[index1]
 		#print("Parent #1: ", index1, parent1)
 
-		#The loop is necessary to prevent the two parents of being the same
-		while(True):
-			#Choosing second parent
-			index2 = sel.selectParent(su)
+		#Choosing second parent
+		index2 = sel.selectParent(su)
 
-			if(index1 != index2): 
-				parent2 = su.population[index2]
-				break
+		if(index1 == index2): 
+			index2 += 1
+			
+		parent2 = su.population[index2]
+
 		#print("Parent #2: ", index2, parent2)
 		#print("***")
 		#print(su.population[index1], su.population[index2])
@@ -85,6 +78,6 @@ def crossover(su):
 '''Sorting population in decrescent order of fitness, acording to the object task'''
 def sort(su):
 	if(su.task == "max"):	
-		return np.asarray(sorted(su.population, key=lambda x: x[-1], reverse=True))[0:su.populationSize]
+		return np.asarray(sorted(su.population, key=lambda x: int(x[-1]), reverse=True))[0:su.populationSize]
 	else:	 
-		return np.asarray(sorted(su.population, key=lambda x: x[-1], reverse=False))[0:su.populationSize]
+		return np.asarray(sorted(su.population, key=lambda x: int(x[-1]), reverse=False))[0:su.populationSize]

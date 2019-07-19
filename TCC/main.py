@@ -4,7 +4,6 @@ Federal University of Alagoas - UFAL
 Author: Leandro Martins de Freitas
 
 '''
-'''HISTÓRICO DE SIMULAÇÕES DEVE FAZER PARTE DA CLASSE SETUP'''
 
 import setup
 import fitness as fit
@@ -49,7 +48,7 @@ def simulation(tests, su):
         sim['id'] = i + 1
         sim['last'], sim['champion'], sim['history'] = evolve(su)
 
-        fitnessSum += sim['champion'][-1]
+        fitnessSum += int(str(sim['champion'][-1]))
         simList.append(sim)
         generationHistory.append((sim['id'], sim['last']))
 
@@ -81,7 +80,7 @@ def evolve(su):
 
     #Recording first generation
     champion = list(su.population[0])
-    log.append("Generation " + str(su.currentGeneration) + " - Champion: " + str([round(value, 2) for value in champion]) + "\n")
+    log.append("Generation " + str(su.currentGeneration) + " - Champion: " + str(champion) + "\n")
     fitnessHistory.append((su.currentGeneration, champion[-1]))
     su.currentGeneration += 1
 
@@ -115,37 +114,39 @@ geneNumber + 1 genes because the last position stores its fitness.
 In binary strings, the first bit stores the signal: 1 if negative,
 0 if positive
 '''
+
+#11111 0000 30
 def init(su):
-
-    su.varDomain = [[0, 10], [1, 5], [1, 5], [-1, 3], [10, 50], [1, 5]]
     su.population = []
+    su.varDomain = [[-10, 10], [-1, 5]]
+    su.varLength = []
+
+    #setting the variables boundaries
+    for domain in su.varDomain:
+        minV = len(bin(abs(domain[0]))) - 1
+        maxV = len(bin(abs(domain[1]))) - 1
+
+        lengthAux = max(minV, maxV)
+        su.varLength.append(lengthAux)
+
     '''Initial population starts the proccess with random values'''
-    if su.geneType == 'float': 
-        for i in range(su.populationSize):
-            su.population.append([])
-            for j in range(su.geneNumber):
-                su.population[i].append(rd.uniform(su.varDomain[j][0], su.varDomain[j][1]))
-            su.population[i].append(0)
-        #su.population = np.random.uniform(su.varMinValue, su.varMaxValue, (su.populationSize, su.geneNumber + 1))
-    elif su.geneType == 'int':
-        for i in range(su.populationSize):
-            su.population.append([])
-            for j in range(su.geneNumber):
-                su.population[i].append(rd.randint(su.varDomain[j][0], su.varDomain[j][1]))
-            su.population[i].append(0)
-        #su.population = np.random.randint(su.varMinValue, su.varMaxValue + 1, (su.populationSize, su.geneNumber + 1))
-    else:
-        minV = len(bin(abs(su.varMinValue))) - 1
-        maxV = len(bin(abs(su.varMaxValue))) - 1
-        su.geneNumber = max(minV, maxV)
-        su.population = np.random.randint(0, 2, (su.populationSize, su.geneNumber + 1))
+    for i in range (su.populationSize):
+        su.population.append([])
 
-
+        aux = 0
+        for domain in su.varDomain:
+            #generating new decimal individual 
+            newIndividual = rd.randint(domain[0], domain[1])
+            
+            #binary casting and formatting
+            newIndividual = list(("{0:0" + str(su.varLength[aux]) + "b}").format(newIndividual))
+            newIndividual[0] = '1' if (newIndividual[0] == '-') else '0'
+            su.population[i].extend(newIndividual)
+            aux += 1
+        su.population[i].append('0')
+        
     '''Calculating the fitness of the initial population'''
     for chrom in su.population:
-        if  su.geneType == 'float':
-            chrom = [round(value, 2) for value in chrom]
-
         chrom = fit.getFitness(chrom, su)
 
     su.population = op.sort(su) #Sorting the individuals according to fitness

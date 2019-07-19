@@ -10,18 +10,19 @@ class Setup:
 	seed: int = None
 	enabled: bool = True
 	population = None
+	varDomain = None #this array stores the domain of each variable in the form [minValue, maxValue]. 
+	varLength = None #this array stores the maximum lenght of the variable binary representation 
 	
 	#####Chromosome structure#####
 	geneType: str = "int" #"float" | "int" | "bin"
-	geneNumber: int = 6
 	varMinValue: int = -10
 	varMaxValue: int = 20
 	varDomain = None
 
 	#####Fitness Function#####
 	#function: str = "x1 + (2*x1 - 25)**2"
-	function: str = "x1 - x2 + x3 - x4**2 + 3*(x5 - x6)"
-	#function: str = "x1 - x2"
+	#function: str = "x1 - x2 + x3 - x4**2 + 3*(x5 - x6)"
+	function: str = "x1 - x2"
 
 	task: str = "max" #"max" | "min"
 
@@ -42,4 +43,4 @@ class Setup:
 
 	#####Results#####
 	bestFitness: float = 0
-	saveLog: bool = True
+	saveLog: bool = False
