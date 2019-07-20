@@ -5,27 +5,34 @@ import random as rd
 '''Calculating fitness on multidimension functions'''
 def getFitness(chrom, su):   
     func = su.function
-
     begin = 0
 
     for i in range(len(su.varLength)):
         end = begin + su.varLength[i]
 
-        aux = chrom[begin: end]
-        aux[0] = '-' if (aux[0] == '1') else '0'
-        aux = ''.join(aux)
-        print(aux)
+        aux = chrom.copy()[begin: end]
+        #print(aux)
+
+        aux[0] = "-" if (aux[0] == "1") else "0"
 
         var = 'x' + str(i + 1)
-        value = '(' + str(int(aux, 2)) + ')'
+        value = int(''.join(aux), 2)
+
+
+        if(value < su.varDomain[i][0] or value > su.varDomain[i][1]):
+            value = rd.randint(su.varDomain[i][0], su.varDomain[i][1])
+            chrom[begin: end] = list(("{0:0" + str(su.varLength[i]) + "b}").format(value))
+            chrom[0] = '1' if (chrom[0] == '-') else '0'
 
         #Replacing values
-        func = func.replace(var, value)
+        func = func.replace(var, '(' + str(value) + ')')
         begin = end
 
-    #Evaluating function
+    #chrom.tolist()
     result = eval(func)
+
     chrom[-1] = result
+
     return chrom
 
 # def binaryFitness(chrom, su):

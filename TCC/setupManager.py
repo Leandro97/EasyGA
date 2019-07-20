@@ -4,7 +4,7 @@ import random as rd
 setupList = []
 
 def createSetups(quantity):
-    seed = rd.randint(0, 6)
+    seed = rd.randint(0, 10)
 
     for i in range(quantity):
         newSetup = setup.Setup(seed)

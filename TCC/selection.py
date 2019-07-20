@@ -39,13 +39,12 @@ def init(su):
 	#Normalizing probabilities
 	minV, maxV = probabilityArray[0], probabilityArray[-1]
 
-
 	for i in range(su.populationSize):
-		probabilityArray[i] = round((probabilityArray[i] - minV) / (maxV - minV), 2)
-		probabilityArray[i] = 0.001 if (probabilityArray[i] == 0) else probabilityArray[i]
-		
-	print(su.population)
-	print(probabilityArray)
+		if(minV == maxV):
+			probabilityArray[i] = 0.5
+		else:	
+			probabilityArray[i] = round((probabilityArray[i] - minV) / (maxV - minV), 2)
+			probabilityArray[i] = 0.001 if (probabilityArray[i] == 0) else probabilityArray[i]
 
 '''Roulette selection'''
 def roulette(su):
@@ -55,7 +54,6 @@ def roulette(su):
 	#If the random number is lesser than the probability, the chromosome is chosen 
 	for i in range(su.populationSize):
 		if chance < probabilityArray[i]:
-			print(su.populationSize - i - 1)
 			return su.populationSize - i - 1
 	return 0
 

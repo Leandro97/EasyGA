@@ -86,7 +86,8 @@ def evolve(su):
 
     while (su.currentGeneration <= su.maxGenerations):
         op.crossover(su)
-        su.population = op.sort(su)
+        op.sort(su)
+        #print(su.population)
 
         #Verifying if champion changed
         if(su.population[0][-1] == champion[-1]):
@@ -104,7 +105,6 @@ def evolve(su):
 
         #Verifying if plateu was reached 
         if(counter == su.plateau): break
-
         #print("###")
     return last, champion, fitnessHistory
 
@@ -132,24 +132,25 @@ def init(su):
     '''Initial population starts the proccess with random values'''
     for i in range (su.populationSize):
         su.population.append([])
-
         aux = 0
         for domain in su.varDomain:
             #generating new decimal individual 
-            newIndividual = rd.randint(domain[0], domain[1])
+            newVar = rd.randint(domain[0], domain[1])
             
             #binary casting and formatting
-            newIndividual = list(("{0:0" + str(su.varLength[aux]) + "b}").format(newIndividual))
-            newIndividual[0] = '1' if (newIndividual[0] == '-') else '0'
-            su.population[i].extend(newIndividual)
+            newVarList = list(("{0:0" + str(su.varLength[aux]) + "b}").format(newVar))
+
+            newVarList[0] = '1' if (newVarList[0] == '-') else '0'
+
+            su.population[i].extend(newVarList)
             aux += 1
         su.population[i].append('0')
         
     '''Calculating the fitness of the initial population'''
     for chrom in su.population:
-        chrom = fit.getFitness(chrom, su)
+        fit.getFitness(chrom, su)
 
-    su.population = op.sort(su) #Sorting the individuals according to fitness
+    op.sort(su) #Sorting the individuals according to fitnessHistory
     su.currentGeneration = 1
 
 def main():
