@@ -48,12 +48,12 @@ def simulation(tests, su):
         sim['id'] = i + 1
         sim['last'], sim['champion'], sim['history'] = evolve(su)
 
-        fitnessSum += int(str(sim['champion'][-1]))
+        fitnessSum += float(str(sim['champion'][-1]))
         simList.append(sim)
         generationHistory.append((sim['id'], sim['last']))
 
     #Ordering the simulations by fitness
-    simByChampion = sorted(simList, key = lambda sim: sim['champion'][-1], reverse = True if(su.task == 'max') else False)
+    simByChampion = sorted(simList, key = lambda sim: float(sim['champion'][-1]), reverse = True if(su.task == 'max') else False)
     bestIndividual = simByChampion[0]
 
     #Verifying champion reached with less generations
@@ -80,7 +80,7 @@ def evolve(su):
 
     #Recording first generation
     champion = list(su.population[0])
-    log.append("Generation " + str(su.currentGeneration) + " - Champion: " + str(champion) + "\n")
+    log.append("Generation " + str(su.currentGeneration) + " - Champion: " + str([round(value, 2) for value in champion]) + "\n")
     fitnessHistory.append((su.currentGeneration, champion[-1]))
     su.currentGeneration += 1
 
@@ -118,34 +118,45 @@ In binary strings, the first bit stores the signal: 1 if negative,
 #11111 0000 30
 def init(su):
     su.population = []
-    su.varDomain = [[-10, 10], [-1, 5]]
+    #su.varDomain = [[-10, 10], [-1, 5]]
+    su.varDomain = [[-10, 10], [-10, 10], [-10, 10], [-10, 10], [-10, 10], [-10, 10]]
     su.varLength = []
 
     #setting the variables boundaries
     for domain in su.varDomain:
-        minV = len(bin(abs(domain[0]))) - 1
-        maxV = len(bin(abs(domain[1]))) - 1
+        if(su.geneType == "bin"):
+            minV = len(bin(abs(domain[0]))) - 1
+            maxV = len(bin(abs(domain[1]))) - 1
 
-        lengthAux = max(minV, maxV)
-        su.varLength.append(lengthAux)
+            lengthAux = max(minV, maxV)
+            su.varLength.append(lengthAux)
+        else:
+            su.varLength.append(1)
+
 
     '''Initial population starts the proccess with random values'''
     for i in range (su.populationSize):
         su.population.append([])
         aux = 0
         for domain in su.varDomain:
-            #generating new decimal individual 
-            newVar = rd.randint(domain[0], domain[1])
-            
-            #binary casting and formatting
-            newVarList = list(("{0:0" + str(su.varLength[aux]) + "b}").format(newVar))
+            if(su.geneType == "bin"):
+                #generating new decimal individual 
+                intVar = rd.randint(domain[0], domain[1])
 
-            newVarList[0] = '1' if (newVarList[0] == '-') else '0'
+                #binary casting and formatting
+                binaryVar = list(("{0:0" + str(su.varLength[aux]) + "b}").format(intVar))
 
-            su.population[i].extend(newVarList)
-            aux += 1
-        su.population[i].append('0')
-        
+                su.population[i].extend(binaryVar)
+                aux += 1
+            elif(su.geneType == "int"):
+                intVar = rd.randint(domain[0], domain[1])
+                su.population[i].append(intVar)
+            else:
+                floatVar = rd.uniform(domain[0], domain[1])
+                su.population[i].append(floatVar)
+
+        su.population[i].append(0)
+    
     '''Calculating the fitness of the initial population'''
     for chrom in su.population:
         fit.getFitness(chrom, su)
@@ -154,7 +165,7 @@ def init(su):
     su.currentGeneration = 1
 
 def main():
-    setupQuantity = 3 
+    setupQuantity = 1 
     setupList = suManager.createSetups(setupQuantity)
 
     for entry in setupList:

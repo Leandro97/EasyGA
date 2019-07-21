@@ -14,30 +14,30 @@ class Setup:
 	varLength = None #this array stores the maximum lenght of each variable 
 	
 	#####Chromosome structure#####
-	geneType: str = "int" #"float" | "int" | "bin"
+	geneType: str = "float" #"float" | "int" | "bin"
 	varMinValue: int = -10
 	varMaxValue: int = 20
 	varDomain = None
 
 	#####Fitness Function#####
 	#function: str = "x1 + (2*x1 - 25)**2"
-	#function: str = "x1 - x2 + x3 - x4**2 + 3*(x5 - x6)"
-	function: str = "x1 + x2"
+	function: str = "x1 - x2 + x3 - x4**2 + 3*(x5 - x6)"
+	#function: str = "x1 + x2"
 
 	task: str = "max" #"max" | "min"
 
 	#####Algorithm#####
 	currentGeneration: int = 1
-	populationSize: int = 6
+	populationSize: int = 50
 	currentPopulationSize: int = populationSize
-	maxGenerations: int = 20
+	maxGenerations: int = 100
 	plateau: int = 20
 
-	crossover: str = "onePoint" #"onePoint" | "twoPoint"
-	selection: str = "roulette" #"uniform" | "roulette" | "tournament"
-	mutation: str = "uniform" #"uniform" | ??? | ???
+	crossover: str = "uniform" #"onePoint" | "twoPoint" | "uniform"
+	selection: str = "roulette" #"roulette" |     "uniform" | "tournament"
+	mutation: str = "uniform" #"flip" | ??? | ???
 	mutationRate: float = 0.15
 
 	#####Results#####
 	bestFitness: float = 0
-	saveLog: bool = False
+	saveLog: bool = True
