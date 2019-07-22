@@ -1,0 +1,145 @@
+<TabPanel>:
+    do_default_tab: False
+    tab_width: self.width / 4
+    TabbedPanelItem:
+        id: tab1
+        text: "Individual"
+
+        Tab1:
+            BoxLayout:
+                size_hint_y: .1
+                MyLabel: 
+                    text: "Individual representation:"
+                    color: 0, 0, 0, 1
+                Spinner:
+                    id: geneType
+                    text: "Binary string"
+                    values: ["Binary string", "Integer string", "Float string"]
+            BoxLayout:
+                size_hint_y: .15
+                canvas.before:
+                    Color:
+                        rgba: .8, .83, .89, 1
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+                MyLabel: 
+                    text: "Variable"
+                    color: 0, 0, 0, 1
+                MyLabel: 
+                    text: "Minimum value"
+                    color: 0, 0, 0, 1
+                MyLabel: 
+                    text: "Maximum value"
+                    color: 0, 0, 0, 1
+
+            ScrollView:
+                height: "20dp"
+                scroll_type: ['bars', 'content']
+                scroll_y: 0
+                bar_color: .52, .63, .9, 1
+                bar_inactive_color: .8, .83, .89, 1
+                bar_width: "10dp"
+
+                GridLayout:
+                    id: varScrollView
+                    orientation: 'vertical'
+                    cols: 3
+                    size_hint_x: 0.98
+                    spacing: "5dp"
+                    size_hint_y: None
+                    height: self.minimum_height
+
+            BoxLayout:
+                size_hint_y: .15
+                spacing: "10dp"
+                MyButton:
+                    text: "Add variable"
+                    on_press: self.parent.parent.addVar(50)
+                MyButton:
+                    text: "Remove variable"
+                    on_press: self.parent.parent.removeVar(50)
+
+    TabbedPanelItem:
+    	id: tab2
+        text: "Fitness function"
+        
+        Tab2:
+            orientation: "vertical"
+            BoxLayout:
+                orientation: "vertical"
+                size_hint_y: .6
+
+                BoxLayout:
+                    orientation: "vertical"
+
+                    MyLabel:
+                        text: "Set your fitness function"
+                        font_size: "30sp"
+                    MyLabel:
+                        text: "The variables must be in the following format: x1, x2, x3, ..., xn"
+                        font_size: "15sp"
+                AnchorLayout:
+                    anchor_x: "center" 
+                    anchor_y: "bottom"
+
+                    TextInput:
+                        id: fitnessFunction
+                        size_hint: .8, .4        
+                        text: "x1"
+
+            BoxLayout:
+                BoxLayout:
+                    MyLabel:
+                        text: "Maximize function"
+                    MyCheckBox:
+                        id: maxCheckBox
+                        group: "task"
+                        active: True
+                BoxLayout:
+                    MyLabel:
+                        text: "Minimize function"    
+                    MyCheckBox:
+                        id: minCheckBox
+                        group: "task"
+                        active: False
+                AnchorLayout:
+                    anchor_x: "center" 
+                    anchor_y: "center"
+                    MyButton:
+                        size_hint: .6, .15
+                        text: "Verify function"  
+            
+    TabbedPanelItem:
+        id: tab3
+        text: "Algorithm"
+
+        Tab3:
+            SetupLayout:                   
+
+    TabbedPanelItem:
+        id: tab4
+        text: "Simulation and results"
+        
+        Tab4:
+            EvolveLayout:
+
+###########
+<MyLabel>:
+    color: 0,0,0,1
+
+<MyTab>:
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    orientation: 'vertical'
+    padding: "20dp"
+    spacing: "20dp"
+
+<TabbedPanelItem>:
+    bold: True
+    background_normal: ''
+    background_color: .53, .59, .65, 1

@@ -28,7 +28,6 @@ def crossover(su):
 	if su.selection == "roulette": 
 		sel.init(su)
 
-	#print(su.population)
 	#New childs are born until the current size of the population is equal to two times the initial size
 	while(su.currentPopulationSize <= 2 * su.populationSize):
 		#Choosing first parent
@@ -61,7 +60,7 @@ def crossover(su):
 		newPopulation.append(child1)
 		newPopulation.append(child2)
 		su.currentPopulationSize += 2
-	
+
 	#Saving best individual of current generation
 	best = su.population[0]
 	su.population = newPopulation

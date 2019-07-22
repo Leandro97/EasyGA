@@ -27,33 +27,35 @@ def getLimits(history):
 	return xb, xe, yb, ye
 
 '''Plotting the progression of best inidviual for each setup'''
-def plotFitness(history, task):	
+def plotFitness(history, task, nameList):	
 	#Creating panel
 	fig, ax = plt.subplots(1,1)
 	xTick = []
 	yTick = []
 	xb, xe, yb, ye = getLimits(history)
 	marker = ['o', 's', '^', 'd', 'P']
+	
 	count = 0
-
+	print(nameList)
 	for entry in history:
+		print(count)
 		x, y = zip(*entry)
-		ax.plot(x, y, marker = marker[count % 5], label = "Configuração {}".format(count + 1))
+		ax.plot(x, y, marker = marker[count % 5], label = "{}".format(nameList[count]))
 		count += 1
 
 	#Setting grid for better visualization
 	ax.yaxis.grid(True, which="major")
 
 	#Setting title and subtitle
-	plt.suptitle("Progressão do melhor indivíduo", x = 0.43)
+	plt.suptitle("Progression of best individual", x = 0.43)
 	if(task == "min"):
-		plt.title("Minimizando função", fontsize = 8)
+		plt.title("Minimizing function", fontsize = 8)
 	else:
-		plt.title("Maximizando função", fontsize = 8)
+		plt.title("Maximizing function", fontsize = 8)
 
 	#Setting axis label	
-	plt.xlabel("Geração")				
-	plt.ylabel("Aptidão do melhor indivíduo")
+	plt.xlabel("Generation")				
+	plt.ylabel("Fitness of best individual")
 
 	xMean = math.floor((xe - xb) / 4)
 	yMean = math.floor((ye - yb) / 4)
@@ -74,7 +76,7 @@ def plotFitness(history, task):
 	#plt.show()
 
 '''Plotting generations reached for each setup'''
-def plotGenerations(history, task):
+def plotGenerations(history, task, nameList):
 	#Creating panel
 	fig, ax = plt.subplots(1,1)
 	xTick = []
@@ -85,22 +87,22 @@ def plotGenerations(history, task):
 
 	for entry in history:
 		x, y = zip(*entry)
-		ax.plot(x, y, marker = marker[count % 5], label = "Configuração {}".format(count + 1))
+		ax.plot(x, y, marker = marker[count % 5], label = "{}".format(nameList[count]))
 		count += 1
 
 	#setting grid for better visualization
 	ax.yaxis.grid(True, which="major")
 
 	#Setting title and subtitle
-	plt.suptitle("Simulações x Gerações Alcançadas", x = 0.43)
+	plt.suptitle("Simulations x Reached generations", x = 0.43)
 	if(task == "min"):
-		plt.title("Minimizando função", fontsize = 8)
+		plt.title("Minimizing function", fontsize = 8)
 	else:
-		plt.title("Maximizando função", fontsize = 8)
+		plt.title("Maximizing function", fontsize = 8)
 
 	#Setting axis label
-	plt.xlabel("Simulação")				
-	plt.ylabel("Número de gerações")
+	plt.xlabel("Simulation")				
+	plt.ylabel("Number of generations")
 
 	yMean = math.ceil((ye - yb) / 4)
 	yTick = [yb, yb + yMean, yb + 2*yMean, yb + 3*yMean, ye]
