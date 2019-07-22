@@ -30,7 +30,7 @@ def getFitness(chrom, su):
     chrom[-1] = result
 
     if su.geneType == "float":
-        chrom = [round(value, 2) for value in chrom]
+        chrom = [round(float(value), 2) for value in chrom]
 
     return chrom
 

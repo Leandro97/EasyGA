@@ -76,7 +76,7 @@ def evolve(su):
 
     #Recording first generation
     champion = list(su.population[0])
-    if(su.geneType == float):
+    if(su.geneType == "float"):
         log.append("Generation " + str(su.currentGeneration) + " - Champion: " + str([round(value, 2) for value in champion]) + "\n")
     else:
         log.append("Generation " + str(su.currentGeneration) + " - Champion: " + str(champion) + "\n")

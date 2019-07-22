@@ -54,7 +54,7 @@ def crossover(su):
 		mutation(child2, su)
 
 		if su.geneType == "float":
-			child1, child2 = [round(value, 2) for value in child1], [round(value, 2) for value in child2] #rounding values
+			child1, child2 = [round(float(value), 2) for value in child1], [round(float(value), 2) for value in child2] #rounding values
 
 		#Adding child to population 
 		newPopulation.append(child1)

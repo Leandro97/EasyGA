@@ -10,6 +10,7 @@ def getLimits(history):
 
 	for entry in history:
 		x, y = zip(*entry)
+
 		for xEntry in x:
 			if xb == None or xEntry < xb:
 				xb = xEntry
@@ -36,9 +37,8 @@ def plotFitness(history, task, nameList):
 	marker = ['o', 's', '^', 'd', 'P']
 	
 	count = 0
-	print(nameList)
+
 	for entry in history:
-		print(count)
 		x, y = zip(*entry)
 		ax.plot(x, y, marker = marker[count % 5], label = "{}".format(nameList[count]))
 		count += 1
