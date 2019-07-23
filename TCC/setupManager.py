@@ -1,14 +1,14 @@
 import setup
 import random as rd
 
-
 def createSetups(geneType, bruteVars, func, task, bruteSetups):
 	setupList = []
 	seed = rd.randint(0, 10000)
 
 	i = 0
 	for entry in bruteSetups:
-		newSetup = setup.Setup(seed)
+		newSetup = setup.Setup()
+		newSetup.seed = seed
 		newSetup.varDomain = []
 		newSetup.function = func
 		newSetup.task = task
