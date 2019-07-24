@@ -5,9 +5,9 @@ the algorithm execution.
 '''
 class Setup():
 	seed = None
-	population = None
-	varDomain = None #this array stores the domain of each variable in the form [minValue, maxValue]. 
-	varLength = None #this array stores the maximum lenght of each variable 
+	population = []
+	varDomain = [] #this array stores the domain of each variable in the form [minValue, maxValue]. 
+	varLength = [] #this array stores the maximum lenght of each variable 
 	
 	#####Chromosome structure#####
 	geneType = "int" #"float" | "int" | "bin"
@@ -32,4 +32,5 @@ class Setup():
 
 	#####Results#####
 	bestFitness = 0
-	saveLog = False
+	saveLog = True
+	log = []

@@ -3,27 +3,27 @@ import kivy
 from kivy.app import App
 from kivy import uix
 from kivy.uix.label import Label
-from kivy.uix.screenmanager import Screen, ScreenManager
-from kivy.uix.relativelayout import RelativeLayout
+from kivy.uix.screenmanager import Screen
 from kivy.uix.button import Button
 from kivy.uix.textinput import TextInput
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.gridlayout import GridLayout
-from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.checkbox import CheckBox
 from kivy.uix.spinner import Spinner
-from kivy.uix.tabbedpanel import TabbedPanel, TabbedPanelItem
-from kivy.uix.scrollview import ScrollView
+from kivy.uix.tabbedpanel import TabbedPanel
 from kivy.uix.popup import Popup
+from kivy.uix.scrollview import ScrollView
 from kivy.clock import Clock
 from kivy.uix.image import Image
-import weakref
 from kivy.config import Config
 from functools import partial
+from kivy.properties import StringProperty
+from kivy.lang import Builder
 import middle as mid
 
 TEXT_COLOR = (0, 0, 0, 1)
 
+Config.set('input', 'mouse', 'mouse,multitouch_on_demand')
 Config.set('graphics', 'width', '700dp')
 Config.set('graphics', 'height', '0dp')
 
@@ -360,26 +360,25 @@ class Tab3(MyTab):
 class Tab4(MyTab):
 	pass
 
-class EvolveLayout(BoxLayout):
+class LogScrollView(ScrollView):
+	text = StringProperty("")
+
+class SimulationLayout(BoxLayout):
 	global varList
 	global setupList
 	global func
 	global task
 
 	def __init__(self, **kwargs):
-		super(EvolveLayout, self).__init__(**kwargs)
-		self.spacing = "20dp"
-		self.orientation = "vertical"
-		
-		evolveButton = MyButton(text = "Evolve!", on_press = lambda x : self.evolve())
-		self.add_widget(evolveButton)
+		super(SimulationLayout, self).__init__(**kwargs)
 
 	def evolve(self):
 		target = self.parent.parent.parent
 		geneType, func, task, nameList = target.getParams()
 
-		mid.main(geneType, varList, func, task, setupList, nameList)
-		
+		finalLog = mid.main(geneType, varList, func, task, setupList, nameList)
+		App.get_running_app().root.ids.logScrollView.text = finalLog
+
 class GUI(App):
 	def build(self):
 		return TabPanel()

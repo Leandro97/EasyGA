@@ -25,7 +25,6 @@ def simulation(tests, su):
     global plotGenerationLog
     global log
 
-    su.population = []
     log = []
     generationHistory = []
     simList = []    
@@ -35,7 +34,7 @@ def simulation(tests, su):
     np.random.seed(seed = su.seed)
     fitnessSum = 0
 
-    fileName = rec.newFile(su)
+    #fileName = rec.newFile(su)
 
     for i in range(tests):
         log.append("\n--------- Simulation #{} ---------\n\n".format(i + 1))
@@ -65,6 +64,12 @@ def simulation(tests, su):
     plotFitnessLog.append(bestIndividual['history'])
     plotGenerationLog.append(generationHistory)
 
+def logWriter(su, champion):
+    if(su.geneType == "float"):
+        log.append("Generation " + str(su.currentGeneration) + " - Champion: " + str([round(value, 2) for value in champion]) + "\n")
+    else:
+        log.append("Generation " + str(su.currentGeneration) + " - Champion: " + str(champion) + "\n")
+
 '''Here all the steps of the algorithm take place'''
 def evolve(su):
     global log
@@ -76,10 +81,7 @@ def evolve(su):
 
     #Recording first generation
     champion = list(su.population[0])
-    if(su.geneType == "float"):
-        log.append("Generation " + str(su.currentGeneration) + " - Champion: " + str([round(value, 2) for value in champion]) + "\n")
-    else:
-        log.append("Generation " + str(su.currentGeneration) + " - Champion: " + str(champion) + "\n")
+    logWriter(su, champion)
 
     fitnessHistory.append((su.currentGeneration, champion[-1]))
     su.currentGeneration += 1
@@ -95,7 +97,7 @@ def evolve(su):
         else:
             counter = 0
             champion = list(su.population[0])
-            log.append("Generation " + str(su.currentGeneration) + " - Champion: " + str(champion) + "\n")
+            logWriter(su, champion)
             last = su.currentGeneration
             fitnessHistory.append((su.currentGeneration, champion[-1]))
       
@@ -111,11 +113,9 @@ def evolve(su):
 '''
 Population initialisation. The array representing a individual has
 geneNumber + 1 genes because the last position stores its fitness.
-In binary strings, the first bit stores the signal: 1 if negative,
+In binary strings, the first bit of each variable stores the signal: 1 if negative,
 0 if positive
 '''
-
-#11111 0000 30
 def init(su):
     su.population = []
     su.varLength = []
@@ -162,17 +162,6 @@ def init(su):
     op.sort(su) #Sorting the individuals according to fitnessHistory
     su.currentGeneration = 1
 
-#def main():
-#    setupQuantity = 1 
-#    setupList = suManager.createSetups(setupQuantity)
-
-#    for entry in setupList:
-#        simulation(5, entry)
-
-#    plt.plotFitness(plotFitnessLog, setupList[0].task) #plotting graphs
-#    plt.plotGenerations(plotGenerationLog, setupList[0].task) #plotting graphs
-#    print("Done!")
-
 def main(geneType, bruteVars, func, task, bruteSetups, nameList):
     global plotFitnessLog
     global plotGenerationLog
@@ -186,7 +175,21 @@ def main(geneType, bruteVars, func, task, bruteSetups, nameList):
 
     for entry in setupList:
         simulation(5, entry)
+
+    finalLog = ""
+    i = 0
+
+    for entry in setupList:
+        #92
+        finalLog += "\n" + '{:-<90}'.format("")
+        finalLog += "\n" + nameList[i] + "\n"
+
+        for line in entry.log:
+            finalLog += line 
+
+        i += 1
     
-    plt.plotFitness(plotFitnessLog, setupList[0].task, nameList) #plotting graphs
-    plt.plotGenerations(plotGenerationLog, setupList[0].task, nameList) #plotting graphs
+    #plt.plotFitness(plotFitnessLog, setupList[0].task, nameList) #plotting graphs
+    #plt.plotGenerations(plotGenerationLog, setupList[0].task, nameList) #plotting graphs
     print("Done!")
+    return finalLog

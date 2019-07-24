@@ -41,37 +41,31 @@ def ordinal(number):
 		return number + "th"
 
 '''Writing on file'''
-def write(log):
+def write(su, log):
 	for entry in log:
-		file.write(entry)
+		su.log.append(entry)
 
 '''Closing file'''
 def close(bestIndividual, average, log, su):
-	if not su.saveLog:
-		return
-
 	'''Adding a heading to the file containing the setup chosen by the user'''
-	write("##############Setup##############\n\n")
-	write("Function: '{}'\n".format(su.function))
-	write("Objective: '{}'\n\n".format(su.task))
+	su.log.append("Function: '{}'\n".format(su.function))
+	su.log.append("Objective: '{}'\n\n".format(su.task))
 
-	write("Maximum population size: {}\n".format(su.populationSize))
-	write("Maximum number of generations: {}\n".format(su.maxGenerations))
-	write("Plateau: {}\n\n".format(su.plateau))
+	su.log.append("Maximum population size: {}\n".format(su.populationSize))
+	su.log.append("Maximum number of generations: {}\n".format(su.maxGenerations))
+	su.log.append("Plateau: {}\n\n".format(su.plateau))
 
 	crossover = 'one point' if (su.crossover == 'onePoint') else 'two point'
-	write("Crossover strategy: '{}'\n".format(su.crossover))
-	write("Selection strategy: '{}'\n".format(su.selection))
-	write("Mutation strategy: '{}'\n".format(su.mutation))
-	write("Mutation rate: {}\n\n".format(su.mutationRate))
-	write("#################################\n")
+	su.log.append("Crossover strategy: '{}'\n".format(su.crossover))
+	su.log.append("Selection strategy: '{}'\n".format(su.selection))
+	su.log.append("Mutation strategy: '{}'\n".format(su.mutation))
+	su.log.append("Mutation rate: {}\n\n".format(su.mutationRate))
+	su.log.append('{:#<40}'.format("") + "\n")
 
 	'''Simulation result'''
-	write("\n-> Best simulation: #{}. <-".format(bestIndividual['id']))
-	write("\n-> Champion: {}. Reached in {} generation. <-".format(bestIndividual['champion'], ordinal(bestIndividual['last'])))
-	write("\n-> Average fitness: {0:.2f} <-\n".format(average))
-	write("\n#################################\n")
+	su.log.append("\n-> Best simulation: #{}. <-".format(bestIndividual['id']))
+	su.log.append("\n-> Champion: {}. Achieved in the {} generation. <-".format(bestIndividual['champion'], ordinal(bestIndividual['last'])))
+	su.log.append("\n-> Average fitness: {0:.2f} <-\n\n".format(average))
+	su.log.append('{:#<40}'.format("") + "\n")
 
-	write(log)
-	file.close()
-	time.sleep(1)
+	write(su, log)

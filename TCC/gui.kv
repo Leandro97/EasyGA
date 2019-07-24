@@ -122,7 +122,48 @@
         text: "Simulation and results"
         
         Tab4:
-            EvolveLayout:
+            SimulationLayout:
+                #LeftLayout
+                BoxLayout:
+                    spacing: "10dp"
+                    orientation: 'vertical'
+                    #Tentar fazer borda pra deixar bonitinho
+                    LogScrollView:
+                        id: logScrollView
+                        height: "20dp"
+                        scroll_type: ['bars', 'content']
+                        bar_color: .52, .63, .9, 1
+                        bar_inactive_color: .8, .83, .89, 1
+                        bar_width: "10dp"
+
+                        Label:
+                            color: 0, 0, 0, 1
+                            size_hint_y: None
+                            size_hint_x: None
+                            width: self.texture_size[0]
+                            height: self.texture_size[1]
+                            text_size: None, None
+                            text: self.parent.text
+
+                    BoxLayout:
+                        size_hint_y: .08
+                        Label:
+                            color: 0, 0, 0, 1
+                            text: "Simulations"
+                        TextInput:
+                            text: "5"
+                    MyButton:
+                        size_hint_y: .12
+                        text: "Evolve!"
+                        on_press: self.parent.parent.evolve()
+                        #on_press: self.parent.parent.parent.parent.parent.ids.logScrollView.text
+                #RightLayout        
+                BoxLayout:
+                    orientation: 'vertical'
+                    Label:
+                        text: "img1"
+                    Label:
+                        text: "img2"
 
 ###########
 <MyLabel>:

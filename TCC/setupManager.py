@@ -10,6 +10,7 @@ def createSetups(geneType, bruteVars, func, task, bruteSetups):
 		newSetup = setup.Setup()
 		newSetup.seed = seed
 		newSetup.varDomain = []
+		newSetup.log = []
 		newSetup.function = func
 		newSetup.task = task
 
