@@ -4,6 +4,7 @@ import time
 
 file = []
 
+
 '''Each experiment is saved in a file which name is the moment of the experiment's execution'''
 def setName(now):
     day = '{:02d}'.format(now.day)
@@ -19,13 +20,16 @@ def setName(now):
     return date + '.' + time + ".txt"
 
 '''Opening file'''
-def newFile(su):
-	if not su.saveLog:
-		return
-
+def newFile(setupName):
 	global file
 	name = datetime.datetime.now()
-	file = open(setName(name), 'w') 
+	file = open(setupName + " | " + str(setName(name)), 'w') 
+
+	return file
+
+'''Writing on file'''
+def save(name, log):
+	newFile(name).write(log)
 
 '''This function returns a ordinal number used on report of best simulation'''
 def ordinal(number):
@@ -39,11 +43,7 @@ def ordinal(number):
 		return number + "rd"
 	else :
 		return number + "th"
-
-'''Writing on file'''
-def write(su, log):
-	for entry in log:
-		su.log.append(entry)
+	
 
 '''Closing file'''
 def close(bestIndividual, average, log, su):

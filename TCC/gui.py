@@ -20,6 +20,7 @@ from functools import partial
 from kivy.properties import StringProperty
 from kivy.lang import Builder
 import middle as mid
+import record as rec
 
 TEXT_COLOR = (0, 0, 0, 1)
 
@@ -378,8 +379,10 @@ class SimulationLayout(BoxLayout):
 	global setupList
 	global func
 	global task
+
 	logIndex = 0
 	finalLog = []
+	nameList = []
 
 	def __init__(self, **kwargs):
 		super(SimulationLayout, self).__init__(**kwargs)
@@ -391,6 +394,7 @@ class SimulationLayout(BoxLayout):
 		self.finalLog = mid.main(geneType, varList, func, task, setupList, nameList, int(target.ids.simulationNumber.text))
 
 		target.ids.logScrollView.text = self.finalLog[self.logIndex]
+		self.nameList = nameList
 
 	def next(self):
 		try:
@@ -408,7 +412,9 @@ class SimulationLayout(BoxLayout):
 		except:
 			pass
 
-
+	def saveLog(self):
+		rec.save(self.nameList[self.logIndex], self.finalLog[self.logIndex])
+		
 class GUI(App):
 	def build(self):
 		return TabPanel()
