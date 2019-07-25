@@ -136,7 +136,7 @@ class SetupBar(BoxLayout):
 		self.newSetupButton.bind(on_press = lambda x : self.createSetup("Setup " + str(setupNumber + 2)))
 		self.newSetupButton.text = str("New setup")
 
-		self.removeButton.bind(on_press = lambda x : self.deleteSetup())
+		self.removeButton.bind(on_press = lambda x : self.deletePopup())
 		self.removeButton.text = "Delete setup"
 
 		self.add_widget(self.spinner)
@@ -186,13 +186,30 @@ class SetupBar(BoxLayout):
 
 		nameList = self.spinner.values
 
-	def deleteSetup(self):
+	def deletePopup(self):
+		global currentSetup
+		global nameList
+		if(len(setupList) == 1):
+			return
+
+		box = BoxLayout(spacing = "20dp")
+
+		popup = Popup(title = "Are you sure you want to delete " + nameList[currentSetup] + "?", content = box, size_hint = (.5, .18))
+		popup.open()
+		
+		save = MyButton(text = "Delete")
+		save.bind(on_press = lambda x : self.deleteSetup(popup))
+
+		cancel = MyButton(text = "Cancel")
+		cancel.bind(on_press = lambda x : popup.dismiss())
+
+		box.add_widget(save)
+		box.add_widget(cancel)
+
+	def deleteSetup(self, popup):
 		global setupNumber
 		global currentSetup
 		global nameList
-
-		if(len(setupList) == 1):
-			return
 
 		try:
 			self.spinner.text = self.spinner.values[currentSetup - 1]
@@ -205,6 +222,7 @@ class SetupBar(BoxLayout):
 			del self.spinner.values[0]	
 
 		nameList = self.spinner.values
+		popup.dismiss()
 
 class MyScreen(Screen):
 	global setupNumber
@@ -218,8 +236,8 @@ class MyScreen(Screen):
 	selection = Spinner(text = "Roulette", size_hint_y = .7)
 	selection.values = ["Roulette", "2", "3"]
 
-	crossover = Spinner(text = "One Point", size_hint_y = .7)
-	crossover.values = ["One Point", "Two Points", "Uniform"]
+	crossover = Spinner(text = "One point", size_hint_y = .7)
+	crossover.values = ["One point", "Two points", "Uniform"]
 
 	mutation = Spinner(text = "Flip", size_hint_y = .7) 
 	mutation.values = ["Flip", "Uniform", "3"]
@@ -360,6 +378,8 @@ class SimulationLayout(BoxLayout):
 	global setupList
 	global func
 	global task
+	logIndex = 0
+	finalLog = []
 
 	def __init__(self, **kwargs):
 		super(SimulationLayout, self).__init__(**kwargs)
@@ -368,8 +388,26 @@ class SimulationLayout(BoxLayout):
 		target = App.get_running_app().root
 		geneType, func, task, nameList = target.getParams()
 
-		finalLog = mid.main(geneType, varList, func, task, setupList, nameList, int(target.ids.simulationNumber.text))
-		target.ids.logScrollView.text = finalLog
+		self.finalLog = mid.main(geneType, varList, func, task, setupList, nameList, int(target.ids.simulationNumber.text))
+
+		target.ids.logScrollView.text = self.finalLog[self.logIndex]
+
+	def next(self):
+		try:
+			self.logIndex = 0 if(self.logIndex + 1 >= len(setupList)) else self.logIndex + 1
+			target = App.get_running_app().root
+			target.ids.logScrollView.text = self.finalLog[self.logIndex]
+		except:
+			pass
+
+	def previous(self):
+		try:
+			self.logIndex = len(setupList) - 1 if(self.logIndex <= 0) else self.logIndex - 1
+			target = App.get_running_app().root
+			target.ids.logScrollView.text = self.finalLog[self.logIndex]
+		except:
+			pass
+
 
 class GUI(App):
 	def build(self):

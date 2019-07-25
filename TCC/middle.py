@@ -176,19 +176,18 @@ def main(geneType, bruteVars, func, task, bruteSetups, nameList, simulationNumbe
     for entry in setupList:
         simulation(simulationNumber, entry)
 
-    finalLog = ""
+    finalLog = []
     i = 0
-
     for entry in setupList:
-        finalLog += "\n" + '{:-<90}'.format("")
-        finalLog += "\n" + nameList[i] + "\n"
+        lineStr = nameList[i] + "\n\n"
 
         for line in entry.log:
-            finalLog += line 
+            lineStr += line 
 
+        finalLog.append(lineStr)
         i += 1
     
-    plt.plotFitness(plotFitnessLog, setupList[0].task, nameList) #plotting graphs
-    plt.plotGenerations(plotGenerationLog, setupList[0].task, nameList) #plotting graphs
+    #plt.plotFitness(plotFitnessLog, setupList[0].task, nameList) #plotting graphs
+    #plt.plotGenerations(plotGenerationLog, setupList[0].task, nameList) #plotting graphs
     print("Done!")
     return finalLog

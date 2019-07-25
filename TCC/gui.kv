@@ -126,6 +126,17 @@
                 BoxLayout:
                     spacing: "10dp"
                     orientation: 'vertical'
+                    BoxLayout:
+                        size_hint_y: .1
+                        Button:
+                            text: "<"
+                            on_press: self.parent.parent.parent.previous()
+                        Button:
+                            text: ">"
+                            on_press: self.parent.parent.parent.next()
+                        Button:
+                            text: "Save"
+
                     LogScrollView:
                         id: logScrollView
                         height: "20dp"
@@ -151,7 +162,7 @@
                         TextInput:
                             id: simulationNumber
                             text: "5"
-                    MyButton:
+                    Button:
                         size_hint_y: .12
                         text: "Evolve!"
                         on_press: self.parent.parent.evolve()

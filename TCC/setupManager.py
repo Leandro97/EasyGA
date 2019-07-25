@@ -31,10 +31,10 @@ def createSetups(geneType, bruteVars, func, task, bruteSetups):
 
 		if(entry[4] == "Roulette"):
 			newSetup.selection = "roulette"
-
-		if(entry[5] == "One Point"):
+			
+		if(entry[5] == "One point"):
 			newSetup.crossover = "onePoint"
-		elif(entry[5] == "Two Points"):
+		elif(entry[5] == "Two points"):
 			newSetup.crossover = "twoPoint"
 		else:
 			newSetup.crossover ="uniform"
