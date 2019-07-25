@@ -63,9 +63,10 @@ def close(bestIndividual, average, log, su):
 	su.log.append('{:#<40}'.format("") + "\n")
 
 	'''Simulation result'''
-	su.log.append("\n-> Best simulation: #{}. <-".format(bestIndividual['id']))
-	su.log.append("\n-> Champion: {}. Achieved in the {} generation. <-".format(bestIndividual['champion'], ordinal(bestIndividual['last'])))
-	su.log.append("\n-> Average fitness: {0:.2f} <-\n\n".format(average))
+	su.log.append("\n-> Best simulation: #{}.".format(bestIndividual['id']))
+	su.log.append("\n-> Champion: {}. Achieved in the {} generation.".format(bestIndividual['champion'], ordinal(bestIndividual['last'])))
+	su.log.append("\n-> Average fitness: {0:.2f}\n\n".format(average))
 	su.log.append('{:#<40}'.format("") + "\n")
 
-	write(su, log)
+	for entry in log:
+		su.log.append(entry)

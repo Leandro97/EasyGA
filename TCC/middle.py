@@ -162,7 +162,7 @@ def init(su):
     op.sort(su) #Sorting the individuals according to fitnessHistory
     su.currentGeneration = 1
 
-def main(geneType, bruteVars, func, task, bruteSetups, nameList):
+def main(geneType, bruteVars, func, task, bruteSetups, nameList, simulationNumber):
     global plotFitnessLog
     global plotGenerationLog
     global log
@@ -174,13 +174,12 @@ def main(geneType, bruteVars, func, task, bruteSetups, nameList):
     setupList = suManager.createSetups(geneType, bruteVars, func, task, bruteSetups)
 
     for entry in setupList:
-        simulation(5, entry)
+        simulation(simulationNumber, entry)
 
     finalLog = ""
     i = 0
 
     for entry in setupList:
-        #92
         finalLog += "\n" + '{:-<90}'.format("")
         finalLog += "\n" + nameList[i] + "\n"
 
@@ -189,7 +188,7 @@ def main(geneType, bruteVars, func, task, bruteSetups, nameList):
 
         i += 1
     
-    #plt.plotFitness(plotFitnessLog, setupList[0].task, nameList) #plotting graphs
-    #plt.plotGenerations(plotGenerationLog, setupList[0].task, nameList) #plotting graphs
+    plt.plotFitness(plotFitnessLog, setupList[0].task, nameList) #plotting graphs
+    plt.plotGenerations(plotGenerationLog, setupList[0].task, nameList) #plotting graphs
     print("Done!")
     return finalLog

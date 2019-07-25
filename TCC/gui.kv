@@ -123,15 +123,13 @@
         
         Tab4:
             SimulationLayout:
-                #LeftLayout
                 BoxLayout:
                     spacing: "10dp"
                     orientation: 'vertical'
-                    #Tentar fazer borda pra deixar bonitinho
                     LogScrollView:
                         id: logScrollView
                         height: "20dp"
-                        scroll_type: ['bars', 'content']
+                        scroll_type: ['bars']
                         bar_color: .52, .63, .9, 1
                         bar_inactive_color: .8, .83, .89, 1
                         bar_width: "10dp"
@@ -151,6 +149,7 @@
                             color: 0, 0, 0, 1
                             text: "Simulations"
                         TextInput:
+                            id: simulationNumber
                             text: "5"
                     MyButton:
                         size_hint_y: .12

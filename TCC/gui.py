@@ -175,9 +175,6 @@ class SetupBar(BoxLayout):
 		self.spinner.text = text
 		popup.dismiss()
 
-	def getSpinner(self):
-		return self.spinner
-
 	def createSetup(self, text):
 		global nameList
 		target = self.parent
@@ -197,11 +194,12 @@ class SetupBar(BoxLayout):
 		if(len(setupList) == 1):
 			return
 
-		if(currentSetup != 0):
+		try:
 			self.spinner.text = self.spinner.values[currentSetup - 1]
 			del setupList[currentSetup + 1]
 			del self.spinner.values[currentSetup + 1]	
-		else:
+		except:
+			print("opa")
 			self.spinner.text = self.spinner.values[1]
 			del setupList[0]
 			del self.spinner.values[0]	
@@ -242,20 +240,14 @@ class MyScreen(Screen):
 		setupList.append(["10", "50", "20", "0.15", "Roulette", "One point", "Flip"])
 		
 		parentLayout = GridLayout(cols = 2, spacing = "10dp")
+
 		self.add_widget(parentLayout)
-
 		self.makeInput(parentLayout, self.populationSize, "Population size", 0)
-
 		self.makeInput(parentLayout, self.maxGenerations, "Maximum number of generations", 1)
-
 		self.makeInput(parentLayout, self.plateau, "Plateau", 2)
-
 		self.makeInput(parentLayout, self.mutationRate, "Mutation rate", 3)
-
 		self.makeInput(parentLayout, self.selection, "Selection strategy", 4)
-
 		self.makeInput(parentLayout, self.crossover, "Crossover strategy", 5)
-
 		self.makeInput(parentLayout, self.mutation, "Mutation strategy", 6)
 	
 	def updateDict(self, attIndex, aux, text):
@@ -373,11 +365,11 @@ class SimulationLayout(BoxLayout):
 		super(SimulationLayout, self).__init__(**kwargs)
 
 	def evolve(self):
-		target = self.parent.parent.parent
+		target = App.get_running_app().root
 		geneType, func, task, nameList = target.getParams()
 
-		finalLog = mid.main(geneType, varList, func, task, setupList, nameList)
-		App.get_running_app().root.ids.logScrollView.text = finalLog
+		finalLog = mid.main(geneType, varList, func, task, setupList, nameList, int(target.ids.simulationNumber.text))
+		target.ids.logScrollView.text = finalLog
 
 class GUI(App):
 	def build(self):
