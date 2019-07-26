@@ -60,15 +60,19 @@ def simulation(tests, su):
                 break
 
     average = fitnessSum / tests
-    rec.close(bestIndividual, average, log, su) #saving simulation report
+    rec.record(bestIndividual, average, log, su) #saving simulation report
     plotFitnessLog.append(bestIndividual['history'])
     plotGenerationLog.append(generationHistory)
 
 def logWriter(su, champion):
     if(su.geneType == "float"):
         log.append("Generation " + str(su.currentGeneration) + " - Champion: " + str([round(value, 2) for value in champion]) + "\n")
-    else:
+    elif(su.geneType == "int"):
         log.append("Generation " + str(su.currentGeneration) + " - Champion: " + str(champion) + "\n")
+    else:
+        champion2Int = [int(value) for value in champion[:-1]]
+        champion2Int.append(champion[-1])
+        log.append("Generation " + str(su.currentGeneration) + " - Champion: " + str(champion2Int) + "\n")
 
 '''Here all the steps of the algorithm take place'''
 def evolve(su):
