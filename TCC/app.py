@@ -413,10 +413,11 @@ class SimulationLayout(BoxLayout):
 			pass
 
 	def saveLog(self):
-		rec.save(self.nameList[self.logIndex], self.finalLog[self.logIndex])
+		if self.finalLog:
+			rec.save(self.nameList[self.logIndex], self.finalLog[self.logIndex])
 		
-class GUI(App):
+class APP(App):
 	def build(self):
 		return TabPanel()
 
-GUI().run()
+APP().run()
