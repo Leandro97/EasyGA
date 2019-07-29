@@ -36,7 +36,7 @@ def simulation(tests, su):
     #fileName = rec.newFile(su)
 
     for i in range(tests):
-        log.append("\n--------- Simulation #{} ---------\n\n".format(i + 1))
+        log.append("\n --------- Simulation #{} ---------\n\n".format(i + 1))
 
         sim = {}
         sim['id'] = i + 1
@@ -65,13 +65,13 @@ def simulation(tests, su):
 
 def logWriter(su, champion):
     if(su.geneType == "float"):
-        log.append("Generation " + str(su.currentGeneration) + " - Champion: " + str([round(value, 2) for value in champion]) + "\n")
+        log.append(" Generation " + str(su.currentGeneration) + " - Champion: " + str([round(value, 2) for value in champion]) + "\n")
     elif(su.geneType == "int"):
-        log.append("Generation " + str(su.currentGeneration) + " - Champion: " + str(champion) + "\n")
+        log.append(" Generation " + str(su.currentGeneration) + " - Champion: " + str(champion) + "\n")
     else:
         champion2Int = [int(value) for value in champion[:-1]]
         champion2Int.append(champion[-1])
-        log.append("Generation " + str(su.currentGeneration) + " - Champion: " + str(champion2Int) + "\n")
+        log.append(" Generation " + str(su.currentGeneration) + " - Champion: " + str(champion2Int) + "\n")
 
 '''Here all the steps of the algorithm take place'''
 def evolve(su):
@@ -182,7 +182,7 @@ def main(geneType, bruteVars, func, task, bruteSetups, nameList, simulationNumbe
     textLog = []
     i = 0
     for entry in setupList:
-        lineStr = nameList[i] + "\n\n"
+        lineStr = " " + nameList[i] + "\n\n"
 
         for line in entry.log:
             lineStr += line 

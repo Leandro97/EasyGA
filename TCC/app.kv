@@ -19,7 +19,7 @@
                 size_hint_y: .15
                 canvas.before:
                     Color:
-                        rgba: .8, .83, .89, 1
+                        rgba: .90, .92, .98, 1
                     Rectangle:
                         pos: self.pos
                         size: self.size
@@ -147,15 +147,17 @@
                         scroll_type: ["bars", "content"]
                         height: "20dp"
                         bar_color: .52, .63, .9, 1
-                        bar_inactive_color: .8, .83, .89, 1
+                        bar_inactive_color: .7, .75, 1, .8
                         bar_width: "10dp"
 
                         canvas.before:
                             Color:
-                                rgba: .94, .93, .89, 1
+                                rgba: .90, .92, .98, 1
+                                #rgba: .8, .83, .89, 1
                             Rectangle:
                                 pos: self.pos
                                 size: self.size
+
                         Label:
                             color: 0, 0, 0, 1
                             size_hint_y: None
@@ -176,6 +178,7 @@
                     Button:
                         size_hint_y: .12
                         text: "Evolve!"
+
                         on_press: self.parent.parent.evolve()
 
                 #Right Layout        
@@ -184,11 +187,18 @@
                     spacing: "5dp"
                     BoxLayout:
                         size_hint_y: .09
-                        Button:
+                        ToggleButton:
+                            id: graphButton1
                             text: "Fitness progression"
+                            group: "graph"
+                            state: "down"
+                            allow_no_selection: False
                             on_press: self.parent.parent.parent.makePlot1()
-                        Button:
+                        ToggleButton:
+                            id: graphButton2
                             text: "Generations reached"
+                            group: "graph"
+                            allow_no_selection: False
                             on_press: self.parent.parent.parent.makePlot2()    
                     BoxLayout:
                         id: image
@@ -216,4 +226,4 @@
 <TabbedPanelItem>:
     bold: True
     background_normal: ""
-    background_color: .53, .59, .65, 1
+    background_color: .53, .59, .65, .7

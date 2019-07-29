@@ -398,6 +398,8 @@ class SimulationLayout(BoxLayout):
 		self.nameList = nameList
 
 		self.currentGraph = 1
+		target.ids.graphButton1.state = "down"
+		target.ids.graphButton2.state = "normal"
 		self.makePlot1()
 
 	def nextLog(self):

@@ -53,14 +53,14 @@ def ordinal(number):
 '''Closing file'''
 def record(bestIndividual, average, log, su):
 	'''Adding a heading to the file containing the setup chosen by the user'''
-	su.log.append("Function: {}\n".format(su.function.replace(" ", "")))
+	su.log.append(" Function: {}\n".format(su.function.replace(" ", "")))
 
 	task = "Maximize" if su.task == "max" else "Minimize"
-	su.log.append("Objective: {}\n\n".format(task))
+	su.log.append(" Objective: {}\n\n".format(task))
 
-	su.log.append("Maximum population size: {}\n".format(su.populationSize))
-	su.log.append("Maximum number of generations: {}\n".format(su.maxGenerations))
-	su.log.append("Plateau: {}\n\n".format(su.plateau))
+	su.log.append(" Maximum population size: {}\n".format(su.populationSize))
+	su.log.append(" Maximum number of generations: {}\n".format(su.maxGenerations))
+	su.log.append(" Plateau: {}\n\n".format(su.plateau))
 
 	if (su.crossover == 'onePoint'):
 		crossover = "One point" 
@@ -69,20 +69,20 @@ def record(bestIndividual, average, log, su):
 	else:
 		crossover = "Uniform"
 
-	su.log.append("Crossover strategy: {}\n".format(crossover))
-	su.log.append("Selection strategy: {}\n".format(su.selection))
-	su.log.append("Mutation strategy: {}\n".format(su.mutation))
-	su.log.append("Mutation rate: {}\n\n".format(su.mutationRate))
-	su.log.append('{:#<40}'.format("") + "\n")
+	su.log.append(" Crossover strategy: {}\n".format(crossover))
+	su.log.append(" Selection strategy: {}\n".format(su.selection))
+	su.log.append(" Mutation strategy: {}\n".format(su.mutation))
+	su.log.append(" Mutation rate: {}\n\n".format(su.mutationRate))
+	su.log.append(' {:#<40}'.format("") + "\n")
 
 	'''Simulation result'''
 	champion2Int = [int(value) for value in bestIndividual['champion'][:-1]]
 	champion2Int.append(bestIndividual["champion"][-1])
 
-	su.log.append("\n-> Best simulation: #{}.".format(bestIndividual["id"]))
-	su.log.append("\n-> Champion: {}. Achieved in the {} generation.".format(champion2Int, ordinal(bestIndividual["last"])))
-	su.log.append("\n-> Average fitness: {0:.2f}\n\n".format(average))
-	su.log.append('{:#<40}'.format("") + "\n")
+	su.log.append("\n -> Best simulation: #{}.".format(bestIndividual["id"]))
+	su.log.append("\n -> Champion: {}. Achieved in the {} generation.".format(champion2Int, ordinal(bestIndividual["last"])))
+	su.log.append("\n -> Average fitness: {0:.2f}\n\n".format(average))
+	su.log.append(' {:#<40}'.format("") + "\n")
 
 	for entry in log:
 		su.log.append(entry)
