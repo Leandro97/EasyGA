@@ -1,26 +1,28 @@
 # -*- coding: utf-8 -*-
 import kivy
 from kivy.app import App
-from kivy import uix
-from kivy.uix.label import Label
-from kivy.uix.screenmanager import Screen
-from kivy.uix.button import Button
-from kivy.uix.textinput import TextInput
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.gridlayout import GridLayout
+from kivy.uix.scrollview import ScrollView
+from kivy.uix.label import Label
+from kivy.uix.button import Button
+from kivy.uix.textinput import TextInput
 from kivy.uix.checkbox import CheckBox
 from kivy.uix.spinner import Spinner
 from kivy.uix.tabbedpanel import TabbedPanel
+from kivy.uix.screenmanager import Screen
 from kivy.uix.popup import Popup
-from kivy.uix.scrollview import ScrollView
-from kivy.clock import Clock
 from kivy.uix.image import Image
+from kivy.clock import Clock
 from kivy.config import Config
-from functools import partial
 from kivy.properties import StringProperty
-from kivy.lang import Builder
+from kivy.garden.matplotlib.backend_kivyagg import FigureCanvasKivyAgg
+
+import time
+from functools import partial
 import middle as mid
 import record as rec
+import plotter as plt  
 
 TEXT_COLOR = (0, 0, 0, 1)
 
@@ -271,16 +273,12 @@ class MyScreen(Screen):
 	
 	def updateDict(self, attIndex, aux, text):
 		global currentSetup
-		#print("Setup atual", currentSetup, text)
 		setupList[currentSetup][attIndex] = text
-		#print(self.setupList)
 
 	def newSetup(self):
 		global setupNumber
 		global currentSetup
 		currentSetup += 1
-
-		#print("Setup atual", currentSetup)
 
 		setupNumber += 1
 		setupList.append(["10", "50", "20", "0.15", "Roulette", "One point", "Flip"])
@@ -378,25 +376,31 @@ class SimulationLayout(BoxLayout):
 	global varList
 	global setupList
 	global func
-	global task
 
 	logIndex = 0
 	finalLog = []
 	nameList = []
+	currentGraph = 1
+	plotFitnessLog = None
+	plotGenerationLog = None
+	task = None
 
 	def __init__(self, **kwargs):
 		super(SimulationLayout, self).__init__(**kwargs)
 
 	def evolve(self):
 		target = App.get_running_app().root
-		geneType, func, task, nameList = target.getParams()
+		geneType, func, self.task, nameList = target.getParams()
 
-		self.finalLog = mid.main(geneType, varList, func, task, setupList, nameList, int(target.ids.simulationNumber.text))
+		self.finalLog, self.plotFitnessLog, self.plotGenerationLog = mid.main(geneType, varList, func, self.task, setupList, nameList, int(target.ids.simulationNumber.text))
 
 		target.ids.logScrollView.text = self.finalLog[self.logIndex]
 		self.nameList = nameList
 
-	def next(self):
+		self.currentGraph = 1
+		self.makePlot1()
+
+	def nextLog(self):
 		try:
 			self.logIndex = 0 if(self.logIndex + 1 >= len(setupList)) else self.logIndex + 1
 			target = App.get_running_app().root
@@ -404,7 +408,7 @@ class SimulationLayout(BoxLayout):
 		except:
 			pass
 
-	def previous(self):
+	def previousLog(self):
 		try:
 			self.logIndex = len(setupList) - 1 if(self.logIndex <= 0) else self.logIndex - 1
 			target = App.get_running_app().root
@@ -416,6 +420,33 @@ class SimulationLayout(BoxLayout):
 		if self.finalLog:
 			rec.save(self.nameList[self.logIndex], self.finalLog[self.logIndex])
 		
+	def makePlot1(self):
+		if not self.plotFitnessLog:
+			return
+
+		plt.plotFitness(self.plotFitnessLog, self.task, self.nameList) #plotting graphs
+		target = App.get_running_app().root
+		target.ids.image.clear_widgets()
+		target.ids.image.add_widget(FigureCanvasKivyAgg(plt.pyplot.gcf()))
+		self.currentGraph = 1
+
+	def makePlot2(self):
+		if not self.plotGenerationLog:
+			return
+			
+		plt.plotGenerations(self.plotGenerationLog, self.task, self.nameList) #plotting graphs
+		target = App.get_running_app().root
+		target.ids.image.clear_widgets()
+		target.ids.image.add_widget(FigureCanvasKivyAgg(plt.pyplot.gcf()))
+		self.currentGraph = 2
+
+	def showPlot(self):
+		plt.pyplot.show()
+		if(self.currentGraph == 1):
+			self.makePlot1()
+		else:
+			self.makePlot2()
+
 class APP(App):
 	def build(self):
 		return TabPanel()

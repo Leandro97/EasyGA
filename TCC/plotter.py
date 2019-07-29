@@ -1,8 +1,9 @@
 import math
-import matplotlib.pyplot as plt
+import matplotlib.pyplot as pyplot
 import matplotlib.ticker as ticker
 from matplotlib.ticker import (MultipleLocator, FormatStrFormatter, AutoMinorLocator)
 import numpy as np
+import io
 
 '''Returns the limits of x and y axis used on plotting'''
 def getLimits(history):
@@ -29,8 +30,8 @@ def getLimits(history):
 
 '''Plotting the progression of best inidviual for each setup'''
 def plotFitness(history, task, nameList):	
+	pyplot.close()
 	#Creating panel
-	fig, ax = plt.subplots(1,1)
 	xTick = []
 	yTick = []
 	xb, xe, yb, ye = getLimits(history)
@@ -40,22 +41,22 @@ def plotFitness(history, task, nameList):
 
 	for entry in history:
 		x, y = zip(*entry)
-		ax.plot(x, y, marker = marker[count % 5], label = "{}".format(nameList[count]))
+		pyplot.plot(x, y, marker = marker[count % 5], label = "{}".format(nameList[count]))
 		count += 1
 
 	#Setting grid for better visualization
-	ax.yaxis.grid(True, which="major")
+	pyplot.gca().yaxis.grid(True, which="major")
 
 	#Setting title and subtitle
-	plt.suptitle("Progression of best individual", x = 0.43)
+	pyplot.suptitle("Progression of best individual", x = 0.43)
 	if(task == "min"):
-		plt.title("Minimizing function", fontsize = 8)
+		pyplot.title("Minimizing function", fontsize = 8)
 	else:
-		plt.title("Maximizing function", fontsize = 8)
+		pyplot.title("Maximizing function", fontsize = 8)
 
 	#Setting axis label	
-	plt.xlabel("Generation")				
-	plt.ylabel("Fitness of best individual")
+	pyplot.xlabel("Generation")				
+	pyplot.ylabel("Fitness of best individual")
 
 	xMean = math.floor((xe - xb) / 4)
 	yMean = math.floor((ye - yb) / 4)
@@ -68,17 +69,16 @@ def plotFitness(history, task, nameList):
 	yTick.append(ye)
 
 	#Setting legend position
-	box = ax.get_position()
-	ax.set_position([box.x0, box.y0, box.width 	* 0.75, box.height])
-	plt.legend(loc = 'upper left', bbox_to_anchor=(1, 1))
-	plt.xticks(xTick)
-	plt.yticks(yTick)
-	#plt.show()
+	box = pyplot.gca().get_position()
+	pyplot.gca().set_position([box.x0, box.y0, box.width * 0.8, box.height])
+	pyplot.legend(loc = 'upper left', bbox_to_anchor = (1, 1), fancybox=True, shadow=True)
+	pyplot.xticks(xTick)
+	pyplot.yticks(yTick)
 
 '''Plotting generations reached for each setup'''
 def plotGenerations(history, task, nameList):
+	pyplot.close()
 	#Creating panel
-	fig, ax = plt.subplots(1,1)
 	xTick = []
 	yTick = []
 	xb, xe, yb, ye = getLimits(history)
@@ -87,30 +87,29 @@ def plotGenerations(history, task, nameList):
 
 	for entry in history:
 		x, y = zip(*entry)
-		ax.plot(x, y, marker = marker[count % 5], label = "{}".format(nameList[count]))
+		pyplot.plot(x, y, marker = marker[count % 5], label = "{}".format(nameList[count]))
 		count += 1
 
 	#setting grid for better visualization
-	ax.yaxis.grid(True, which="major")
+	pyplot.gca().yaxis.grid(True, which="major")
 
 	#Setting title and subtitle
-	plt.suptitle("Simulations x Reached generations", x = 0.43)
+	pyplot.suptitle("Simulations x Reached generations", x = 0.43)
 	if(task == "min"):
-		plt.title("Minimizing function", fontsize = 8)
+		pyplot.title("Minimizing function", fontsize = 8)
 	else:
-		plt.title("Maximizing function", fontsize = 8)
+		pyplot.title("Maximizing function", fontsize = 8)
 
 	#Setting axis label
-	plt.xlabel("Simulation")				
-	plt.ylabel("Number of generations")
+	pyplot.xlabel("Simulation")				
+	pyplot.ylabel("Number of generations")
 
 	yMean = math.ceil((ye - yb) / 4)
 	yTick = [yb, yb + yMean, yb + 2*yMean, yb + 3*yMean, ye]
 
 	#Setting legend position
-	box = ax.get_position()
-	ax.set_position([box.x0, box.y0, box.width 	* 0.75, box.height])
-	plt.legend(loc = 'upper left', bbox_to_anchor=(1, 1))
-	plt.xticks(x)
-	plt.yticks(yTick)
-	plt.show()
+	box = pyplot.gca().get_position()
+	pyplot.gca().set_position([box.x0, box.y0, box.width * 0.8, box.height])
+	pyplot.legend(loc = 'upper left', bbox_to_anchor = (1, 1), fancybox=True, shadow=True)
+	pyplot.xticks(x)
+	pyplot.yticks(yTick)

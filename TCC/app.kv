@@ -35,7 +35,7 @@
 
             ScrollView:
                 height: "20dp"
-                scroll_type: ['bars', 'content']
+                scroll_type: ["bars", "content"]
                 scroll_y: 0
                 bar_color: .52, .63, .9, 1
                 bar_inactive_color: .8, .83, .89, 1
@@ -43,7 +43,7 @@
 
                 GridLayout:
                     id: varScrollView
-                    orientation: 'vertical'
+                    orientation: "vertical"
                     cols: 3
                     size_hint_x: 0.98
                     spacing: "5dp"
@@ -123,29 +123,39 @@
         
         Tab4:
             SimulationLayout:
+                spacing: "5dp"
+
+                #Left Layout    
                 BoxLayout:
-                    spacing: "10dp"
-                    orientation: 'vertical'
+                    size_hint_x: .65
+                    spacing: "5dp"
+                    orientation: "vertical"
                     BoxLayout:
                         size_hint_y: .1
                         Button:
                             text: "<"
-                            on_press: self.parent.parent.parent.previous()
+                            on_press: self.parent.parent.parent.previousLog()
                         Button:
                             text: ">"
-                            on_press: self.parent.parent.parent.next()
+                            on_press: self.parent.parent.parent.nextLog()
                         Button:
                             text: "Save"
                             on_press: self.parent.parent.parent.saveLog()
 
                     LogScrollView:
                         id: logScrollView
+                        scroll_type: ["bars", "content"]
                         height: "20dp"
-                        scroll_type: ['bars']
                         bar_color: .52, .63, .9, 1
                         bar_inactive_color: .8, .83, .89, 1
                         bar_width: "10dp"
 
+                        canvas.before:
+                            Color:
+                                rgba: .94, .93, .89, 1
+                            Rectangle:
+                                pos: self.pos
+                                size: self.size
                         Label:
                             color: 0, 0, 0, 1
                             size_hint_y: None
@@ -167,14 +177,26 @@
                         size_hint_y: .12
                         text: "Evolve!"
                         on_press: self.parent.parent.evolve()
-                        #on_press: self.parent.parent.parent.parent.parent.ids.logScrollView.text
-                #RightLayout        
+
+                #Right Layout        
                 BoxLayout:
-                    orientation: 'vertical'
-                    Label:
-                        text: "img1"
-                    Label:
-                        text: "img2"
+                    orientation: "vertical"
+                    spacing: "5dp"
+                    BoxLayout:
+                        size_hint_y: .09
+                        Button:
+                            text: "Fitness progression"
+                            on_press: self.parent.parent.parent.makePlot1()
+                        Button:
+                            text: "Generations reached"
+                            on_press: self.parent.parent.parent.makePlot2()    
+                    BoxLayout:
+                        id: image
+                    BoxLayout:
+                        size_hint_y: .11
+                        Button:
+                            text: "Expand graph"
+                            on_press: self.parent.parent.parent.showPlot()
 
 ###########
 <MyLabel>:
@@ -187,11 +209,11 @@
         Rectangle:
             pos: self.pos
             size: self.size
-    orientation: 'vertical'
+    orientation: "vertical"
     padding: "20dp"
     spacing: "20dp"
 
 <TabbedPanelItem>:
     bold: True
-    background_normal: ''
+    background_normal: ""
     background_color: .53, .59, .65, 1

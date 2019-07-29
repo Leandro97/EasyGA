@@ -9,7 +9,6 @@ import fitness as fit
 import operations as op
 import selection as sel 
 import record as rec  
-import plotter as plt  
 import setupManager as suManager
 import datetime
 import numpy as np
@@ -180,7 +179,7 @@ def main(geneType, bruteVars, func, task, bruteSetups, nameList, simulationNumbe
     for entry in setupList:
         simulation(simulationNumber, entry)
 
-    finalLog = []
+    textLog = []
     i = 0
     for entry in setupList:
         lineStr = nameList[i] + "\n\n"
@@ -188,10 +187,8 @@ def main(geneType, bruteVars, func, task, bruteSetups, nameList, simulationNumbe
         for line in entry.log:
             lineStr += line 
 
-        finalLog.append(lineStr)
+        textLog.append(lineStr)
         i += 1
-    
-    #plt.plotFitness(plotFitnessLog, setupList[0].task, nameList) #plotting graphs
-    #plt.plotGenerations(plotGenerationLog, setupList[0].task, nameList) #plotting graphs
+
     print("Done!")
-    return finalLog
+    return textLog, plotFitnessLog, plotGenerationLog
