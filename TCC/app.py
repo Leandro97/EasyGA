@@ -219,7 +219,6 @@ class SetupBar(BoxLayout):
 			del setupList[currentSetup + 1]
 			del self.spinner.values[currentSetup + 1]	
 		except:
-			print("opa")
 			self.spinner.text = self.spinner.values[1]
 			del setupList[0]
 			del self.spinner.values[0]	
@@ -426,7 +425,7 @@ class SimulationLayout(BoxLayout):
 		if not self.plotFitnessLog:
 			return
 
-		plt.plotFitness(self.plotFitnessLog, self.task, self.nameList) #plotting graphs
+		plt.plotFitness(self.plotFitnessLog, self.task, self.nameList)
 		target = App.get_running_app().root
 		target.ids.image.clear_widgets()
 		target.ids.image.add_widget(FigureCanvasKivyAgg(plt.pyplot.gcf()))
@@ -436,18 +435,21 @@ class SimulationLayout(BoxLayout):
 		if not self.plotGenerationLog:
 			return
 			
-		plt.plotGenerations(self.plotGenerationLog, self.task, self.nameList) #plotting graphs
+		plt.plotGenerations(self.plotGenerationLog, self.task, self.nameList)
 		target = App.get_running_app().root
 		target.ids.image.clear_widgets()
 		target.ids.image.add_widget(FigureCanvasKivyAgg(plt.pyplot.gcf()))
 		self.currentGraph = 2
 
 	def showPlot(self):
-		plt.pyplot.show()
 		if(self.currentGraph == 1):
-			self.makePlot1()
+			if not self.plotFitnessLog:
+				return
+			plt.plotFitness(self.plotFitnessLog, self.task, self.nameList) 
 		else:
-			self.makePlot2()
+			plt.plotGenerations(self.plotGenerationLog, self.task, self.nameList)
+
+		plt.pyplot.show()
 
 class APP(App):
 	def build(self):
