@@ -12,10 +12,10 @@ from kivy.uix.spinner import Spinner
 from kivy.uix.tabbedpanel import TabbedPanel
 from kivy.uix.screenmanager import Screen
 from kivy.uix.popup import Popup
-from kivy.uix.image import Image
+from kivy.uix.bubble import Bubble
 from kivy.clock import Clock
 from kivy.config import Config
-from kivy.properties import StringProperty
+from kivy.properties import StringProperty, BooleanProperty
 from kivy.garden.matplotlib.backend_kivyagg import FigureCanvasKivyAgg
 
 import time
@@ -200,13 +200,13 @@ class SetupBar(BoxLayout):
 		popup = Popup(title = "Are you sure you want to delete " + nameList[currentSetup] + "?", content = box, size_hint = (.5, .18))
 		popup.open()
 		
-		save = MyButton(text = "Delete")
-		save.bind(on_press = lambda x : self.deleteSetup(popup))
+		delete = MyButton(text = "Delete")
+		delete.bind(on_press = lambda x : self.deleteSetup(popup))
 
 		cancel = MyButton(text = "Cancel")
 		cancel.bind(on_press = lambda x : popup.dismiss())
 
-		box.add_widget(save)
+		box.add_widget(delete)
 		box.add_widget(cancel)
 
 	def deleteSetup(self, popup):
@@ -418,8 +418,14 @@ class SimulationLayout(BoxLayout):
 			pass
 
 	def saveLog(self):
-		if self.finalLog:
-			rec.save(self.nameList[self.logIndex], self.finalLog[self.logIndex])
+		if not self.finalLog:
+			return
+
+		rec.save(self.nameList[self.logIndex], self.finalLog[self.logIndex])
+		box = BoxLayout(orientation = "vertical", spacing = "20dp")
+		popup = Popup(title = "Log file saved", content = box, size_hint = (.5, .18))
+		popup.open()
+		box.add_widget(Button(text = "Ok", on_press = lambda x : popup.dismiss()))
 		
 	def makePlot1(self):
 		if not self.plotFitnessLog:

@@ -94,7 +94,7 @@ def plotGenerations(history, task, nameList):
 	pyplot.gca().yaxis.grid(True, which="major")
 
 	#Setting title and subtitle
-	pyplot.suptitle("Simulations x Reached generations", x = 0.43)
+	pyplot.suptitle("Simulations x Generations reached", x = 0.43)
 	if(task == "min"):
 		pyplot.title("Minimizing function", fontsize = 8)
 	else:
