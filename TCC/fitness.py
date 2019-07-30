@@ -57,6 +57,9 @@ def binaryFitness(chrom, su):
         func = func.replace(var, '(' + str(value) + ')')
         begin = end
 
+
     result = eval(func)
     chrom[-1] = result
+    #print(func)
+    #print(result)
     return chrom

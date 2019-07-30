@@ -53,10 +53,10 @@
             BoxLayout:
                 size_hint_y: .15
                 spacing: "10dp"
-                MyButton:
+                Button:
                     text: "Add variable"
                     on_press: self.parent.parent.addVar(50)
-                MyButton:
+                Button:
                     text: "Remove variable"
                     on_press: self.parent.parent.removeVar(50)
 
@@ -83,10 +83,14 @@
                     anchor_x: "center" 
                     anchor_y: "bottom"
 
+
                     TextInput:
                         id: fitnessFunction
-                        size_hint: .8, .4        
+                        size_hint: .8, .6        
                         text: "x1"
+
+                MyLabel:
+                    text: "Example: x1**x3 - sin(exp(x2)) + log(x1)"
 
             BoxLayout:
                 BoxLayout:
@@ -106,7 +110,7 @@
                 AnchorLayout:
                     anchor_x: "center" 
                     anchor_y: "center"
-                    MyButton:
+                    Button:
                         size_hint: .6, .15
                         text: "Verify function"  
             
@@ -174,6 +178,8 @@
                             text: "Simulations"
                         TextInput:
                             id: simulationNumber
+                            self.write_tab: False
+                            self.multiline: False
                             text: "5"
                     Button:
                         size_hint_y: .12
