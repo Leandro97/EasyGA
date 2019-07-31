@@ -1,4 +1,5 @@
 <TabPanel>:
+    validStatus: True
     do_default_tab: False
     tab_width: self.width / 4
     TabbedPanelItem:
@@ -184,8 +185,8 @@
                     Button:
                         size_hint_y: .12
                         text: "Evolve!"
-
                         on_press: self.parent.parent.evolve()
+                        disabled: not root.validStatus
 
                 #Right Layout        
                 BoxLayout:

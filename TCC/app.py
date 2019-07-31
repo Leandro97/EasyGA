@@ -15,8 +15,11 @@ from kivy.uix.popup import Popup
 from kivy.uix.bubble import Bubble
 from kivy.clock import Clock
 from kivy.config import Config
-from kivy.properties import StringProperty, BooleanProperty
+from kivy.properties import StringProperty, BooleanProperty, ListProperty
 from kivy.garden.matplotlib.backend_kivyagg import FigureCanvasKivyAgg
+from kivy.graphics import Rectangle, Color
+from kivy.lang import Builder
+
 
 import time
 from functools import partial
@@ -41,9 +44,11 @@ nameList = []
 
 class TabPanel(TabbedPanel):
 	global varList
+	#validation_color = ListProperty([0, 1, 0, 1]) #study using properties to block spinners
 
 	def __init__(self, **kwargs):
 		super(TabPanel, self).__init__(**kwargs)
+		self.validStatus = True
 
 		#Tab1
 		newVar = MyLabel()
@@ -78,14 +83,6 @@ class MyTab(BoxLayout):
 
 class MyButton(Button):
 	pass
-
-class MyTextInput(TextInput):
-	validated = BooleanProperty(False)
-	def __init__(self, **kwargs):
-		super(MyTextInput, self).__init__(**kwargs)
-		self.write_tab = False
-		self.multiline = False
-		self.size_hint_y = .55
 
 class MyCheckBox(CheckBox):
 	def __init__(self, **kwargs):
@@ -165,7 +162,7 @@ class SetupBar(BoxLayout):
 		insideBox.add_widget(save)
 		insideBox.add_widget(cancel)
 
-		newName = MyTextInput()
+		newName = TextInput(write_tab = False, multiline = False, size_hint_y = .55)
 
 		box.add_widget(newName)
 		box.add_widget(insideBox)
@@ -173,6 +170,10 @@ class SetupBar(BoxLayout):
 	def changeName(self, text, popup):
 		global currentSetup
 		global nameList
+
+		if text.strip() == "":
+			popup.dismiss()
+			return
 
 		self.spinner.values[currentSetup] = text
 		nameList = self.spinner.values
@@ -227,26 +228,45 @@ class SetupBar(BoxLayout):
 		nameList = self.spinner.values
 		popup.dismiss()
 
-#class ParamInput(BoxLayout):
-#	def __init__(self, **kwargs):
-#		super(ParamInput, self).__init__(**kwargs)
-#		self.input = MyInput()
-#		self.input.bind(text = self.validate)
-#		self.add_widget(self.input)
-#		self.bubble = ValidateLabel()
-#		self.add_widget(self.bubble)
+class ParamTextInput(TextInput):
+	def __init__(self, **kwargs):
+		super(ParamTextInput, self).__init__(**kwargs)
+		self.write_tab = False
+		self.multiline = False
+		self.size_hint_y = .55
 
-#class ValidateLabel(Bubble):
-#	validated = False
+Builder.load_string('''
+<ValidationLabel>:
+    canvas:
+        Color:
+            rgba: self.rgba
+        Rectangle:
+            pos: self.pos
+            size: self.size
+''')
+
+class ValidationLabel(Label):
+	rgba = ListProperty([0, 0, 1, .15])
+	
+	def invalid(self, message):
+		self.rgba = [1, 0, 0, .15]
+		self.text = message
+		App.get_running_app().root.validStatus = False
+
+	def valid(self):
+		self.rgba = [0, 0, 1, .15]
+		App.get_running_app().root.validStatus = True
 
 class MyScreen(Screen):
 	global setupNumber
 	global setupList
+
+	inputNames = {0: "Population size", 1: "Number of generations", 2: "Plateau", 3: "Mutation rate"}
 	
-	populationSize = MyTextInput(text = "10")
-	maxGenerations = MyTextInput(text = "50")
-	plateau = MyTextInput(text = "20")
-	mutationRate = MyTextInput(text = "0.15")
+	populationSize = ParamTextInput(text = "10")
+	maxGenerations = ParamTextInput(text = "50")
+	plateau = ParamTextInput(text = "20")
+	mutationRate = ParamTextInput(text = "0.15")
 
 	selection = Spinner(text = "Roulette", size_hint_y = .7)
 	selection.values = ["Roulette", "2", "3"]
@@ -257,12 +277,23 @@ class MyScreen(Screen):
 	mutation = Spinner(text = "Flip", size_hint_y = .7) 
 	mutation.values = ["Flip", "2", "3"]
 
+	validationLabel = ValidationLabel(text = "Parameters are valid!", color = (0, 0, 0, 1))
 
-	def makeInput(self, layout, widget, labelText, index):
+	def makeTextInput(self, layout, widget, labelText, minValue, maxValue, index):
 		paramLayout = BoxLayout(orientation = "vertical")
 		paramLabel = MyLabel(text = labelText, color = TEXT_COLOR)
 
-		widget.bind(text = partial(self.updateDict, index))
+		widget.bind(text = partial(self.updateFromTextInput, index, minValue, maxValue))
+
+		paramLayout.add_widget(paramLabel)
+		paramLayout.add_widget(widget)
+		layout.add_widget(paramLayout)
+
+	def makeSpinner(self, layout, widget, labelText, index):
+		paramLayout = BoxLayout(orientation = "vertical")
+		paramLabel = MyLabel(text = labelText, color = TEXT_COLOR)
+
+		widget.bind(text = partial(self.updateFromSpinner, index))
 
 		paramLayout.add_widget(paramLabel)
 		paramLayout.add_widget(widget)
@@ -275,16 +306,58 @@ class MyScreen(Screen):
 		parentLayout = GridLayout(cols = 2, spacing = "10dp")
 
 		self.add_widget(parentLayout)
-		self.makeInput(parentLayout, self.populationSize, "Population size", 0)
-		self.makeInput(parentLayout, self.maxGenerations, "Maximum number of generations", 1)
-		self.makeInput(parentLayout, self.plateau, "Plateau", 2)
-		self.makeInput(parentLayout, self.mutationRate, "Mutation rate", 3)
-		self.makeInput(parentLayout, self.selection, "Selection strategy", 4)
-		self.makeInput(parentLayout, self.crossover, "Crossover strategy", 5)
-		self.makeInput(parentLayout, self.mutation, "Mutation strategy", 6)
+		self.makeTextInput(parentLayout, self.populationSize, "Population size", 4, 200, 0)
+		self.makeTextInput(parentLayout, self.maxGenerations, "Number of generations", 1, 500, 1)
+		self.makeTextInput(parentLayout, self.plateau, "Plateau", 1, 500, 2)
+		self.makeTextInput(parentLayout, self.mutationRate, "Mutation rate", 0, 1, 3)
+		self.makeSpinner(parentLayout, self.selection, "Selection strategy", 4)
+		self.makeSpinner(parentLayout, self.crossover, "Crossover strategy", 5)
+		self.makeSpinner(parentLayout, self.mutation, "Mutation strategy", 6)
+		parentLayout.add_widget(self.validationLabel)
 
-	def updateDict(self, attIndex, aux, text):
+	def updateFromTextInput(self, attIndex, minValue, maxValue, aux, text):
 		global currentSetup
+
+		try:
+			if(attIndex != 3):
+				status = int(minValue) <= int(text) <= int(maxValue)
+			else:
+				status = float(minValue) <= float(text) <= float(maxValue)
+				print(status)
+
+			if status:
+				self.unlockInputs()
+				self.validationLabel.text = "Parameters are valid!"
+				self.validationLabel.valid()
+				setupList[currentSetup][attIndex] = text
+			else:
+				self.blockInputs(attIndex)
+				self.validationLabel.invalid("{} must be between {} and {}".format(self.inputNames[attIndex], minValue, maxValue))
+		except Exception as e:
+			self.blockInputs(attIndex)
+			if(attIndex != 3):
+				self.validationLabel.invalid("{} must be a integer number".format(self.inputNames[attIndex]))
+			else:
+				self.validationLabel.invalid("{} must be a float number".format(self.inputNames[attIndex]))
+
+	def blockInputs(self, index):
+		if(index != 0):
+			self.populationSize.disabled = True
+		if(index != 1):
+			self.maxGenerations.disabled = True
+		if(index != 2):
+			self.plateau.disabled = True
+		if(index != 3):
+			self.mutationRate.disabled = True
+
+
+	def unlockInputs(self):
+		self.populationSize.disabled = False
+		self.maxGenerations.disabled = False
+		self.plateau.disabled = False
+		self.mutationRate.disabled = False
+
+	def updateFromSpinner(self, attIndex, aux, text):
 		setupList[currentSetup][attIndex] = text
 
 	def newSetup(self):

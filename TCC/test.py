@@ -7,31 +7,22 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.properties import BooleanProperty
 from functools import partial
 from kivy.clock import Clock
+from kivy.uix.label import Label
 
 KV = """
-
-<ValidateLabel>:
-    size_hint: (None, None)
-    size: (100, 10)
-    Label:
-        text: "Must be a float"
-        color: 1, 1, 1, 1
-
-
-<MyInput>:
-    foreground_color: (0,1,0,1) if self.validated else (1,0,0,1)
-
-
 TestInput:
-
 """
-
 
 class MyInput(TextInput):
     validated = BooleanProperty(False)
 
 class ValidateLabel(Bubble):
     validated = False
+    label = Label(text = "Must be a float", color = (1, 1, 1, 1))
+
+    def __init__(self, **kwargs):
+        super(ValidateLabel, self).__init__(**kwargs)
+        self.add_widget(self.label)
 
 class FloatInput(FloatLayout):
     bubble_showed = False
@@ -43,15 +34,16 @@ class FloatInput(FloatLayout):
         self.add_widget(self.input)
         self.bubble = ValidateLabel()
         self.bubble.size_hint_y = .1
+        
 
     def validate(self, minValue, maxValue, input, value):
-        self.bubble.text = "Number must be between {} and {}".format(minValue, maxValue)
-
+        self.bubble.label.text = "Number must be between {} and {}".format(minValue, maxValue)
+        print(self.bubble.label)
         try:
             status = float(minValue) <= float(value) <= float(maxValue)
         except Exception as e:
             status = False
-            self.bubble.text = "Input must be a number"
+            self.bubble.label.text = "Input must be a number"
 
         if not status:
             if not self.bubble_showed:
@@ -71,9 +63,8 @@ class TestInput(BoxLayout):
 
     def __init__(self, **kwargs):
         super(TestInput, self).__init__(**kwargs)
-        Clock.schedule_once(self.load)
-        
-    def load(self, dt):
+        #Clock.schedule_once(self.load)
+    #def load(self, dt):
         self.add_widget(self.floatInput)
 
 class TestApp(App):
