@@ -80,6 +80,7 @@ class MyButton(Button):
 	pass
 
 class MyTextInput(TextInput):
+	validated = BooleanProperty(False)
 	def __init__(self, **kwargs):
 		super(MyTextInput, self).__init__(**kwargs)
 		self.write_tab = False
@@ -226,6 +227,18 @@ class SetupBar(BoxLayout):
 		nameList = self.spinner.values
 		popup.dismiss()
 
+#class ParamInput(BoxLayout):
+#	def __init__(self, **kwargs):
+#		super(ParamInput, self).__init__(**kwargs)
+#		self.input = MyInput()
+#		self.input.bind(text = self.validate)
+#		self.add_widget(self.input)
+#		self.bubble = ValidateLabel()
+#		self.add_widget(self.bubble)
+
+#class ValidateLabel(Bubble):
+#	validated = False
+
 class MyScreen(Screen):
 	global setupNumber
 	global setupList
@@ -242,7 +255,7 @@ class MyScreen(Screen):
 	crossover.values = ["One point", "Two points", "Uniform"]
 
 	mutation = Spinner(text = "Flip", size_hint_y = .7) 
-	mutation.values = ["Flip", "Uniform", "3"]
+	mutation.values = ["Flip", "2", "3"]
 
 
 	def makeInput(self, layout, widget, labelText, index):
@@ -269,7 +282,7 @@ class MyScreen(Screen):
 		self.makeInput(parentLayout, self.selection, "Selection strategy", 4)
 		self.makeInput(parentLayout, self.crossover, "Crossover strategy", 5)
 		self.makeInput(parentLayout, self.mutation, "Mutation strategy", 6)
-	
+
 	def updateDict(self, attIndex, aux, text):
 		global currentSetup
 		setupList[currentSetup][attIndex] = text
