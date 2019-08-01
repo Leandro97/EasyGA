@@ -225,6 +225,7 @@ class SetupBar(BoxLayout):
 			del setupList[0]
 			del self.spinner.values[0]	
 
+		setupNumber -= 1
 		nameList = self.spinner.values
 		popup.dismiss()
 
