@@ -474,13 +474,23 @@ class SimulationLayout(BoxLayout):
 	def __init__(self, **kwargs):
 		super(SimulationLayout, self).__init__(**kwargs)
 
+	def evolutionPopUp(self):
+		box = BoxLayout()
+		box.add_widget(Label(text = "Evolution in progress!"))
+		self.popup = Popup(title = "Wait a moment", content = box, size_hint = (.5, .18))
+		self.popup.open()
+
+	def evolveButton(self):
+		self.evolutionPopUp()
+		evolution = threading.Thread(target=self.evolve)
+		evolution.start()
+
 	def evolve(self):
 		target = App.get_running_app().root
 		geneType, func, self.task, nameList = target.getParams()
 
 		#self.finalLog, self.plotFitnessLog, self.plotGenerationLog = mid.main(geneType, varList, func, self.task, setupList, nameList, int(target.ids.simulationNumber.text))
 		self.finalLog, self.plotFitnessLog, self.plotGenerationLog = mid.main(geneType, varList, func, self.task, setupList, nameList, 10)
-
 
 		target.ids.logScrollView.text = self.finalLog[self.logIndex]
 		self.nameList = nameList
@@ -489,6 +499,9 @@ class SimulationLayout(BoxLayout):
 		target.ids.graphButton1.state = "down"
 		target.ids.graphButton2.state = "normal"
 		self.makePlot1()
+
+		time.sleep(.5)
+		self.popup.dismiss()
 
 	def nextLog(self):
 		try:

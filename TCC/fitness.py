@@ -60,7 +60,5 @@ def binaryFitness(chrom, su):
 
     result = eval(func)
     chrom[-1] = result
-    #print(func)
-    print(result)
-    print(type(result))
+
     return chrom
