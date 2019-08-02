@@ -21,7 +21,7 @@ from kivy.graphics import Rectangle, Color
 from kivy.lang import Builder
 
 
-import time
+import time, threading
 from functools import partial
 import middle as mid
 import record as rec
@@ -276,7 +276,7 @@ class MyScreen(Screen):
 	crossover.values = ["One point", "Two points", "Uniform"]
 
 	mutation = Spinner(text = "Flip", size_hint_y = .7) 
-	mutation.values = ["Flip", "2", "3"]
+	mutation.values = ["Flip", "Uniform", "3"]
 
 	validationLabel = ValidationLabel(text = "Parameters are valid!", color = (0, 0, 0, 1))
 

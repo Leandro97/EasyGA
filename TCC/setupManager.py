@@ -41,6 +41,8 @@ def createSetups(geneType, bruteVars, func, task, bruteSetups):
 
 		if(entry[6] == "Flip"):
 			newSetup.mutation = "flip"
+		elif(entry[6] == "Uniform"):
+			newSetup.mutation = "uniform"
 	
 		setupList.append(newSetup)
 		i += 1

@@ -24,8 +24,8 @@ def getFitness(chrom, su):
             value = rd.randint(lower, upper) if (su.geneType == "int") else rd.random(lower, upper)
 
         func = func.replace(var, '(' + str(value) + ')')
-
     
+
     result = eval(func)
     chrom[-1] = result
 
@@ -61,5 +61,6 @@ def binaryFitness(chrom, su):
     result = eval(func)
     chrom[-1] = result
     #print(func)
-    #print(result)
+    print(result)
+    print(type(result))
     return chrom

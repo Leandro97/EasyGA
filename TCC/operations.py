@@ -7,6 +7,8 @@ import random as rd
 def mutation(chrom, su):
 	if(su.mutation == "flip"):
 		return flipMutation(chrom, su)
+	elif(su.mutation == "uniform"):
+		return uniformMutation(chrom, su)
 
 	fit.getFitness(chrom, su) #test
 	return chrom #test
@@ -15,7 +17,22 @@ def flipMutation(chrom, su):
 	for i in range(len(chrom) - 1):
 		rand = rd.random()
 		if(rand <= su.mutationRate):
-				chrom[i] = '0' if chrom[i] == '1' else '1'
+			chrom[i] = '0' if chrom[i] == '1' else '1'
+
+	fit.getFitness(chrom, su)
+	return chrom
+
+def uniformMutation(chrom, su):
+	i = 0
+
+	for domain in su.varDomain:
+		rand = rd.random()
+		if(rand <= su.mutationRate):
+			if su.geneType == "float":
+				chrom[i] = rd.uniform(domain[0], domain[1])
+			else:
+				chrom[i] = rd.randint(domain[0], domain[1])
+		i += 1
 
 	fit.getFitness(chrom, su)
 	return chrom
