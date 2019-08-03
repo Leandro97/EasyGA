@@ -267,7 +267,7 @@ class MyScreen(Screen):
 	populationSize = ParamTextInput(text = "10")
 	maxGenerations = ParamTextInput(text = "50")
 	plateau = ParamTextInput(text = "20")
-	mutationRate = ParamTextInput(text = "0.15")
+	mutationRate = ParamTextInput(text = "0.01")
 
 	selection = Spinner(text = "Roulette", size_hint_y = .7)
 	selection.values = ["Roulette", "2", "3"]
@@ -302,7 +302,7 @@ class MyScreen(Screen):
 
 	def __init__(self, **kwargs):
 		super(MyScreen, self).__init__(**kwargs)
-		setupList.append(["10", "50", "20", "0.15", "Roulette", "One point", "Flip"])
+		setupList.append(["10", "50", "20", "0.01", "Roulette", "One point", "Flip"])
 		
 		parentLayout = GridLayout(cols = 2, spacing = "10dp")
 
@@ -367,7 +367,7 @@ class MyScreen(Screen):
 		currentSetup += 1
 
 		setupNumber += 1
-		setupList.append(["10", "50", "20", "0.15", "Roulette", "One point", "Flip"])
+		setupList.append(["10", "50", "20", "0.01", "Roulette", "One point", "Flip"])
 
 class SetupLayout(BoxLayout):
 	global setupList
@@ -474,17 +474,6 @@ class SimulationLayout(BoxLayout):
 	def __init__(self, **kwargs):
 		super(SimulationLayout, self).__init__(**kwargs)
 
-	def evolutionPopUp(self):
-		box = BoxLayout()
-		box.add_widget(Label(text = "Evolution in progress!"))
-		self.popup = Popup(title = "Wait a moment", content = box, size_hint = (.5, .18))
-		self.popup.open()
-
-	def evolveButton(self):
-		self.evolutionPopUp()
-		evolution = threading.Thread(target=self.evolve)
-		evolution.start()
-
 	def evolve(self):
 		target = App.get_running_app().root
 		geneType, func, self.task, nameList = target.getParams()
@@ -494,14 +483,12 @@ class SimulationLayout(BoxLayout):
 
 		target.ids.logScrollView.text = self.finalLog[self.logIndex]
 		self.nameList = nameList
-
 		self.currentGraph = 1
+
 		target.ids.graphButton1.state = "down"
 		target.ids.graphButton2.state = "normal"
-		self.makePlot1()
 
-		time.sleep(.5)
-		self.popup.dismiss()
+		self.makePlot1()
 
 	def nextLog(self):
 		try:
@@ -533,6 +520,7 @@ class SimulationLayout(BoxLayout):
 		if not self.plotFitnessLog:
 			return
 
+		print("Oi")
 		plt.plotFitness(self.plotFitnessLog, self.task, self.nameList)
 		target = App.get_running_app().root
 		target.ids.image.clear_widgets()
