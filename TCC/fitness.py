@@ -3,7 +3,7 @@ from math import *
 import random as rd
 
 def getFitness(chrom, su):
-    if (su.geneType == "bin"):
+    if (su.geneType == "Binary string"):
         return binaryFitness(chrom, su)
 
     func = su.function
@@ -13,7 +13,7 @@ def getFitness(chrom, su):
         value = chrom[i]  
 
 
-        if(su.geneType == "int"):
+        if(su.geneType == "Integer string"):
             aux = int(value)
         else:
             aux = float(value)
@@ -21,7 +21,8 @@ def getFitness(chrom, su):
         if(aux < su.varDomain[i][0] or aux > su.varDomain[i][1]):
             lower = su.varDomain[i][0]
             upper = su.varDomain[i][1]
-            value = rd.randint(lower, upper) if (su.geneType == "int") else rd.uniform(lower, upper)
+            value = rd.randint(lower, upper) if (su.geneType == "Integer string") else rd.uniform(lower, upper)
+            chrom[i] = value
 
         func = func.replace(var, '(' + str(value) + ')')
     
@@ -29,7 +30,7 @@ def getFitness(chrom, su):
     result = eval(func)
     chrom[-1] = result
 
-    if su.geneType == "float":
+    if su.geneType == "Float string":
         chrom = [round(float(value), 2) for value in chrom]
 
     return chrom

@@ -64,7 +64,7 @@ def simulation(tests, su):
     plotGenerationLog.append(generationHistory)
 
 def logWriter(su, champion):
-    if(su.geneType == "float"):
+    if(su.geneType == "Float string"):
         log.append(" Generation " + str(su.currentGeneration) + " - Champion: " + str([round(value, 2) for value in champion]) + "\n")
     elif(su.geneType == "int"):
         log.append(" Generation " + str(su.currentGeneration) + " - Champion: " + str(champion) + "\n")
@@ -125,7 +125,7 @@ def init(su):
 
     #setting the variables boundaries
     for domain in su.varDomain:
-        if(su.geneType == "bin"):
+        if(su.geneType == "Binary string"):
             minV = len(bin(abs(domain[0]))) - 1
             maxV = len(bin(abs(domain[1]))) - 1
 
@@ -140,7 +140,7 @@ def init(su):
         su.population.append([])
         aux = 0
         for domain in su.varDomain:
-            if(su.geneType == "bin"):
+            if(su.geneType == "Binary string"):
                 #generating new decimal individual 
                 intVar = rd.randint(domain[0], domain[1])
 
@@ -149,7 +149,7 @@ def init(su):
 
                 su.population[i].extend(binaryVar)
                 aux += 1
-            elif(su.geneType == "int"):
+            elif(su.geneType == "Integer string"):
                 intVar = rd.randint(domain[0], domain[1])
                 su.population[i].append(intVar)
             else:

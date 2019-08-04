@@ -10,7 +10,7 @@ class Setup():
 	varLength = [] #this array stores the maximum lenght of each variable 
 	
 	#####Chromosome structure#####
-	geneType = "int" #"float" | "int" | "bin"
+	geneType = "Binary srting" #"Float string" | "Integer string" | "Binary string"
 	varDomain = None
 
 	#####Fitness Function#####
@@ -20,14 +20,14 @@ class Setup():
 
 	#####Algorithm#####
 	currentGeneration = 1
-	populationSize = 50
+	populationSize = 10
 	currentPopulationSize = 1
 	maxGenerations = 50
 	plateau = 20
 
-	crossover = "uniform" #"onePoint" | "twoPoint" | "uniform"
-	selection = "roulette" #"roulette" |     "uniform" | "tournament"
-	mutation = "uniform" #"flip" | "uniform" | "non-uniform"
+	crossover = "Uniform" #"One point" | "Two Points" | "Uniform"
+	selection = "Roulette" #"Roulette" | "Tournament" | ?
+	mutation = "Uniform" #"Flip" | "Uniform" | "Non-uniform"
 	mutationRate: float = 0.15
 
 	#####Results#####

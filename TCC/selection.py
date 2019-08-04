@@ -7,12 +7,12 @@ probabilityArray = []
 
 '''Selection interface'''
 def selectParent(su):
-	if(su.selection == "uniform"):
+	if(su.selection == "Uniform"):
 		return np.random.randint(0, su.populationSize)
-	elif(su.selection == "roulette"):
+	elif(su.selection == "Roulette"):
 		return roulette(su)
-	elif(su.selection == "tournament"):
-		return tournament()
+	elif(su.selection == "Tournament"):
+		return tournament(su)
 
 '''Initialising selection roulette'''
 def initRoulette(su):
@@ -58,5 +58,24 @@ def roulette(su):
 	return 0
 
 '''Tournament selection'''
-def tournament():
-	pass	
+def tournament(su):
+	index1 = rd.randint(0, su.populationSize - 1)
+	index2 = rd.randint(0, su.populationSize - 1)
+
+	if(su.task == "max"):
+		if(su.population[index1][-1] < su.population[index2][-1]):
+			aux = index1
+			index1 = index2
+			index2 = aux
+	else:
+		if(su.population[index1][-1] > su.population[index2][-1]):
+			aux = index1
+			index1 = index2
+			index2 = aux
+
+	chance = rd.uniform(0, 1)
+
+	if(chance <= .75):
+		return index1
+	else:
+		return index2	

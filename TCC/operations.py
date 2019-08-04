@@ -5,10 +5,9 @@ import random as rd
 	
 '''Mutation operator'''
 def mutation(chrom, su):
-	if(su.mutation == "flip"):
+	if(su.mutation == "Flip"):
 		fit.getFitness(chrom, su)
-		#return flipMutation(chrom, su)
-	elif(su.mutation == "uniform"):
+	elif(su.mutation == "Uniform"):
 		return uniformMutation(chrom, su)
 	else:
 		return nonUniformMutation(chrom, su)
@@ -28,7 +27,7 @@ def uniformMutation(chrom, su):
 	for domain in su.varDomain:
 		rand = rd.random()
 		if(rand <= su.mutationRate):
-			if su.geneType == "float":
+			if su.geneType == "Float string":
 				chrom[i] += rd.uniform(domain[0], domain[1])
 			else:
 				chrom[i] += rd.randint(domain[0], domain[1])
@@ -43,7 +42,7 @@ def nonUniformMutation(chrom, su):
 	for domain in su.varDomain:
 		rand = rd.random()
 		if(rand <= su.mutationRate):
-			if su.geneType == "float":
+			if su.geneType == "Float string":
 				if(rd.random() <= .5):
 					chrom[i] += delta(su.currentGeneration, su.maxGenerations, domain[1] - chrom[i])
 				else:
@@ -68,7 +67,7 @@ def crossover(su):
 	newPopulation = []
 
 	#Initializing roullete
-	if su.selection == "roulette": 
+	if su.selection == "Roulette": 
 		sel.initRoulette(su)
 
 	#New childs are born until the current size of the population is equal to two times the initial size
@@ -81,22 +80,30 @@ def crossover(su):
 		index2 = sel.selectParent(su)
 
 		if(index1 == index2): 
-			index2 += 1
-			
+			if index2 == su.populationSize - 1:
+				index2 -= 1
+			else:
+				index2 += 1
+		
 		parent2 = su.population[index2]
 
 		#Childs being born and mutated
-		if su.crossover == "onePoint":
+		if su.crossover == "One point":
 			child1, child2 = onePointCrossover(parent1, parent2, su)
-		elif su.crossover == "twoPoint":
+		elif su.crossover == "Two points":
 			child1, child2 = twoPointCrossover(parent1, parent2, su)
 		else:
 			child1, child2 = uniformCrossover(parent1, parent2, su)
 
+		print(child1)
+		print(child2)
 		mutation(child1, su)
 		mutation(child2, su)
+		print(child1)
+		print(child2)
+		print("###")
 
-		if su.geneType == "float":
+		if su.geneType == "Float string":
 			child1, child2 = [round(float(value), 2) for value in child1], [round(float(value), 2) for value in child2] #rounding values
 
 		#Adding child to population 
@@ -152,10 +159,6 @@ def uniformCrossover(parent1, parent2, su):
 		else:
 			child1.append(parent2[i])
 			child2.append(parent1[i])
-
-	#print(child1)
-	#print(child2)
-	#print("###")
 	return child1, child2
 
 '''Sorting population in decrescent order of fitness, acording to the object task'''

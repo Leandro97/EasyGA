@@ -62,25 +62,21 @@ def record(bestIndividual, average, log, su):
 	su.log.append(" Maximum number of generations: {}\n".format(su.maxGenerations))
 	su.log.append(" Plateau: {}\n\n".format(su.plateau))
 
-	if (su.crossover == 'onePoint'):
-		crossover = "One point" 
-	elif (su.crossover == 'twoPoint'):
-		crossover = "Two points" 
-	else:
-		crossover = "Uniform"
-
-	su.log.append(" Crossover strategy: {}\n".format(crossover))
+	su.log.append(" Crossover strategy: {}\n".format(su.crossover))
 	su.log.append(" Selection strategy: {}\n".format(su.selection))
 	su.log.append(" Mutation strategy: {}\n".format(su.mutation))
 	su.log.append(" Mutation rate: {}\n\n".format(su.mutationRate))
 	su.log.append(' {:#<40}'.format("") + "\n")
 
 	'''Simulation result'''
-	champion2Int = [int(value) for value in bestIndividual['champion'][:-1]]
-	champion2Int.append(bestIndividual["champion"][-1])
+	if su.geneType != "Float string":
+		champion = [int(value) for value in bestIndividual['champion'][:-1]]
+		champion.append(bestIndividual["champion"][-1])
+	else:
+		champion = bestIndividual["champion"]
 
 	su.log.append("\n -> Best simulation: #{}.".format(bestIndividual["id"]))
-	su.log.append("\n -> Champion: {}. Achieved in the {} generation.".format(champion2Int, ordinal(bestIndividual["last"])))
+	su.log.append("\n -> Champion: {}. Achieved in the {} generation.".format(champion, ordinal(bestIndividual["last"])))
 	su.log.append("\n -> Average fitness: {0:.2f}\n\n".format(average))
 	su.log.append(' {:#<40}'.format("") + "\n")
 
