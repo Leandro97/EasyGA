@@ -22,12 +22,12 @@ class Setup():
 	currentGeneration = 1
 	populationSize = 50
 	currentPopulationSize = 1
-	maxGenerations = 100
+	maxGenerations = 50
 	plateau = 20
 
 	crossover = "uniform" #"onePoint" | "twoPoint" | "uniform"
 	selection = "roulette" #"roulette" |     "uniform" | "tournament"
-	mutation = "uniform" #"flip" | ??? | ???
+	mutation = "uniform" #"flip" | "uniform" | "non-uniform"
 	mutationRate: float = 0.15
 
 	#####Results#####

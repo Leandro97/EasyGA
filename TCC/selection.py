@@ -15,7 +15,7 @@ def selectParent(su):
 		return tournament()
 
 '''Initialising selection roulette'''
-def init(su):
+def initRoulette(su):
 	#This array stores the probability of choosing a individual 
 	global probabilityArray
 	probabilityArray = [0.1]

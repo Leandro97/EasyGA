@@ -276,7 +276,7 @@ class MyScreen(Screen):
 	crossover.values = ["One point", "Two points", "Uniform"]
 
 	mutation = Spinner(text = "Flip", size_hint_y = .7) 
-	mutation.values = ["Flip", "Uniform", "3"]
+	mutation.values = ["Flip", "Uniform", "Non-uniform"]
 
 	validationLabel = ValidationLabel(text = "Parameters are valid!", color = (0, 0, 0, 1))
 
@@ -520,7 +520,6 @@ class SimulationLayout(BoxLayout):
 		if not self.plotFitnessLog:
 			return
 
-		print("Oi")
 		plt.plotFitness(self.plotFitnessLog, self.task, self.nameList)
 		target = App.get_running_app().root
 		target.ids.image.clear_widgets()

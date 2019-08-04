@@ -21,7 +21,7 @@ def getFitness(chrom, su):
         if(aux < su.varDomain[i][0] or aux > su.varDomain[i][1]):
             lower = su.varDomain[i][0]
             upper = su.varDomain[i][1]
-            value = rd.randint(lower, upper) if (su.geneType == "int") else rd.random(lower, upper)
+            value = rd.randint(lower, upper) if (su.geneType == "int") else rd.uniform(lower, upper)
 
         func = func.replace(var, '(' + str(value) + ')')
     

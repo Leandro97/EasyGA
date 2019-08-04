@@ -6,12 +6,12 @@ import random as rd
 '''Mutation operator'''
 def mutation(chrom, su):
 	if(su.mutation == "flip"):
-		return flipMutation(chrom, su)
+		fit.getFitness(chrom, su)
+		#return flipMutation(chrom, su)
 	elif(su.mutation == "uniform"):
 		return uniformMutation(chrom, su)
-
-	fit.getFitness(chrom, su) #test
-	return chrom #test
+	else:
+		return nonUniformMutation(chrom, su)
 
 def flipMutation(chrom, su):
 	for i in range(len(chrom) - 1):
@@ -29,13 +29,39 @@ def uniformMutation(chrom, su):
 		rand = rd.random()
 		if(rand <= su.mutationRate):
 			if su.geneType == "float":
-				chrom[i] = rd.uniform(domain[0], domain[1])
+				chrom[i] += rd.uniform(domain[0], domain[1])
 			else:
-				chrom[i] = rd.randint(domain[0], domain[1])
+				chrom[i] += rd.randint(domain[0], domain[1])
 		i += 1
 
 	fit.getFitness(chrom, su)
 	return chrom
+
+def nonUniformMutation(chrom, su):
+	i = 0
+
+	for domain in su.varDomain:
+		rand = rd.random()
+		if(rand <= su.mutationRate):
+			if su.geneType == "float":
+				if(rd.random() <= .5):
+					chrom[i] += delta(su.currentGeneration, su.maxGenerations, domain[1] - chrom[i])
+				else:
+					chrom[i] -= delta(su.currentGeneration, su.maxGenerations, chrom[i] - domain[0])
+			else:
+				if(rd.random() <= .5):
+					chrom[i] += int(delta(su.currentGeneration, su.maxGenerations, domain[1] - chrom[i]))
+				else:
+					chrom[i] -= int(delta(su.currentGeneration, su.maxGenerations, chrom[i] - domain[0]))
+		i += 1
+
+	fit.getFitness(chrom, su)
+	return chrom
+
+def delta(currentGen, maxGen, value):
+	rand = rd.random()
+	result = value * (1 - rand**(1 - currentGen/maxGen)) 
+	return result
 
 '''Crossover management'''
 def crossover(su):
@@ -43,7 +69,7 @@ def crossover(su):
 
 	#Initializing roullete
 	if su.selection == "roulette": 
-		sel.init(su)
+		sel.initRoulette(su)
 
 	#New childs are born until the current size of the population is equal to two times the initial size
 	while(su.currentPopulationSize <= 2 * su.populationSize):

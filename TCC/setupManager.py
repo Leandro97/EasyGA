@@ -5,7 +5,6 @@ def createSetups(geneType, bruteVars, func, task, bruteSetups):
 	setupList = []
 	seed = rd.randint(0, 10000)
 
-	i = 0
 	for entry in bruteSetups:
 		newSetup = setup.Setup()
 		newSetup.seed = seed
@@ -43,9 +42,10 @@ def createSetups(geneType, bruteVars, func, task, bruteSetups):
 			newSetup.mutation = "flip"
 		elif(entry[6] == "Uniform"):
 			newSetup.mutation = "uniform"
+		else:
+			newSetup.mutation = "non-uniform"
 	
 		setupList.append(newSetup)
-		i += 1
 	return setupList
 
 def deleteSetup(setupList, index):
