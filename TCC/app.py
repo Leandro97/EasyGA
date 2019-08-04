@@ -79,13 +79,22 @@ class TabPanel(TabbedPanel):
 		return geneType, func, task, nameList
 
 	def updateMutation(self, text):
+		global setupList
+
 		if(text != "Binary string"):
 			self.ids.setupLayout.myScreen.mutation.text = "Uniform"
 			self.ids.setupLayout.myScreen.mutation.values = ["Uniform", "Non-uniform"]
+			self.mutationValues = ["Uniform", "Non-uniform"]
+
+			for setup in setupList:
+				setup[6] = "Uniform"
 		else:
 			self.ids.setupLayout.myScreen.mutation.text = "Flip"
 			self.ids.setupLayout.myScreen.mutation.values = ["Flip"]
+			self.mutationValues = ["Flip"]
 
+			for setup in setupList:
+				setup[6] = "Flip"
 class MyTab(BoxLayout):
 	pass
 
@@ -278,7 +287,7 @@ class MyScreen(Screen):
 	mutationRate = ParamTextInput(text = "0.01")
 
 	selection = Spinner(text = "Roulette", size_hint_y = .7)
-	selection.values = ["Roulette", "Tournament", "3"]
+	selection.values = ["Roulette", "Tournament", "Rank"]
 
 	crossover = Spinner(text = "One point", size_hint_y = .7)
 	crossover.values = ["One point", "Two points", "Uniform"]
@@ -372,9 +381,9 @@ class MyScreen(Screen):
 		global setupNumber
 		global currentSetup
 		currentSetup += 1
-
 		setupNumber += 1
-		setupList.append(["10", "50", "20", "0.01", "Roulette", "One point", "Flip"])
+
+		setupList.append(["10", "50", "20", "0.01", "Roulette", "One point", App.get_running_app().root.mutationValues[0]])
 
 class SetupLayout(BoxLayout):
 	global setupList
