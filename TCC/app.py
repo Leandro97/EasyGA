@@ -278,7 +278,7 @@ class MyScreen(Screen):
 	mutationRate = ParamTextInput(text = "0.01")
 
 	selection = Spinner(text = "Roulette", size_hint_y = .7)
-	selection.values = ["Roulette", "2", "3"]
+	selection.values = ["Roulette", "Tournament", "3"]
 
 	crossover = Spinner(text = "One point", size_hint_y = .7)
 	crossover.values = ["One point", "Two points", "Uniform"]
@@ -490,12 +490,16 @@ class SimulationLayout(BoxLayout):
 
 		target.ids.logScrollView.text = self.finalLog[self.logIndex]
 		self.nameList = nameList
-		self.currentGraph = 1
 
-		target.ids.graphButton1.state = "down"
-		target.ids.graphButton2.state = "normal"
 
-		self.makePlot1()
+		if(self.currentGraph == 1):
+			target.ids.graphButton1.state = "down"
+			target.ids.graphButton2.state = "normal"
+			self.makePlot1()
+		else:
+			target.ids.graphButton2.state = "down"
+			target.ids.graphButton1.state = "normal"
+			self.makePlot2()
 
 	def nextLog(self):
 		try:
