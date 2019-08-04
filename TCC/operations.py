@@ -6,7 +6,7 @@ import random as rd
 '''Mutation operator'''
 def mutation(chrom, su):
 	if(su.mutation == "Flip"):
-		fit.getFitness(chrom, su)
+		return flipMutation(chrom, su)
 	elif(su.mutation == "Uniform"):
 		return uniformMutation(chrom, su)
 	else:
@@ -66,10 +66,6 @@ def delta(currentGen, maxGen, value):
 def crossover(su):
 	newPopulation = []
 
-	#Initializing roullete
-	if su.selection == "Roulette": 
-		sel.initRoulette(su)
-
 	#New childs are born until the current size of the population is equal to two times the initial size
 	while(su.currentPopulationSize <= 2 * su.populationSize):
 		#Choosing first parent
@@ -95,13 +91,8 @@ def crossover(su):
 		else:
 			child1, child2 = uniformCrossover(parent1, parent2, su)
 
-		print(child1)
-		print(child2)
 		mutation(child1, su)
 		mutation(child2, su)
-		print(child1)
-		print(child2)
-		print("###")
 
 		if su.geneType == "Float string":
 			child1, child2 = [round(float(value), 2) for value in child1], [round(float(value), 2) for value in child2] #rounding values
