@@ -44,7 +44,7 @@ nameList = []
 
 class TabPanel(TabbedPanel):
 	global varList
-	#validation_color = ListProperty([0, 1, 0, 1]) #study using properties to block spinners
+	mutationValues = ListProperty(["Flip"]) 
 
 	def __init__(self, **kwargs):
 		super(TabPanel, self).__init__(**kwargs)
@@ -77,6 +77,14 @@ class TabPanel(TabbedPanel):
 			task = "max"
 
 		return geneType, func, task, nameList
+
+	def updateMutation(self, text):
+		if(text != "Binary string"):
+			self.ids.setupLayout.myScreen.mutation.text = "Uniform"
+			self.ids.setupLayout.myScreen.mutation.values = ["Uniform", "Non-uniform"]
+		else:
+			self.ids.setupLayout.myScreen.mutation.text = "Flip"
+			self.ids.setupLayout.myScreen.mutation.values = ["Flip"]
 
 class MyTab(BoxLayout):
 	pass
@@ -276,7 +284,7 @@ class MyScreen(Screen):
 	crossover.values = ["One point", "Two points", "Uniform"]
 
 	mutation = Spinner(text = "Flip", size_hint_y = .7) 
-	mutation.values = ["Flip", "Uniform", "Non-uniform"]
+	mutation.values = ["Flip"]
 
 	validationLabel = ValidationLabel(text = "Parameters are valid!", color = (0, 0, 0, 1))
 
@@ -316,6 +324,9 @@ class MyScreen(Screen):
 		self.makeSpinner(parentLayout, self.mutation, "Mutation strategy", 6)
 		parentLayout.add_widget(self.validationLabel)
 
+	def updateFromSpinner(self, attIndex, aux, text):
+		setupList[currentSetup][attIndex] = text
+
 	def updateFromTextInput(self, attIndex, minValue, maxValue, aux, text):
 		global currentSetup
 
@@ -324,7 +335,6 @@ class MyScreen(Screen):
 				status = int(minValue) <= int(text) <= int(maxValue)
 			else:
 				status = float(minValue) <= float(text) <= float(maxValue)
-				print(status)
 
 			if status:
 				self.unlockInputs()
@@ -333,13 +343,13 @@ class MyScreen(Screen):
 				setupList[currentSetup][attIndex] = text
 			else:
 				self.blockInputs(attIndex)
-				self.validationLabel.invalid("{} must be between {} and {}".format(self.inputNames[attIndex], minValue, maxValue))
+				self.validationLabel.invalid("{} must be between {} and {}!".format(self.inputNames[attIndex], minValue, maxValue))
 		except Exception as e:
 			self.blockInputs(attIndex)
 			if(attIndex != 3):
-				self.validationLabel.invalid("{} must be a integer number".format(self.inputNames[attIndex]))
+				self.validationLabel.invalid("{} must be a integer number!".format(self.inputNames[attIndex]))
 			else:
-				self.validationLabel.invalid("{} must be a float number".format(self.inputNames[attIndex]))
+				self.validationLabel.invalid("{} must be a float number!".format(self.inputNames[attIndex]))
 
 	def blockInputs(self, index):
 		if(index != 0):
@@ -351,15 +361,12 @@ class MyScreen(Screen):
 		if(index != 3):
 			self.mutationRate.disabled = True
 
-
 	def unlockInputs(self):
 		self.populationSize.disabled = False
 		self.maxGenerations.disabled = False
 		self.plateau.disabled = False
 		self.mutationRate.disabled = False
-
-	def updateFromSpinner(self, attIndex, aux, text):
-		setupList[currentSetup][attIndex] = text
+		self.mutation.disabled = False
 
 	def newSetup(self):
 		global setupNumber

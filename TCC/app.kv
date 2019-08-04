@@ -16,6 +16,7 @@
                     id: geneType
                     text: "Binary string"
                     values: ["Binary string", "Integer string", "Float string"]
+                    on_text: root.updateMutation(self.text)
             BoxLayout:
                 size_hint_y: .15
                 canvas.before:
@@ -120,7 +121,8 @@
         text: "Algorithm"
 
         Tab3:
-            SetupLayout:                   
+            SetupLayout:        
+                id: setupLayout           
 
     TabbedPanelItem:
         id: tab4
