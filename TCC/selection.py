@@ -9,20 +9,21 @@ cumulativeProbability = 0
 '''Selection interface'''
 def selectParent(su):
 	if(su.selection == "Roulette"):
-		initRoulette(su)
+		initSelection(su)
 		return roulette(su)
 	elif(su.selection == "Tournament"):
 		return tournament(su)
 	else:
+		#initSelection(su)
 		return rank(su)
 
-'''Initialising selection roulette'''
-def initRoulette(su):
+'''Initialising probability array for roulette and rank selections'''
+def initSelection(su):
 	#This array stores the probability of choosing a individual 
 	global probabilityArray
 	global cumulativeProbability
 
-	probabilityArray = [0.1]
+	probabilityArray = []
 	
 	if su.task == "min":
 		minV, maxV = int(su.population[0][-1]), int(su.population[-1][-1])
@@ -37,9 +38,9 @@ def initRoulette(su):
 			newValue = (value - minV) / (maxV - minV) if (su.task == "min") else (value - maxV) / (minV - maxV)
 		else:
 			newValue = 1.0
-			
+
 		#Calculating selection probability 
-		probabilityArray.append(round(newValue + probabilityArray[i - 1], 2))
+		probabilityArray.append(round(newValue, 2))
 
 	cumulativeProbability = sum(probabilityArray)
 
@@ -49,13 +50,27 @@ def roulette(su):
 	global cumulativeProbability
 
 	probabilityArray = [value/cumulativeProbability for value in probabilityArray]
-	print(probabilityArray)
 	chance = np.random.uniform(0, probabilityArray[-1])
 
 	#If the random number is lesser than the probability, the chromosome is chosen 
 	for i in range(su.populationSize):
 		if chance < probabilityArray[i]:
 			return(i)
+	return 0
+
+'''Rank selection'''
+def rank(su):
+	probabilityArray = []
+
+	for i in range(len(su.population)):
+		probabilityArray.append(su.population[i][-1] / (i + 1)) 
+
+	chance = np.random.uniform(0, probabilityArray[0])
+
+	#If the random number is lesser than the probability, the chromosome is chosen 
+	for i in reversed(range(su.populationSize)):
+		if chance < probabilityArray[i]:
+			return i
 	return 0
 
 '''Tournament selection'''
@@ -80,7 +95,3 @@ def tournament(su):
 		return index1
 	else:
 		return index2	
-
-'''Rank selection'''
-def rank(su):
-	pass

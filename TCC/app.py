@@ -537,6 +537,7 @@ class SimulationLayout(BoxLayout):
 		box.add_widget(Button(text = "Ok", on_press = lambda x : popup.dismiss()))
 		
 	def makePlot1(self):
+		self.currentGraph = 1
 		if not self.plotFitnessLog:
 			return
 
@@ -544,9 +545,9 @@ class SimulationLayout(BoxLayout):
 		target = App.get_running_app().root
 		target.ids.image.clear_widgets()
 		target.ids.image.add_widget(FigureCanvasKivyAgg(plt.pyplot.gcf()))
-		self.currentGraph = 1
 
 	def makePlot2(self):
+		self.currentGraph = 2
 		if not self.plotGenerationLog:
 			return
 			
@@ -554,7 +555,6 @@ class SimulationLayout(BoxLayout):
 		target = App.get_running_app().root
 		target.ids.image.clear_widgets()
 		target.ids.image.add_widget(FigureCanvasKivyAgg(plt.pyplot.gcf()))
-		self.currentGraph = 2
 
 	def showPlot(self):
 		if(self.currentGraph == 1):
