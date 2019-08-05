@@ -39,6 +39,7 @@ def initSelection(su):
 		else:
 			newValue = 1.0
 
+		newValue = 0.01 if newValue == 0 else newValue
 		#Calculating selection probability 
 		probabilityArray.append(round(newValue, 2))
 
@@ -55,7 +56,7 @@ def roulette(su):
 	#If the random number is lesser than the probability, the chromosome is chosen 
 	for i in range(su.populationSize):
 		if chance < probabilityArray[i]:
-			return(i)
+			return i
 	return 0
 
 '''Rank selection'''

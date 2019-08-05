@@ -26,8 +26,13 @@ def getFitness(chrom, su):
 
         func = func.replace(var, '(' + str(value) + ')')
     
+    try:
+        result = eval(func)
+    except NameError as e:
+        return (False, e)
+    except:
+        return (False, False)
 
-    result = eval(func)
     chrom[-1] = result
 
     if su.geneType == "Float string":
@@ -58,8 +63,12 @@ def binaryFitness(chrom, su):
         func = func.replace(var, '(' + str(value) + ')')
         begin = end
 
+    try:
+        result = eval(func)
+    except NameError as e:
+        return (False, e)
+    except:
+        return (False, False)
 
-    result = eval(func)
     chrom[-1] = result
-
     return chrom

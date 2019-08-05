@@ -18,8 +18,7 @@ def flipMutation(chrom, su):
 		if(rand <= su.mutationRate):
 			chrom[i] = '0' if chrom[i] == '1' else '1'
 
-	fit.getFitness(chrom, su)
-	return chrom
+	return fit.getFitness(chrom, su)
 
 def uniformMutation(chrom, su):
 	i = 0
@@ -33,8 +32,7 @@ def uniformMutation(chrom, su):
 				chrom[i] += rd.randint(domain[0], domain[1])
 		i += 1
 
-	fit.getFitness(chrom, su)
-	return chrom
+	return fit.getFitness(chrom, su)
 
 def nonUniformMutation(chrom, su):
 	i = 0
@@ -54,8 +52,7 @@ def nonUniformMutation(chrom, su):
 					chrom[i] -= int(delta(su.currentGeneration, su.maxGenerations, chrom[i] - domain[0]))
 		i += 1
 
-	fit.getFitness(chrom, su)
-	return chrom
+	return fit.getFitness(chrom, su)
 
 def delta(currentGen, maxGen, value):
 	rand = rd.random()
@@ -91,21 +88,30 @@ def crossover(su):
 		else:
 			child1, child2 = uniformCrossover(parent1, parent2, su)
 
-		mutation(child1, su)
-		mutation(child2, su)
+		aux1 = mutation(child1, su)
+		aux2 = mutation(child2, su)
 
+		#print(aux1, aux2)
 		if su.geneType == "Float string":
-			child1, child2 = [round(float(value), 2) for value in child1], [round(float(value), 2) for value in child2] #rounding values
+			if aux1[0]:
+				child1 = [round(float(value), 2) for value in child1] #rounding values
+			if aux2[0]:
+				child2 = [round(float(value), 2) for value in child2] #rounding values
 
 		#Adding child to population 
-		newPopulation.append(child1)
-		newPopulation.append(child2)
-		su.currentPopulationSize += 2
+		if aux1[0]:
+			newPopulation.append(child1)
+			su.currentPopulationSize += 1
+
+		if aux2[0]:
+			newPopulation.append(child2)
+			su.currentPopulationSize += 1
 
 	#Saving best individual of current generation
 	best = su.population[0]
 	su.population = newPopulation
 	su.population.append(best)
+	#print(su.population)
 	#print('######')
 
 '''One point crossover'''

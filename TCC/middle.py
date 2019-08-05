@@ -134,9 +134,11 @@ def init(su):
         else:
             su.varLength.append(1)
 
-
+    i = 0
     '''Initial population starts the proccess with random values'''
-    for i in range (su.populationSize):
+    while True:
+        if(i == su.populationSize) : break
+
         su.population.append([])
         aux = 0
         for domain in su.varDomain:
@@ -156,11 +158,15 @@ def init(su):
                 floatVar = rd.uniform(domain[0], domain[1])
                 su.population[i].append(floatVar)
 
-        su.population[i].append(0)
+        su.population[i].append(None)
     
-    '''Calculating the fitness of the initial population'''
-    for chrom in su.population:
-        fit.getFitness(chrom, su)
+        '''Calculating the fitness of the initial population'''
+        fit.getFitness(su.population[i], su)
+
+        if(su.population[i][-1] == None):
+            del su.population[i]
+        else:
+            i += 1
 
     op.sort(su) #Sorting the individuals according to fitnessHistory
     su.currentGeneration = 1
