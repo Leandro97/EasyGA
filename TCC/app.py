@@ -20,6 +20,7 @@ from kivy.garden.matplotlib.backend_kivyagg import FigureCanvasKivyAgg
 from kivy.graphics import Rectangle, Color
 from kivy.lang import Builder
 
+#apêndice de instalação docker ou bibliotecas
 
 import time, threading
 from functools import partial
