@@ -54,9 +54,11 @@ class TabPanel(TabbedPanel):
 		newVar = MyLabel()
 		newVar.setVar("x1")
 
+		#bind to check values and swap if minValue > maxValue
 		minValue = VarTextInput()
 		minValue.setVar("0")
 
+		#bind to check values and swap if minValue > maxValue
 		maxValue = VarTextInput()
 		maxValue.setVar("10")
 

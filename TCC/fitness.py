@@ -63,6 +63,8 @@ def binaryFitness(chrom, su):
         func = func.replace(var, '(' + str(value) + ')')
         begin = end
 
+    #result = eval(func)
+    #SyntaxError
     try:
         result = eval(func)
     except NameError as e:
