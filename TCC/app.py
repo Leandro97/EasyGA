@@ -30,6 +30,7 @@ TODO
 import time, threading
 from functools import partial
 import middle as mid
+import fitness as fit
 import record as rec
 import plotter as plt  
 
@@ -502,8 +503,23 @@ class SimulationLayout(BoxLayout):
 		target = App.get_running_app().root
 		geneType, func, self.task, nameList = target.getParams()
 
+		check = fit.checkFunction(func, len(varList))
+
+		if not check[0]:
+			print(check[1])
+			#TODO: fazer popup de erro
+			target.ids.logScrollView.text = ""
+			target.ids.image.clear_widgets()
+			return
+
 		#self.finalLog, self.plotFitnessLog, self.plotGenerationLog = mid.main(geneType, varList, func, self.task, setupList, nameList, int(target.ids.simulationNumber.text))
-		self.finalLog, self.plotFitnessLog, self.plotGenerationLog = mid.main(geneType, varList, func, self.task, setupList, nameList, 1)
+		self.finalLog, self.plotFitnessLog, self.plotGenerationLog = mid.main(geneType, varList, func, self.task, setupList, nameList, 10)
+
+		if self.finalLog == False:
+			#TODO: fazer popup de erro
+			target.ids.logScrollView.text = ""
+			target.ids.image.clear_widgets()
+			return
 
 		target.ids.logScrollView.text = self.finalLog[self.logIndex]
 		self.nameList = nameList

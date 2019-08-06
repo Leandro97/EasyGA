@@ -42,6 +42,9 @@ def simulation(tests, su):
         sim['id'] = i + 1
         sim['last'], sim['champion'], sim['history'] = evolve(su)
 
+        if(sim['last'] == False):
+            return False
+
         fitnessSum += float(str(sim['champion'][-1]))
         simList.append(sim)
         generationHistory.append((sim['id'], sim['last']))
@@ -62,6 +65,7 @@ def simulation(tests, su):
     rec.record(bestIndividual, average, log, su) #saving simulation report
     plotFitnessLog.append(bestIndividual['history'])
     plotGenerationLog.append(generationHistory)
+    return True
 
 def logWriter(su, champion):
     if(su.geneType == "Float string"):
@@ -80,7 +84,10 @@ def evolve(su):
     fitnessHistory = [] #stores a (generation, fitness) pair. Will be used on plotting
     last = 1 #Last generation where the champion changed
     counter = 0 #Counts how many generations the champion remains the same
-    init(su)
+    check = init(su)
+
+    if not check:
+        return False, False, False
 
     #Recording first generation
     champion = list(su.population[0])
@@ -135,9 +142,12 @@ def init(su):
             su.varLength.append(1)
 
     i = 0
+    counter = 0 
     '''Initial population starts the proccess with random values'''
     while True:
         if(i == su.populationSize) : break
+        if(counter == su.populationSize):
+            return False
 
         su.population.append([])
         aux = 0
@@ -165,11 +175,14 @@ def init(su):
 
         if(su.population[i][-1] == None):
             del su.population[i]
+            counter += 1
         else:
+            counter = 0
             i += 1
 
     op.sort(su) #Sorting the individuals according to fitnessHistory
     su.currentGeneration = 1
+    return True 
 
 def main(geneType, bruteVars, func, task, bruteSetups, nameList, simulationNumber):
     global plotFitnessLog
@@ -183,7 +196,10 @@ def main(geneType, bruteVars, func, task, bruteSetups, nameList, simulationNumbe
     setupList = suManager.createSetups(geneType, bruteVars, func, task, bruteSetups)
 
     for entry in setupList:
-        simulation(simulationNumber, entry)
+        check = simulation(simulationNumber, entry)
+
+        if not check:
+            return False, False, False
 
     textLog = []
     i = 0
