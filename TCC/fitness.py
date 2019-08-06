@@ -1,6 +1,24 @@
 import math as math
 from math import *
 import random as rd
+import re
+
+def checkFunction(func, varLength):
+    aux = func
+    for i in range(varLength):  
+        var = 'x' + str(i + 1)
+        aux = re.sub(r'\b' + var + r'\b', "(1)", aux)
+
+    try:
+        result = eval(aux)
+    except NameError as e:
+        return (False, e)
+    except SyntaxError as e:
+        return (False, e)
+    except:
+        return (True, True)
+         
+    return (True, True)
 
 def getFitness(chrom, su):
     if (su.geneType == "Binary string"):
@@ -24,7 +42,7 @@ def getFitness(chrom, su):
             value = rd.randint(lower, upper) if (su.geneType == "Integer string") else rd.uniform(lower, upper)
             chrom[i] = value
 
-        func = func.replace(var, '(' + str(value) + ')')
+        func = re.sub(r"\b" + var + r"\b", '(' + str(value) + ')', func)
     
     try:
         result = eval(func)
@@ -46,6 +64,8 @@ def binaryFitness(chrom, su):
     begin = 0
 
     for i in range(len(su.varLength)):
+        var = 'x' + str(i + 1)
+        
         end = begin + su.varLength[i]
 
         aux = chrom[begin: end].copy()
@@ -59,12 +79,9 @@ def binaryFitness(chrom, su):
         #Replacing values
         chrom[begin] = '1' if (chrom[begin] == '-') else '0'
 
-        var = 'x' + str(i + 1)
-        func = func.replace(var, '(' + str(value) + ')')
+        func = re.sub(r"\b" + var + r"\b", '(' + str(value) + ')', func)
         begin = end
 
-    #result = eval(func)
-    #SyntaxError
     try:
         result = eval(func)
     except NameError as e:
