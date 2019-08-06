@@ -54,7 +54,7 @@ def ordinal(number):
 def record(bestIndividual, average, log, su):
 	'''Adding a heading to the file containing the setup chosen by the user'''
 	su.log.append(" Function: {}\n".format(su.function.replace(" ", "")))
-
+	su.log.append(" Domain: {}\n".format(su.varDomain))
 	task = "Maximize" if su.task == "max" else "Minimize"
 	su.log.append(" Objective: {}\n\n".format(task))
 
