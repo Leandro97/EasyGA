@@ -91,28 +91,33 @@ def crossover(su):
 		aux1 = mutation(child1, su)
 		aux2 = mutation(child2, su)
 
-		#print(aux1, aux2)
 		if su.geneType == "Float string":
 			if aux1[0]:
 				child1 = [round(float(value), 2) for value in child1] #rounding values
 			if aux2[0]:
 				child2 = [round(float(value), 2) for value in child2] #rounding values
 
-		#Adding child to population 
-		if aux1[0]:
-			newPopulation.append(child1)
-			su.currentPopulationSize += 1
+		counter = 0 
 
-		if aux2[0]:
-			newPopulation.append(child2)
-			su.currentPopulationSize += 1
+		while True:
+			#Adding child to population 
+			if aux1[0]:
+				newPopulation.append(child1)
+				su.currentPopulationSize += 1
+
+			if aux2[0]:
+				newPopulation.append(child2)
+				su.currentPopulationSize += 1
+
+			counter += 1
+
+			if(counter == su.populationSize):
+				return
 
 	#Saving best individual of current generation
 	best = su.population[0]
 	su.population = newPopulation
 	su.population.append(best)
-	#print(su.population)
-	#print('######')
 
 '''One point crossover'''
 def onePointCrossover(parent1, parent2, su):

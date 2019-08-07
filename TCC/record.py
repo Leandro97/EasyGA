@@ -71,9 +71,10 @@ def record(bestIndividual, average, log, su):
 	'''Simulation result'''
 	if su.geneType != "Float string":
 		champion = [int(value) for value in bestIndividual['champion'][:-1]]
-		champion.append(bestIndividual["champion"][-1])
+		champion.append(round(bestIndividual["champion"][-1], 3))
 	else:
 		champion = bestIndividual["champion"]
+		champion[-1] = round(champion[-1], 3)
 
 	su.log.append("\n -> Best simulation: #{}.".format(bestIndividual["id"]))
 	su.log.append("\n -> Champion: {}. Achieved in the {} generation.".format(champion, ordinal(bestIndividual["last"])))

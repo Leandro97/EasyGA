@@ -69,7 +69,7 @@ def simulation(tests, su):
 
 def logWriter(su, champion):
     if(su.geneType == "Float string"):
-        log.append(" Generation " + str(su.currentGeneration) + " - Champion: " + str([round(value, 2) for value in champion]) + "\n")
+        log.append(" Generation " + str(su.currentGeneration) + " - Champion: " + str([round(value, 3) for value in champion]) + "\n")
     elif(su.geneType == "int"):
         log.append(" Generation " + str(su.currentGeneration) + " - Champion: " + str(champion) + "\n")
     else:
@@ -117,7 +117,6 @@ def evolve(su):
 
         #Verifying if plateu was reached 
         if(counter == su.plateau): break
-        #print("###")
     return last, champion, fitnessHistory
 
 '''
@@ -146,7 +145,7 @@ def init(su):
     '''Initial population starts the proccess with random values'''
     while True:
         if(i == su.populationSize) : break
-        if(counter == su.populationSize):
+        if(counter == 2 * su.populationSize):
             return False
 
         su.population.append([])
@@ -166,7 +165,7 @@ def init(su):
                 su.population[i].append(intVar)
             else:
                 floatVar = rd.uniform(domain[0], domain[1])
-                su.population[i].append(floatVar)
+                su.population[i].append(round(floatVar, 3))
 
         su.population[i].append(None)
     
@@ -179,6 +178,7 @@ def init(su):
         else:
             counter = 0
             i += 1
+
 
     op.sort(su) #Sorting the individuals according to fitnessHistory
     su.currentGeneration = 1

@@ -63,7 +63,7 @@ class TabPanel(TabbedPanel):
 
 		#bind to check values and swap if minValue > maxValue
 		minValue = VarTextInput()
-		minValue.setVar("0")
+		minValue.setVar("-10")
 
 		#bind to check values and swap if minValue > maxValue
 		maxValue = VarTextInput()
@@ -434,6 +434,7 @@ class SetupLayout(BoxLayout):
 
 class Tab1(MyTab):
 	global varList
+
 	def addVar(self, value):
 		global varCounter
 		varCounter += 1
@@ -443,7 +444,7 @@ class Tab1(MyTab):
 		newVar.setVar("x" + str(varCounter))
 
 		minValue = VarTextInput()
-		minValue.setVar("0")
+		minValue.setVar("-10")
 
 		maxValue = VarTextInput()
 		maxValue.setVar("10")
@@ -499,6 +500,13 @@ class SimulationLayout(BoxLayout):
 	def __init__(self, **kwargs):
 		super(SimulationLayout, self).__init__(**kwargs)
 
+	def warningPopup(self, message):
+		box = BoxLayout(orientation = "vertical", spacing = "20dp")
+		popup = Popup(title = "Warning!", content = box, size_hint = (.7, .28))
+		popup.open()
+		box.add_widget(Label(text = message))
+		box.add_widget(Button(text = "Ok", on_press = lambda x : popup.dismiss()))
+
 	def evolve(self):
 		target = App.get_running_app().root
 		geneType, func, self.task, nameList = target.getParams()
@@ -506,19 +514,18 @@ class SimulationLayout(BoxLayout):
 		check = fit.checkFunction(func, len(varList))
 
 		if not check[0]:
-			print(check[1])
-			#TODO: fazer popup de erro
 			target.ids.logScrollView.text = ""
 			target.ids.image.clear_widgets()
+			self.warningPopup(check[1])
 			return
 
 		#self.finalLog, self.plotFitnessLog, self.plotGenerationLog = mid.main(geneType, varList, func, self.task, setupList, nameList, int(target.ids.simulationNumber.text))
 		self.finalLog, self.plotFitnessLog, self.plotGenerationLog = mid.main(geneType, varList, func, self.task, setupList, nameList, 10)
 
 		if self.finalLog == False:
-			#TODO: fazer popup de erro
 			target.ids.logScrollView.text = ""
 			target.ids.image.clear_widgets()
+			self.warningPopup("Function could not be evaluated. Verify your function and domain of the variables.")
 			return
 
 		target.ids.logScrollView.text = self.finalLog[self.logIndex]
