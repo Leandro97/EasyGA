@@ -530,7 +530,7 @@ class SimulationLayout(BoxLayout):
 			target.ids.graphButton2.state = "normal"
 			self.makePlot1()
 		else:
-			target.ids.graphButton2	.state = "down"
+			target.ids.graphButton2.state = "down"
 			target.ids.graphButton1.state = "normal"
 			self.makePlot2()
 
