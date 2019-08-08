@@ -23,7 +23,6 @@ from kivy.lang import Builder
 '''
 TODO
 - Apêndice de instalação do docker ou bibliotecas
-- Verificar sintaxe da função
 - Popup de ajuda mostrando sintaxe
 '''
 
@@ -40,7 +39,7 @@ Config.set('input', 'mouse', 'mouse,multitouch_on_demand')
 Config.set('graphics', 'width', '700dp')
 Config.set('graphics', 'height', '0dp')
 
-varList = [] #Guarda pares (minValue, maxValue)
+varList = [] #Stores (minValue, maxValue) pairs
 varCounter = 1
 
 setupList = []
@@ -49,13 +48,20 @@ currentSetup = 0
 
 nameList = []
 
+def warningPopup(message):
+		box = BoxLayout(orientation = "vertical", spacing = "20dp")
+		popup = Popup(title = "Warning!", content = box, size_hint = (.7, .28))
+		popup.open()
+		box.add_widget(Label(text = message))
+		box.add_widget(Button(text = "Ok", on_press = lambda x : popup.dismiss()))
+
 class TabPanel(TabbedPanel):
 	global varList
+	global varCounter
 	mutationValues = ListProperty(["Flip"]) 
 
 	def __init__(self, **kwargs):
 		super(TabPanel, self).__init__(**kwargs)
-		self.validStatus = True
 
 		#Tab1
 		newVar = MyLabel()
@@ -64,10 +70,12 @@ class TabPanel(TabbedPanel):
 		#bind to check values and swap if minValue > maxValue
 		minValue = VarTextInput()
 		minValue.setVar("-10")
+		minValue.bind(text = partial(self.validateVars, varCounter - 1, 0))
 
 		#bind to check values and swap if minValue > maxValue
 		maxValue = VarTextInput()
 		maxValue.setVar("10")
+		maxValue.bind(text = partial(self.validateVars, varCounter - 1, 1))
 
 		self.ids.varScrollView.add_widget(newVar)
 		self.ids.varScrollView.add_widget(minValue)
@@ -87,23 +95,65 @@ class TabPanel(TabbedPanel):
 
 		return geneType, func, task, nameList
 
-	def updateMutation(self, text):
+	def updateType(self, text):
 		global setupList
+		global varList
+		mutationArray = []
 
 		if(text != "Binary string"):
-			self.ids.setupLayout.myScreen.mutation.text = "Uniform"
-			self.ids.setupLayout.myScreen.mutation.values = ["Uniform", "Non-uniform"]
-			self.mutationValues = ["Uniform", "Non-uniform"]
-
-			for setup in setupList:
-				setup[6] = "Uniform"
+			mutationArray = ["Uniform", "Non-uniform"]
 		else:
-			self.ids.setupLayout.myScreen.mutation.text = "Flip"
-			self.ids.setupLayout.myScreen.mutation.values = ["Flip"]
-			self.mutationValues = ["Flip"]
+			mutationArray = ["Flip"]
 
-			for setup in setupList:
-				setup[6] = "Flip"
+		self.ids.setupLayout.myScreen.mutation.text = mutationArray[0]
+		self.ids.setupLayout.myScreen.mutation.values = mutationArray
+		self.mutationValues = mutationArray
+
+		for setup in setupList:
+			setup[6] = mutationArray[0]
+
+		if self.ids.geneType.text != "float":
+			for var in varList:
+				var[0].text = str(int(float(var[0].text)))
+				var[1].text = str(int(float(var[1].text)))
+
+	def validateVars(self, varIndex, valueIndex, aux, text):
+		global varList
+		try:
+			if(self.ids.geneType.text != "Float string"):
+				int(varList[varIndex][valueIndex].text)
+			else:
+				float(varList[varIndex][valueIndex].text)
+
+			self.unlockInputs()
+		except Exception as e:
+			self.blockInputs(varIndex, valueIndex)
+
+			geneType = "float" if(self.ids.geneType.text == "Float string") else "integer"
+			#warningPopup("Variable boundary needs to be a {} number!".format(geneType))
+
+	def blockInputs(self, varIndex, valueIndex):
+		self.validTab1 = False
+		self.ids.geneType.disabled = True
+
+		for i in range(len(varList)):
+			if i == varIndex:
+				if valueIndex == 0:
+					varList[i][1].disabled = True
+				else:
+					varList[i][0].disabled = True 
+			else:
+				varList[i][0].disabled = True
+				varList[i][1].disabled = True 
+
+	def unlockInputs(self):
+		self.validTab1 = True
+		self.ids.geneType.disabled = False		
+
+		for i in range(len(varList)):
+			varList[i][0].disabled = False
+			varList[i][1].disabled = False
+
 class MyTab(BoxLayout):
 	pass
 
@@ -150,7 +200,6 @@ class SetupBar(BoxLayout):
 	def load(self, dt):
 		global setupNumber
 		global nameList
-		#spinnerLayout = BoxLayout(spacing = "0dp")
 
 		self.spinner.bind(text = self.parent.updateScreen)
 		self.spinner.text = "Setup 1"
@@ -171,7 +220,6 @@ class SetupBar(BoxLayout):
 		self.add_widget(self.newSetupButton)
 		self.add_widget(self.removeButton)
 
-	#colocar limite de caracteres
 	def doPopUp(self):
 		box = BoxLayout(orientation = "vertical", spacing = "20dp")
 		insideBox = BoxLayout(spacing = "20dp", size_hint_y = .5)
@@ -278,11 +326,11 @@ class ValidationLabel(Label):
 	def invalid(self, message):
 		self.rgba = [1, 0, 0, .15]
 		self.text = message
-		App.get_running_app().root.validStatus = False
+		App.get_running_app().root.validTab3 = False
 
 	def valid(self):
 		self.rgba = [0, 0, 1, .15]
-		App.get_running_app().root.validStatus = True
+		App.get_running_app().root.validTab3 = True
 
 class MyScreen(Screen):
 	global setupNumber
@@ -333,9 +381,9 @@ class MyScreen(Screen):
 		parentLayout = GridLayout(cols = 2, spacing = "10dp")
 
 		self.add_widget(parentLayout)
-		self.makeTextInput(parentLayout, self.populationSize, "Population size", 4, 200, 0)
-		self.makeTextInput(parentLayout, self.maxGenerations, "Number of generations", 1, 500, 1)
-		self.makeTextInput(parentLayout, self.plateau, "Plateau", 1, 500, 2)
+		self.makeTextInput(parentLayout, self.populationSize, "Population size", 10, 1000, 0)
+		self.makeTextInput(parentLayout, self.maxGenerations, "Number of generations", 1, 1000, 1)
+		self.makeTextInput(parentLayout, self.plateau, "Plateau", 1, 1000, 2)
 		self.makeTextInput(parentLayout, self.mutationRate, "Mutation rate", 0, 1, 3)
 		self.makeSpinner(parentLayout, self.selection, "Selection strategy", 4)
 		self.makeSpinner(parentLayout, self.crossover, "Crossover strategy", 5)
@@ -445,14 +493,16 @@ class Tab1(MyTab):
 
 		minValue = VarTextInput()
 		minValue.setVar("-10")
+		minValue.bind(text = partial(self.parent.parent.validateVars, varCounter - 1, 0))
 
 		maxValue = VarTextInput()
 		maxValue.setVar("10")
+		maxValue.bind(text = partial(self.parent.parent.validateVars, varCounter - 1, 1))
 
 		target.ids.varScrollView.add_widget(newVar)
 		target.ids.varScrollView.add_widget(minValue)
 		target.ids.varScrollView.add_widget(maxValue)
-		varList.append([minValue, maxValue])
+		varList.append((minValue, maxValue))
 
 		target.ids.varScrollView.height += value
 
@@ -500,13 +550,6 @@ class SimulationLayout(BoxLayout):
 	def __init__(self, **kwargs):
 		super(SimulationLayout, self).__init__(**kwargs)
 
-	def warningPopup(self, message):
-		box = BoxLayout(orientation = "vertical", spacing = "20dp")
-		popup = Popup(title = "Warning!", content = box, size_hint = (.7, .28))
-		popup.open()
-		box.add_widget(Label(text = message))
-		box.add_widget(Button(text = "Ok", on_press = lambda x : popup.dismiss()))
-
 	def evolve(self):
 		target = App.get_running_app().root
 		geneType, func, self.task, nameList = target.getParams()
@@ -516,21 +559,20 @@ class SimulationLayout(BoxLayout):
 		if not check[0]:
 			target.ids.logScrollView.text = ""
 			target.ids.image.clear_widgets()
-			self.warningPopup(check[1])
+			warningPopup(check[1])
 			return
 
 		#self.finalLog, self.plotFitnessLog, self.plotGenerationLog = mid.main(geneType, varList, func, self.task, setupList, nameList, int(target.ids.simulationNumber.text))
-		self.finalLog, self.plotFitnessLog, self.plotGenerationLog = mid.main(geneType, varList, func, self.task, setupList, nameList, 10)
+		self.finalLog, self.plotFitnessLog, self.plotGenerationLog = mid.main(geneType, varList, func, self.task, setupList, nameList, 1)
 
 		if self.finalLog == False:
 			target.ids.logScrollView.text = ""
 			target.ids.image.clear_widgets()
-			self.warningPopup("Function could not be evaluated. Verify your function and domain of the variables.")
+			warningPopup("Function could not be evaluated. Verify your function and domain of the variables.")
 			return
 
 		target.ids.logScrollView.text = self.finalLog[self.logIndex]
 		self.nameList = nameList
-
 
 		if(self.currentGraph == 1):
 			target.ids.graphButton1.state = "down"

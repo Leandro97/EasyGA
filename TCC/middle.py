@@ -184,7 +184,7 @@ def init(su):
     su.currentGeneration = 1
     return True 
 
-def main(geneType, bruteVars, func, task, bruteSetups, nameList, simulationNumber):
+def main(geneType, varList, func, task, bruteSetups, nameList, simulationNumber):
     global plotFitnessLog
     global plotGenerationLog
     global log
@@ -193,7 +193,7 @@ def main(geneType, bruteVars, func, task, bruteSetups, nameList, simulationNumbe
     plotGenerationLog = []
     log = []
 
-    setupList = suManager.createSetups(geneType, bruteVars, func, task, bruteSetups)
+    setupList = suManager.createSetups(geneType, varList, func, task, bruteSetups)
 
     for entry in setupList:
         check = simulation(simulationNumber, entry)

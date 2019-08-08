@@ -50,7 +50,7 @@ def roulette(su):
 	global probabilityArray
 	global cumulativeProbability
 
-	probabilityArray = [value/cumulativeProbability for value in probabilityArray]
+	probabilityArray = [value/cumulativeProbability for value in probabilityArray] if cumulativeProbability != 0 else [1/len(probabilityArray) for value in probabilityArray]
 	chance = np.random.uniform(0, probabilityArray[-1])
 
 	#If the random number is lesser than the probability, the chromosome is chosen 

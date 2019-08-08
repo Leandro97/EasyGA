@@ -1,5 +1,6 @@
 <TabPanel>:
-    validStatus: True
+    validTab1: True
+    validTab3: True
     do_default_tab: False
     tab_width: self.width / 4
     TabbedPanelItem:
@@ -16,7 +17,7 @@
                     id: geneType
                     text: "Binary string"
                     values: ["Binary string", "Integer string", "Float string"]
-                    on_text: root.updateMutation(self.text)
+                    on_text: root.updateType(self.text)
             BoxLayout:
                 size_hint_y: .15
                 canvas.before:
@@ -91,7 +92,7 @@
                         size_hint: .8, .6        
                         text: "x1"
                 MyLabel:
-                    text: "Example: x1**x3 - sin(exp(x2)) + log(x1)"
+                    text: "Example: x1**x3 - sin(e**x2)/(x2 - 5) + log(x1)"
 
             BoxLayout:
                 BoxLayout:
@@ -188,7 +189,7 @@
                         size_hint_y: .1
                         text: "Evolve!"
                         on_press: self.parent.parent.evolve()
-                        disabled: not (root.validStatus and True)
+                        disabled: not (root.validTab1 and root.validTab3)
 
                 #Right Layout        
                 BoxLayout:

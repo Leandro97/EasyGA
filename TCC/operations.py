@@ -104,10 +104,12 @@ def crossover(su):
 			if aux1[0]:
 				newPopulation.append(child1)
 				su.currentPopulationSize += 1
+				break
 
 			if aux2[0]:
 				newPopulation.append(child2)
 				su.currentPopulationSize += 1
+				break
 
 			counter += 1
 

@@ -1,7 +1,7 @@
 import setup
 import random as rd
 
-def createSetups(geneType, bruteVars, func, task, bruteSetups):
+def createSetups(geneType, varList, func, task, bruteSetups):
 	setupList = []
 	seed = rd.randint(0, 10000)
 
@@ -14,7 +14,7 @@ def createSetups(geneType, bruteVars, func, task, bruteSetups):
 		newSetup.task = task
 		newSetup.geneType = geneType
 
-		for var in bruteVars:
+		for var in varList:
 			newSetup.varDomain.append([int(var[0].text), int(var[1].text)])
 
 		newSetup.populationSize = int(entry[0])
