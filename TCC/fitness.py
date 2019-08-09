@@ -71,7 +71,6 @@ def binaryFitness(chrom, su):
         end = begin + su.varLength[i]
 
         aux = chrom[begin: end].copy()
-        aux[0] = "-" if (aux[0] == "1") else "0"
         value = int(''.join(aux), 2)
 
         if(value < su.varDomain[i][0] or value > su.varDomain[i][1]):

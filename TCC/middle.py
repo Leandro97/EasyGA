@@ -179,7 +179,6 @@ def init(su):
             counter = 0
             i += 1
 
-
     op.sort(su) #Sorting the individuals according to fitnessHistory
     su.currentGeneration = 1
     return True 

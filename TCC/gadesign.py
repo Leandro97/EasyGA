@@ -49,11 +49,11 @@ currentSetup = 0
 nameList = []
 
 def warningPopup(message):
-		box = BoxLayout(orientation = "vertical", spacing = "20dp")
-		popup = Popup(title = "Warning!", content = box, size_hint = (.7, .28))
-		popup.open()
-		box.add_widget(Label(text = message))
-		box.add_widget(Button(text = "Ok", on_press = lambda x : popup.dismiss()))
+	box = BoxLayout(orientation = "vertical", spacing = "20dp")
+	popup = Popup(title = "Warning!", content = box, size_hint = (.8, .28))
+	popup.open()
+	box.add_widget(Label(text = message))
+	box.add_widget(Button(text = "Ok", on_press = lambda x : popup.dismiss()))
 
 class TabPanel(TabbedPanel):
 	global varList
@@ -94,6 +94,47 @@ class TabPanel(TabbedPanel):
 			task = "max"
 
 		return geneType, func, task, nameList
+
+	def syntaxHelper(self):
+		text1 = (
+		  f"""[size=20]Basic operations[/size]\n"""
+		  f"""Addition: x1 + x2\n"""
+		  f"""Subtraction: x1 - x2\n"""
+		  f"""Multiplication: x1 * x2\n"""
+		  f"""Division: x1 / x2\n\n"""
+
+		  f"""[size=20]Especial functions[/size]\n"""
+		  f"""Floor: floor(x1)\n"""
+		  f"""Ceiling: ceil(x1)\n"""
+		  f"""x1 to the power x2: pow(x1, x2) or x1**x2\n"""
+		  f"""Natural logarithm: log(x1)\n"""
+		  f"""Base-x2 logarithm: log(x1, x2)\n\n"""
+		  )
+
+		text2 = (
+		  f"""[size=20]Constants[/size]\n"""
+		  f"""Euler's number: e\n"""
+		  f"""Pi: pi\n"""
+		  f"""Tau: tau\n\n"""
+
+
+		  f"""[size=20]Trigonometric functions[/size]\n"""
+		  f"""Sine, arc sine: sin(x1), asin(x1)\n"""
+		  f"""Cosine, arc cosine: cos(x1), acos(x1)\n"""
+		  f"""Tangent, arc tangent: tan(x1), atan(x1)\n"""
+		  f"""From radians to degrees: degrees(x1)\n"""
+		  f"""From degrees to radians: radians(x1)\n\n"""
+		)
+
+		box = BoxLayout(orientation = "vertical", spacing = "20dp")
+		insideBox = BoxLayout(spacing = "20dp")
+		insideBox.add_widget(Label(text = text1, markup=True))
+		insideBox.add_widget(Label(text = text2, markup=True))
+		popup = Popup(title = "What can I do?", content = box, size_hint = (.8, .8))
+		popup.open()
+
+		box.add_widget(insideBox)
+		box.add_widget(Button(text = "Ok", size_hint_y = 0.1, on_press = lambda x : popup.dismiss()))
 
 	def updateType(self, text):
 		global setupList
@@ -482,7 +523,7 @@ class SetupLayout(BoxLayout):
 class Tab1(MyTab):
 	global varList
 
-	def addVar(self, value):
+	def addVar(self):
 		global varCounter
 		varCounter += 1
 		target = self.parent.parent
@@ -503,9 +544,9 @@ class Tab1(MyTab):
 		target.ids.varScrollView.add_widget(maxValue)
 		varList.append((minValue, maxValue))
 
-		target.ids.varScrollView.height += value
+		target.ids.varScrollView.height += 50
 
-	def removeVar(self, value):
+	def removeVar(self):
 		global varCounter
 		global varList
 
@@ -519,7 +560,7 @@ class Tab1(MyTab):
 		
 		varCounter -= 1
 		del varList[-1]
-		target.ids.varScrollView.height -= value
+		target.ids.varScrollView.height -= 50
 
 class Tab2(MyTab):
 	pass
@@ -558,6 +599,7 @@ class SimulationLayout(BoxLayout):
 	def click(self):
 		target = App.get_running_app().root
 		target.ids.image.add_widget(FigureCanvasKivyAgg(plt.pyplot.gcf()))
+		target.ids.image.clear_widgets()
 		self.evolvePopUp()
 
 		mythread = threading.Thread(target = self.evolve)
@@ -574,14 +616,16 @@ class SimulationLayout(BoxLayout):
 			target.ids.logScrollView.text = ""
 			target.ids.image.clear_widgets()
 			warningPopup(check[1])
+			self.popup.dismiss()
 			return
 
-		self.finalLog, self.plotFitnessLog, self.plotGenerationLog = mid.main(geneType, varList, func, self.task, setupList, nameList, 1)
+		self.finalLog, self.plotFitnessLog, self.plotGenerationLog = mid.main(geneType, varList, func, self.task, setupList, nameList, 10)
 
 		if self.finalLog == False:
 			target.ids.logScrollView.text = ""
 			target.ids.image.clear_widgets()
 			warningPopup("Function could not be evaluated. Verify your function and domain of the variables.")
+			self.popup.dismiss()
 			return
 
 		target.ids.logScrollView.text = self.finalLog[self.logIndex]
@@ -654,8 +698,8 @@ class SimulationLayout(BoxLayout):
 
 		plt.pyplot.show()
 
-class APP(App):
+class GADesign(App):
 	def build(self):
 		return TabPanel()
 
-APP().run()
+GADesign().run()

@@ -58,10 +58,10 @@
                 spacing: "10dp"
                 Button:
                     text: "Add variable"
-                    on_press: self.parent.parent.addVar(50)
+                    on_press: self.parent.parent.addVar()
                 Button:
                     text: "Remove variable"
-                    on_press: self.parent.parent.removeVar(50)
+                    on_press: self.parent.parent.removeVar()
 
     TabbedPanelItem:
     	id: tab2
@@ -85,7 +85,6 @@
                 AnchorLayout:
                     anchor_x: "center" 
                     anchor_y: "bottom"
-
 
                     TextInput:
                         id: fitnessFunction
@@ -116,7 +115,8 @@
                     anchor_y: "center"
                     Button:
                         size_hint: .6, .15
-                        text: "Help"  
+                        text: "Syntax helper"  
+                        on_press: root.syntaxHelper()
             
     TabbedPanelItem:
         id: tab3
