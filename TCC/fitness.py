@@ -49,6 +49,7 @@ def getFitness(chrom, su):
     
     try:
         result = eval(func)
+        float(result)
     except:
         return (False, False)
 
@@ -85,8 +86,7 @@ def binaryFitness(chrom, su):
 
     try:
         result = eval(func)
-    except NameError as e:
-        return (False, e)
+        float(result)
     except:
         return (False, False)
 

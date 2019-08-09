@@ -130,7 +130,6 @@ class TabPanel(TabbedPanel):
 			self.blockInputs(varIndex, valueIndex)
 
 			geneType = "float" if(self.ids.geneType.text == "Float string") else "integer"
-			#warningPopup("Variable boundary needs to be a {} number!".format(geneType))
 
 	def blockInputs(self, varIndex, valueIndex):
 		self.validTab1 = False
