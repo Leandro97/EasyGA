@@ -549,7 +549,22 @@ class SimulationLayout(BoxLayout):
 	def __init__(self, **kwargs):
 		super(SimulationLayout, self).__init__(**kwargs)
 
+	def evolvePopUp(self):
+		box = BoxLayout()
+		box.add_widget(Label(text = "Evolution in progress!"))
+		self.popup = Popup(title = "Wait a moment", content = box, size_hint = (.5, .18))
+		self.popup.open()
+
+	def click(self):
+		target = App.get_running_app().root
+		target.ids.image.add_widget(FigureCanvasKivyAgg(plt.pyplot.gcf()))
+		self.evolvePopUp()
+
+		mythread = threading.Thread(target = self.evolve)
+		mythread.start()
+
 	def evolve(self):
+		time.sleep(.5)
 		target = App.get_running_app().root
 		geneType, func, self.task, nameList = target.getParams()
 
@@ -561,7 +576,6 @@ class SimulationLayout(BoxLayout):
 			warningPopup(check[1])
 			return
 
-		#self.finalLog, self.plotFitnessLog, self.plotGenerationLog = mid.main(geneType, varList, func, self.task, setupList, nameList, int(target.ids.simulationNumber.text))
 		self.finalLog, self.plotFitnessLog, self.plotGenerationLog = mid.main(geneType, varList, func, self.task, setupList, nameList, 1)
 
 		if self.finalLog == False:
@@ -581,6 +595,8 @@ class SimulationLayout(BoxLayout):
 			target.ids.graphButton2.state = "down"
 			target.ids.graphButton1.state = "normal"
 			self.makePlot2()
+
+		self.popup.dismiss()
 
 	def nextLog(self):
 		try:

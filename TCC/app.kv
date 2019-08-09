@@ -175,22 +175,12 @@
                             height: self.texture_size[1]
                             text_size: None, None
                             text: self.parent.text
-
-                    #BoxLayout:
-                    #    size_hint_y: .08
-                    #    Label:
-                    #        color: 0, 0, 0, 1
-                    #        text: "Simulations"
-                    #    TextInput:
-                    #        id: simulationNumber
-                    #        write_tab: False
-                    #        multiline: False
-                    #        text: "5"
                     Button:
                         #size_hint_y: .12
                         size_hint_y: .1
                         text: "Evolve!"
-                        on_press: self.parent.parent.evolve()
+                        #on_press: self.parent.parent.evolve()
+                        on_press: self.parent.parent.click()
                         disabled: not (root.validTab1 and root.validTab3)
 
                 #Right Layout        
