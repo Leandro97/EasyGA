@@ -1,9 +1,7 @@
 '''Here the file operations are done'''
 import datetime
 import time
-
-file = []
-
+import os
 
 '''Each experiment is saved in a file which name is the moment of the experiment's execution'''
 def setName(now):
@@ -21,10 +19,19 @@ def setName(now):
 
 '''Opening file'''
 def newFile(setupName):
-	global file
-	name = datetime.datetime.now()
-	file = open(setupName + " | " + str(setName(name)), 'w') 
+	#Getting the current script path
+	currentDir = os.path.dirname(os.path.realpath(__file__))
+	subDir = "Output"
+	fileName = setupName + " | " + str(setName(datetime.datetime.now()))
+	filePath = os.path.join(currentDir, subDir, fileName)
 
+	#Creating subdirectory
+	try:
+		os.mkdir(os.path.join(currentDir, subDir))
+	except Exception as e:
+		pass
+
+	file = open(filePath, 'w') 
 	return file
 
 '''Writing on file'''

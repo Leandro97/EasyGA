@@ -664,7 +664,7 @@ class SimulationLayout(BoxLayout):
 
 		rec.save(self.nameList[self.logIndex], self.finalLog[self.logIndex])
 		box = BoxLayout(orientation = "vertical", spacing = "20dp")
-		popup = Popup(title = "Log file saved", content = box, size_hint = (.5, .18))
+		popup = Popup(title = "Log file saved in folder 'Output'", content = box, size_hint = (.5, .18))
 		popup.open()
 		box.add_widget(Button(text = "Ok", on_press = lambda x : popup.dismiss()))
 		
