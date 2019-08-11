@@ -3,6 +3,7 @@ from math import *
 import random as rd
 import re
 
+'''Checking syntax errors or unknow variables'''
 def checkFunction(func, varLength):
     aux = func
     for i in range(varLength):  
@@ -21,6 +22,7 @@ def checkFunction(func, varLength):
          
     return (True, True)
 
+'''Calculating fitness for integer and float representations'''
 def getFitness(chrom, su):
     if (su.geneType == "Binary string"):
         return binaryFitness(chrom, su)
@@ -31,12 +33,12 @@ def getFitness(chrom, su):
         var = 'x' + str(i + 1)
         value = chrom[i]  
 
-
         if(su.geneType == "Integer string"):
             aux = int(value)
         else:
             aux = float(value)
 
+        #If the gene value exceed the defined boundaries it is replaced by a random number within the interval 
         if(aux < su.varDomain[i][0] or aux > su.varDomain[i][1]):
             lower = su.varDomain[i][0]
             upper = su.varDomain[i][1]
@@ -45,19 +47,20 @@ def getFitness(chrom, su):
 
         if(su.geneType == "Float string"):
             chrom[i] = round(chrom[i], 3)
+
         func = re.sub(r"\b" + var + r"\b", '(' + str(value) + ')', func)
     
+    #Trying to evaluate the function. If any errors surface the function returns False
     try:
         result = eval(func)
         float(result)
     except:
         return (False, False)
 
-    chrom[-1] = result
+    chrom[-1] = result 
 
     if su.geneType == "Float string":
         chrom = [round(float(value), 3) for value in chrom]
-
     return chrom
 
 '''Calculating fitness for binary representation'''

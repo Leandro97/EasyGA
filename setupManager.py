@@ -1,6 +1,7 @@
 import setup
 import random as rd
 
+#Sets and returns a list of setups
 def createSetups(geneType, varList, func, task, bruteSetups):
 	setupList = []
 	seed = rd.randint(0, 10000)

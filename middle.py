@@ -14,9 +14,9 @@ import datetime
 import numpy as np
 import random as rd
 
-log = [] #this array will store the progression of best individual
-plotFitnessLog = [] #stores best individual history of all setups
-plotGenerationLog = [] #stores generation history of all setups
+log = [] #Progression of best individual. Its content is shown as a log file
+plotFitnessLog = [] #Stores (generation, fitness) pairs for the best individual of each setup
+plotGenerationLog = [] #Stores (simulation, generations) pairs for each setup
 
 '''Each time the user runs a scenario, this function is called'''
 def simulation(tests, su):
@@ -33,15 +33,14 @@ def simulation(tests, su):
     np.random.seed(seed = su.seed)
     fitnessSum = 0
 
-    #fileName = rec.newFile(su)
-
     for i in range(tests):
         log.append("\n --------- Simulation #{} ---------\n\n".format(i + 1))
 
-        sim = {}
-        sim['id'] = i + 1
-        sim['last'], sim['champion'], sim['history'] = evolve(su)
+        sim = {} #Auxiliar dictionary for simulations
+        sim['id'] = i + 1 #Simulation number
+        sim['last'], sim['champion'], sim['history'] = evolve(su) #Last generation achieved, simulation's best individual, progression of best individual
 
+        #sim['last'] == False means that there was some problem in the evolution caused by a invalid function (1/0, for example) or bad domain ([-5, -1] for log(x1), for example) 
         if(sim['last'] == False):
             return False
 
@@ -62,11 +61,12 @@ def simulation(tests, su):
                 break
 
     average = fitnessSum / tests
-    rec.record(bestIndividual, average, log, su) #saving simulation report
-    plotFitnessLog.append(bestIndividual['history'])
-    plotGenerationLog.append(generationHistory)
+    rec.record(bestIndividual, average, log, su) #Saving simulation report
+    plotFitnessLog.append(bestIndividual['history']) #Saving individual progression for graph plotting
+    plotGenerationLog.append(generationHistory) #Saving number of generations for graph plotting
     return True
 
+'''Saving progression on log file'''
 def logWriter(su, champion):
     if(su.geneType == "Float string"):
         log.append(" Generation " + str(su.currentGeneration) + " - Champion: " + str([round(value, 3) for value in champion]) + "\n")
@@ -81,10 +81,10 @@ def logWriter(su, champion):
 def evolve(su):
     global log
     champion = []
-    fitnessHistory = [] #stores a (generation, fitness) pair. Will be used on plotting
+    fitnessHistory = [] #Stores a (generation, fitness) pair. It will be used on plotting
     last = 1 #Last generation where the champion changed
     counter = 0 #Counts how many generations the champion remains the same
-    check = init(su)
+    check = init(su) #If False, there is some problem on function or domain
 
     if not check:
         return False, False, False
@@ -99,7 +99,6 @@ def evolve(su):
     while (su.currentGeneration <= su.maxGenerations):
         op.crossover(su)
         op.sort(su)
-        #print(su.population)
 
         #Verifying if champion changed
         if(su.population[0][-1] == champion[-1]):
@@ -115,13 +114,12 @@ def evolve(su):
         su.currentPopulationSize = su.populationSize
         su.currentGeneration += 1
 
-        #Verifying if plateu was reached 
+        #Verifying if plateau was reached 
         if(counter == su.plateau): break
     return last, champion, fitnessHistory
 
 '''
-Population initialisation. The array representing a individual has
-geneNumber + 1 genes because the last position stores its fitness.
+Population initialisation. The last position stores its fitness.
 In binary strings, the first bit of each variable stores the signal: 1 if negative,
 0 if positive
 '''
@@ -129,7 +127,7 @@ def init(su):
     su.population = []
     su.varLength = []
 
-    #setting the variables boundaries
+    #Setting the variables boundaries
     for domain in su.varDomain:
         if(su.geneType == "Binary string"):
             minV = len(bin(abs(domain[0]))) - 1
@@ -140,22 +138,27 @@ def init(su):
         else:
             su.varLength.append(1)
 
-    i = 0
-    counter = 0 
+    i = 0 #Counter for population individuals
+    counter = 0 #Validity counter
+
     '''Initial population starts the proccess with random values'''
     while True:
-        if(i == su.populationSize) : break
-        if(counter == 2 * su.populationSize):
+        #Checking if population number was reached
+        if(i == su.populationSize) : 
+            break
+
+
+        if(counter == 2 * su.populationSize): #If the counter doubles the population size, tere is something wrong with the function or domain so the evolution stops
             return False
 
         su.population.append([])
         aux = 0
         for domain in su.varDomain:
             if(su.geneType == "Binary string"):
-                #generating new decimal individual 
+                #Generating new decimal individual 
                 intVar = rd.randint(domain[0], domain[1])
 
-                #binary casting and formatting
+                #Binary casting and formatting
                 binaryVar = list(("{0:0" + str(su.varLength[aux]) + "b}").format(intVar))
 
                 su.population[i].extend(binaryVar)
@@ -167,11 +170,11 @@ def init(su):
                 floatVar = rd.uniform(domain[0], domain[1])
                 su.population[i].append(round(floatVar, 3))
 
-        su.population[i].append(None)
+        su.population[i].append(None) #Appending fitness value
     
-        '''Calculating the fitness of the initial population'''
-        fit.getFitness(su.population[i], su)
+        fit.getFitness(su.population[i], su) #Calculating fitness
 
+        #If the fitness couldn't be calculated, the individual is eliminated and the validity counter is incremented
         if(su.population[i][-1] == None):
             del su.population[i]
             counter += 1
@@ -181,8 +184,9 @@ def init(su):
 
     op.sort(su) #Sorting the individuals according to fitnessHistory
     su.currentGeneration = 1
-    return True 
+    return True #All individuals were created and evaluated
 
+"""This function receives the parameters provided by the user, performs the evolutionary process and returns the results"""
 def main(geneType, varList, func, task, bruteSetups, nameList, simulationNumber):
     global plotFitnessLog
     global plotGenerationLog
@@ -197,11 +201,14 @@ def main(geneType, varList, func, task, bruteSetups, nameList, simulationNumber)
     for entry in setupList:
         check = simulation(simulationNumber, entry)
 
+        #If there is any problem the function returns False
         if not check:
             return False, False, False
 
     textLog = []
     i = 0
+
+    #Setting up the text log that will be displayed at the GUI
     for entry in setupList:
         lineStr = " " + nameList[i] + "\n\n"
 

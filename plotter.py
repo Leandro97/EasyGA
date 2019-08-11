@@ -7,7 +7,6 @@ import io
 
 '''Returns the limits of x and y axis used on plotting'''
 def getLimits(history):
-	#xb = xe = yb = ye = None
 	xb = xe = None
 
 	for entry in history:
@@ -46,14 +45,13 @@ def plotFitness(history, task, nameList):
 		pyplot.title("Minimizing function", fontsize = 8)
 	else:
 		pyplot.title("Maximizing function", fontsize = 8)
-	
 
 	#Setting axis label	
 	pyplot.xlabel("Generation")				
 	pyplot.ylabel("Fitness of best individual")
 
+	#Setting x-axis marks
 	xMean = math.floor((xe - xb) / 4)
-
 	for i in range(4):
 		xTick.append(xb + xMean * i)
 

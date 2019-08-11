@@ -6,15 +6,14 @@ the algorithm execution.
 class Setup():
 	seed = None
 	population = []
-	varDomain = [] #this array stores the domain of each variable in the form [minValue, maxValue]. 
-	varLength = [] #this array stores the maximum lenght of each variable 
+	varDomain = [] #This array stores the domain of each variable in the form [minValue, maxValue]. 
+	varLength = [] #This array stores the maximum lenght of each variable 
 	
 	#####Chromosome structure#####
-	geneType = "Binary srting" #"Float string" | "Integer string" | "Binary string"
+	geneType = "Binary srting" #"Binary string" | "Integer string" | "Float string"
 	varDomain = None
 
 	#####Fitness Function#####
-	#function = "x1 - x2 + x3 - x4**2 + 3*(x5 - x6)"
 	function = "x1"
 	task = "max" #"max" | "min"
 
@@ -26,11 +25,6 @@ class Setup():
 	plateau = 20
 
 	crossover = "Uniform" #"One point" | "Two Points" | "Uniform"
-	selection = "Roulette" #"Roulette" | "Tournament" | ?
+	selection = "Roulette" #"Roulette" | "Tournament" | "Rank"
 	mutation = "Uniform" #"Flip" | "Uniform" | "Non-uniform"
-	mutationRate: float = 0.15
-
-	#####Results#####
-	bestFitness = 0
-	saveLog = True
-	log = []
+	mutationRate: float = 0.01

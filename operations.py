@@ -12,14 +12,16 @@ def mutation(chrom, su):
 	else:
 		return nonUniformMutation(chrom, su)
 
+'''Used only on binary representations'''
 def flipMutation(chrom, su):
 	for i in range(len(chrom) - 1):
 		rand = rd.random()
 		if(rand <= su.mutationRate):
-			chrom[i] = '0' if chrom[i] == '1' else '1'
+			chrom[i] = '0' if chrom[i] == '1' else '1' #Bit inversion
 
 	return fit.getFitness(chrom, su)
 
+'''Used on float and integer representations'''
 def uniformMutation(chrom, su):
 	i = 0
 
@@ -27,13 +29,20 @@ def uniformMutation(chrom, su):
 		rand = rd.random()
 		if(rand <= su.mutationRate):
 			if su.geneType == "Float string":
-				chrom[i] += rd.uniform(domain[0], domain[1])
+				if(rd.random() <= .5):
+					chrom[i] += rd.uniform(domain[0], domain[1])
+				else:
+					chrom[i] -= rd.uniform(domain[0], domain[1])
 			else:
-				chrom[i] += rd.randint(domain[0], domain[1])
+				if(rd.random() <= .5):
+					chrom[i] += rd.randint(domain[0], domain[1])
+				else:
+					chrom[i] -= rd.randint(domain[0], domain[1])
 		i += 1
 
 	return fit.getFitness(chrom, su)
 
+'''Used on float and integer representations'''
 def nonUniformMutation(chrom, su):
 	i = 0
 
@@ -54,6 +63,7 @@ def nonUniformMutation(chrom, su):
 
 	return fit.getFitness(chrom, su)
 
+'''Auxiliar function for non-uniform mutation. The higher the generation, the lower the value added to the gene'''
 def delta(currentGen, maxGen, value):
 	rand = rd.random()
 	result = value * (1 - rand**(1 - currentGen/maxGen)) 
@@ -72,6 +82,7 @@ def crossover(su):
 		#Choosing second parent
 		index2 = sel.selectParent(su)
 
+		#If index1 and index2 are the same, index2 assumes the previous (or next) index 
 		if(index1 == index2): 
 			if index2 == su.populationSize - 1:
 				index2 -= 1
@@ -93,20 +104,20 @@ def crossover(su):
 
 		if su.geneType == "Float string":
 			if aux1[0]:
-				child1 = [round(float(value), 2) for value in child1] #rounding values
+				child1 = [round(float(value), 3) for value in child1] #rounding values
 			if aux2[0]:
-				child2 = [round(float(value), 2) for value in child2] #rounding values
+				child2 = [round(float(value), 3) for value in child2] #rounding values
 
 		counter = 0 
 
 		while True:
 			#Adding child to population 
-			if aux1[0]:
+			if aux1:
 				newPopulation.append(child1)
 				su.currentPopulationSize += 1
 				break
 
-			if aux2[0]:
+			if aux2:
 				newPopulation.append(child2)
 				su.currentPopulationSize += 1
 				break

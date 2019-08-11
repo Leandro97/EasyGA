@@ -14,7 +14,6 @@ def selectParent(su):
 	elif(su.selection == "Tournament"):
 		return tournament(su)
 	else:
-		#initSelection(su)
 		return rank(su)
 
 '''Initialising probability array for roulette and rank selections'''
@@ -40,6 +39,7 @@ def initSelection(su):
 			newValue = 1.0
 
 		newValue = 0.01 if newValue == 0 else newValue
+
 		#Calculating selection probability 
 		probabilityArray.append(round(newValue, 2))
 
@@ -92,6 +92,7 @@ def tournament(su):
 
 	chance = rd.uniform(0, 1)
 
+	#The best individual has a 75% chance of being chosen
 	if(chance <= .75):
 		return index1
 	else:
