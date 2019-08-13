@@ -68,11 +68,11 @@ def record(bestIndividual, average, log, su):
 	su.log.append(" Maximum population size: {}\n".format(su.populationSize))
 	su.log.append(" Maximum number of generations: {}\n".format(su.maxGenerations))
 	su.log.append(" Plateau: {}\n\n".format(su.plateau))
-
-	su.log.append(" Crossover strategy: {}\n".format(su.crossover))
-	su.log.append(" Selection strategy: {}\n".format(su.selection))
-	su.log.append(" Mutation strategy: {}\n".format(su.mutation))
 	su.log.append(" Mutation rate: {}\n\n".format(su.mutationRate))
+
+	su.log.append(" Selection strategy: {}\n".format(su.selection))
+	su.log.append(" Crossover strategy: {}\n".format(su.crossover))
+	su.log.append(" Mutation strategy: {}\n".format(su.mutation))
 	su.log.append(' {:#<40}'.format("") + "\n")
 
 	'''Simulation result'''
