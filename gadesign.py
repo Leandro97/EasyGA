@@ -22,8 +22,8 @@ from kivy.lang import Builder
 
 '''
 TODO
+- Ajeitar quebra de linha nas legendas dos gráficos 
 - Apêndice de instalação do docker ou bibliotecas
-- Popup de ajuda mostrando sintaxe
 '''
 
 import time, threading
@@ -320,7 +320,7 @@ class SetupBar(BoxLayout):
 		box = BoxLayout(orientation = "vertical", spacing = "20dp")
 		insideBox = BoxLayout(spacing = "20dp", size_hint_y = .5)
 
-		popup = Popup(title='New name for ' + self.spinner.text, content= box, size_hint = (.5, .3))
+		popup = Popup(title = "New name for \"" + self.spinner.text + "\"", content = box, size_hint = (.5, .3))
 		popup.open()
 		
 		save = MyButton(text = "Save")
@@ -332,7 +332,7 @@ class SetupBar(BoxLayout):
 		insideBox.add_widget(save)
 		insideBox.add_widget(cancel)
 
-		newName = TextInput(write_tab = False, multiline = False, size_hint_y = .55)
+		newName = TextInput(text = self.spinner.text, write_tab = False, multiline = False, size_hint_y = .55)
 
 		box.add_widget(newName)
 		box.add_widget(insideBox)
@@ -539,6 +539,10 @@ class MyScreen(Screen):
 		if(index != 3):
 			self.mutationRate.disabled = True
 
+		self.parent.setupBar.spinner.disabled = True
+		self.parent.setupBar.editButton.disabled = True
+		self.parent.setupBar.newSetupButton.disabled = True
+
 	'''Enabling inputs'''
 	def unlockInputs(self):
 		self.populationSize.disabled = False
@@ -546,6 +550,9 @@ class MyScreen(Screen):
 		self.plateau.disabled = False
 		self.mutationRate.disabled = False
 		self.mutation.disabled = False
+		self.parent.setupBar.spinner.disabled = False
+		self.parent.setupBar.editButton.disabled = False
+		self.parent.setupBar.newSetupButton.disabled = False
 
 class SetupLayout(BoxLayout):
 	global setupList
