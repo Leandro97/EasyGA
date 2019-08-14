@@ -679,7 +679,7 @@ class SimulationLayout(BoxLayout):
 	#Change to next log text 
 	def nextLog(self):
 		try:
-			self.logIndex = 0 if(self.logIndex + 1 >= len(setupList)) else self.logIndex + 1
+			self.logIndex = self.logIndex + 1 if(self.logIndex + 1 < len(setupList)) else self.logIndex
 			target = App.get_running_app().root
 			target.ids.logScrollView.text = self.finalLog[self.logIndex]
 		except:
@@ -688,7 +688,7 @@ class SimulationLayout(BoxLayout):
 	#Change to previous log text
 	def previousLog(self):
 		try:
-			self.logIndex = len(setupList) - 1 if(self.logIndex <= 0) else self.logIndex - 1
+			self.logIndex = 0 if(self.logIndex <= 0) else self.logIndex - 1
 			target = App.get_running_app().root
 			target.ids.logScrollView.text = self.finalLog[self.logIndex]
 		except:
