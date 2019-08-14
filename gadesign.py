@@ -140,6 +140,7 @@ class TabPanel(TabbedPanel):
 		  f"""[size=20]Especial functions[/size]\n"""
 		  f"""Floor: floor(x1)\n"""
 		  f"""Ceiling: ceil(x1)\n"""
+		  f"""Absolute value: abs(x1)\n"""
 		  f"""x1 to the power x2: pow(x1, x2) or x1**x2\n"""
 		  f"""Natural logarithm: log(x1)\n"""
 		  f"""Base-x2 logarithm: log(x1, x2)\n\n"""
@@ -490,9 +491,9 @@ class MyScreen(Screen):
 		parentLayout = GridLayout(cols = 2, spacing = "10dp")
 
 		self.add_widget(parentLayout)
-		self.makeTextInput(parentLayout, self.populationSize, "Population size", 10, 10000, 0)
-		self.makeTextInput(parentLayout, self.maxGenerations, "Number of generations", 1, 10000, 1)
-		self.makeTextInput(parentLayout, self.plateau, "Plateau", 1, 10000, 2)
+		self.makeTextInput(parentLayout, self.populationSize, "Population size", 10, 200, 0)
+		self.makeTextInput(parentLayout, self.maxGenerations, "Number of generations", 1, 200, 1)
+		self.makeTextInput(parentLayout, self.plateau, "Plateau", 1, 50, 2)
 		self.makeTextInput(parentLayout, self.mutationRate, "Mutation rate", 0, 1, 3)
 		self.makeSpinner(parentLayout, self.selection, "Selection strategy", 4)
 		self.makeSpinner(parentLayout, self.crossover, "Crossover strategy", 5)
@@ -624,6 +625,7 @@ class SimulationLayout(BoxLayout):
 	'''Function trigggered when \'Evolve!\' button is pressed'''
 	def click(self):
 		target = App.get_running_app().root
+		target.ids.logScrollView.text = ""
 		target.ids.image.add_widget(FigureCanvasKivyAgg(plt.pyplot.gcf())) #Setting canvas for graph plotting
 		target.ids.image.clear_widgets()
 		self.evolvePopUp() 
@@ -645,7 +647,7 @@ class SimulationLayout(BoxLayout):
 			self.popup.dismiss()
 			return
 
-		self.finalLog, self.plotFitnessLog, self.plotGenerationLog = mid.main(geneType, varList, func, self.task, setupList, nameList, 10) #Running genetic algorithm
+		self.finalLog, self.plotFitnessLog, self.plotGenerationLog = mid.main(geneType, varList, func, self.task, setupList, nameList, 5) #Running genetic algorithm
 
 		#If finalLog == False, the function couldn't be evaluetad
 		if self.finalLog == False:
