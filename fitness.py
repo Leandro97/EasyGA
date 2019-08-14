@@ -57,10 +57,8 @@ def getFitness(chrom, su):
     except:
         return (False, False)
 
-    chrom[-1] = result 
+    chrom[-1] = round(result, 3) 
 
-    if su.geneType == "Float string":
-        chrom = [round(float(value), 3) for value in chrom]
     return chrom
 
 '''Calculating fitness for binary representation'''
@@ -92,5 +90,5 @@ def binaryFitness(chrom, su):
     except:
         return (False, False)
 
-    chrom[-1] = result
+    chrom[-1] =  round(result, 3) 
     return chrom

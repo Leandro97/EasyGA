@@ -68,9 +68,7 @@ def simulation(tests, su):
 
 '''Saving progression on log file'''
 def logWriter(su, champion):
-    if(su.geneType == "Float string"):
-        log.append(" Generation " + str(su.currentGeneration) + " - Champion: " + str([round(value, 3) for value in champion]) + "\n")
-    elif(su.geneType == "int"):
+    if(su.geneType != "Binary string"):
         log.append(" Generation " + str(su.currentGeneration) + " - Champion: " + str(champion) + "\n")
     else:
         champion2Int = [int(value) for value in champion[:-1]]
