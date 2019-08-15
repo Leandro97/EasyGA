@@ -38,7 +38,7 @@ def simulation(tests, su):
 
         sim = {} #Auxiliar dictionary for simulations
         sim['id'] = i + 1 #Simulation number
-        sim['last'], sim['champion'], sim['history'] = evolve(su) #Last generation achieved, simulation's best individual, progression of best individual
+        sim['last'], sim['champion'], sim['history'], sim['average'] = evolve(su) #Last generation achieved, simulation's best individual, progression of best individual
 
         #sim['last'] == False means that there was some problem in the evolution caused by a invalid function (1/0, for example) or bad domain ([-5, -1] for log(x1), for example) 
         if(sim['last'] == False):
@@ -60,8 +60,7 @@ def simulation(tests, su):
             else:
                 break
 
-    average = fitnessSum / tests
-    rec.record(bestIndividual, average, log, su) #Saving simulation report
+    rec.record(bestIndividual, log, su) #Saving simulation report
     plotFitnessLog.append(bestIndividual['history']) #Saving individual progression for graph plotting
     plotGenerationLog.append(generationHistory) #Saving number of generations for graph plotting
     return True
@@ -114,7 +113,10 @@ def evolve(su):
 
         #Verifying if plateau was reached 
         if(counter == su.plateau): break
-    return last, champion, fitnessHistory
+
+    aux = [value[-1] for value in su.population]
+    average = round(sum(aux)/su.populationSize, 3)
+    return last, champion, fitnessHistory, average
 
 '''
 Population initialisation. The last position stores its fitness.

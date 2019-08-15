@@ -58,7 +58,7 @@ def ordinal(number):
 	
 
 '''Closing file'''
-def record(bestIndividual, average, log, su):
+def record(bestIndividual, log, su):
 	'''Adding a heading to the file containing the setup chosen by the user'''
 	su.log.append(" Function: {}\n".format(su.function.replace(" ", "")))
 	su.log.append(" Domain: {}\n".format(su.varDomain))
@@ -85,7 +85,7 @@ def record(bestIndividual, average, log, su):
 
 	su.log.append("\n -> Best simulation: #{}.".format(bestIndividual["id"]))
 	su.log.append("\n -> Champion: {}. Achieved in the {} generation.".format(champion, ordinal(bestIndividual["last"])))
-	su.log.append("\n -> Average fitness: {0:.2f}\n\n".format(average))
+	su.log.append("\n -> Average fitness: {0:.2f}\n\n".format(bestIndividual["average"]))
 	su.log.append(' {:#<40}'.format("") + "\n")
 
 	for entry in log:
