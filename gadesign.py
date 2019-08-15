@@ -305,7 +305,7 @@ class SetupBar(BoxLayout):
 		self.editButton.bind(on_press = lambda x : self.changeNamePopUp())
 		self.editButton.text = "Edit name"
 
-		self.newSetupButton.bind(on_press = lambda x : self.createSetup("Setup " + str(setupNumber + 2)))
+		self.newSetupButton.bind(on_press = lambda x : self.createSetup(str(setupNumber + 2)))
 		self.newSetupButton.text = str("New setup")
 
 		self.removeButton.bind(on_press = lambda x : self.deletePopup())
@@ -347,9 +347,15 @@ class SetupBar(BoxLayout):
 			popup.dismiss()
 			return
 
+		for entry in nameList:
+			if(entry == text):
+				popup.dismiss()
+				warningPopup("Name already taken!")
+				return
+
 		self.spinner.values[currentSetup] = text
-		nameList = self.spinner.values
 		self.spinner.text = text
+		nameList = self.spinner.values
 		popup.dismiss()
 
 	'''Creating a new setup'''
@@ -357,10 +363,15 @@ class SetupBar(BoxLayout):
 		global nameList
 		target = self.parent
 
+		for entry in nameList:
+			if(entry == "Setup " + str(text)):
+				text = int(text) + 1
+
+		name = "Setup " + str(text)
 		target.myScreen.newSetup()	
-		self.spinner.values.append(text)
-		self.spinner.text = text
-		target.myLabel.text = text
+		self.spinner.values.append(name)
+		self.spinner.text = name
+		target.myLabel.text = name
 
 		nameList = self.spinner.values
 
