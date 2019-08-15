@@ -69,6 +69,7 @@ def plotGenerations(history, task, nameList):
 
 	#Creating panel
 	xTick = []
+	yTick = []
 	xb, xe = getLimits(history)
 	marker = ['o', 's', '^', 'd', 'P']
 	count = 0
@@ -76,6 +77,7 @@ def plotGenerations(history, task, nameList):
 	for entry in history:
 		x, y = zip(*entry)
 		pyplot.plot(x, y, marker = marker[count % 5], label = "{}".format(nameList[count]))
+		yTick.extend(y)
 		count += 1
 
 	#setting grid for better visualization
@@ -97,3 +99,4 @@ def plotGenerations(history, task, nameList):
 	pyplot.gca().set_position([box.x0, box.y0, box.width * 0.8, box.height])
 	pyplot.legend(loc = 'upper left', bbox_to_anchor = (1, 1), fancybox=True, shadow=True)
 	pyplot.xticks(x)
+	pyplot.yticks(yTick)
