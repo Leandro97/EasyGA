@@ -99,4 +99,3 @@ def plotGenerations(history, task, nameList):
 	pyplot.gca().set_position([box.x0, box.y0, box.width * 0.8, box.height])
 	pyplot.legend(loc = 'upper left', bbox_to_anchor = (1, 1), fancybox=True, shadow=True)
 	pyplot.xticks(x)
-	pyplot.yticks(yTick)

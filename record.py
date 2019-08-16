@@ -76,12 +76,21 @@ def record(bestIndividual, log, su):
 	su.log.append(' {:#<40}'.format("") + "\n")
 
 	'''Simulation result'''
-	if su.geneType != "Float string":
+	if su.geneType == "Integer string":
 		champion = [int(value) for value in bestIndividual['champion'][:-1]]
 		champion.append(round(bestIndividual["champion"][-1], 3))
-	else:
+	elif su.geneType == "Float string":
 		champion = bestIndividual["champion"]
 		champion[-1] = round(champion[-1], 3)
+	else:
+		champion = [int(value) for value in bestIndividual['champion'][:-1]]
+		champion.append(round(bestIndividual["champion"][-1], 3))
+
+		begin = 0
+		for i in range(len(su.varLength)):           
+			champion[begin] = '-' if (champion[begin] == 1) else '+'
+			end = begin + su.varLength[i]
+			begin = end
 
 	su.log.append("\n -> Best simulation: #{}.".format(bestIndividual["id"]))
 	su.log.append("\n -> Champion: {}. Achieved in the {} generation.".format(champion, ordinal(bestIndividual["last"])))

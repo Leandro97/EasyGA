@@ -72,6 +72,14 @@ def logWriter(su, champion):
     else:
         champion2Int = [int(value) for value in champion[:-1]]
         champion2Int.append(champion[-1])
+
+        begin = 0
+        for i in range(len(su.varLength)):           
+            #Replacing values
+            champion2Int[begin] = '-' if (champion2Int[begin] == 1) else '+'
+            end = begin + su.varLength[i]
+            begin = end
+
         log.append(" Generation " + str(su.currentGeneration) + " - Champion: " + str(champion2Int) + "\n")
 
 '''Here all the steps of the algorithm take place'''
