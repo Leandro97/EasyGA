@@ -1,4 +1,6 @@
 import math
+import matplotlib
+matplotlib.use("Agg")
 import matplotlib.pyplot as pyplot
 import matplotlib.ticker as ticker
 from matplotlib.ticker import (MultipleLocator, FormatStrFormatter, AutoMinorLocator)

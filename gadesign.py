@@ -744,6 +744,7 @@ class SimulationLayout(BoxLayout):
 
 	#Triggered when the button "Expand graph" is pressed
 	def showPlot(self):
+		plt.matplotlib.use('TkAgg')
 		if(self.currentGraph == 1):
 			if not self.plotFitnessLog:
 				return
@@ -752,6 +753,7 @@ class SimulationLayout(BoxLayout):
 			plt.plotGenerations(self.plotGenerationLog, self.task, self.nameList)
 
 		plt.pyplot.show()
+		plt.matplotlib.use('Agg')
 
 class GADesign(App):
 	def build(self):
