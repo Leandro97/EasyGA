@@ -57,9 +57,11 @@
                 size_hint_y: .15
                 spacing: "10dp"
                 Button:
+                    id: addVar
                     text: "Add variable"
                     on_press: self.parent.parent.addVar()
                 Button:
+                    id: removeVar
                     text: "Remove variable"
                     on_press: self.parent.parent.removeVar()
 

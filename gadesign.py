@@ -92,27 +92,27 @@ class TabPanel(TabbedPanel):
 	global varCounter
 	mutationValues = ListProperty(["Flip"]) 
 
+	newVar = Label(text = "x1", color = (0, 0, 0, 1))
+	minValue = VarTextInput()
+	maxValue = VarTextInput()
+
 	def __init__(self, **kwargs):
 		super(TabPanel, self).__init__(**kwargs)
-
-		#Tab1
-		newVar = MyLabel()
-		newVar.setVar("x1")
+		#Bind to check values and swap if minValue > maxValue
+		self.minValue.setVar("-10")
+		self.minValue.bind(text = partial(self.validateVars, varCounter - 1, 0))
 
 		#Bind to check values and swap if minValue > maxValue
-		minValue = VarTextInput()
-		minValue.setVar("-10")
-		minValue.bind(text = partial(self.validateVars, varCounter - 1, 0))
+		self.maxValue.setVar("10")
+		self.maxValue.bind(text = partial(self.validateVars, varCounter - 1, 1))
 
-		#Bind to check values and swap if minValue > maxValue
-		maxValue = VarTextInput()
-		maxValue.setVar("10")
-		maxValue.bind(text = partial(self.validateVars, varCounter - 1, 1))
-
-		self.ids.varScrollView.add_widget(newVar)
-		self.ids.varScrollView.add_widget(minValue)
-		self.ids.varScrollView.add_widget(maxValue)
-		varList.append((minValue, maxValue))
+		Clock.schedule_once(self.load)
+		
+	def load(self, dt):
+		self.ids.varScrollView.add_widget(self.newVar)
+		self.ids.varScrollView.add_widget(self.minValue)
+		self.ids.varScrollView.add_widget(self.maxValue)
+		varList.append((self.minValue, self.maxValue))
 
 	'''Return parameters for execution of algorithm'''
 	def getParams(self):
@@ -212,6 +212,8 @@ class TabPanel(TabbedPanel):
 	def lockInputs(self, varIndex, valueIndex):
 		self.validTab1 = False
 		self.ids.geneType.disabled = True
+		self.ids.addVar.disabled = True
+		self.ids.removeVar.disabled = True
 
 		for i in range(len(varList)):
 			if i == varIndex:
@@ -227,6 +229,8 @@ class TabPanel(TabbedPanel):
 	def unlockInputs(self):
 		self.validTab1 = True
 		self.ids.geneType.disabled = False		
+		self.ids.addVar.disabled = False
+		self.ids.removeVar.disabled = False
 
 		for i in range(len(varList)):
 			varList[i][0].disabled = False
