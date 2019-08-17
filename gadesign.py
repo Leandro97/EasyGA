@@ -26,6 +26,11 @@ TODO
 - Apêndice de instalação do docker ou bibliotecas
 '''
 
+import sys
+import os
+currentDir = os.path.dirname(os.path.realpath(__file__))
+sys.path.insert(1, currentDir + "/model")
+
 import time, threading
 from functools import partial
 import middle as mid
