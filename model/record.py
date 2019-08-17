@@ -20,14 +20,14 @@ def setName(now):
 '''Opening file'''
 def newFile(setupName):
 	#Getting the current script path
-	currentDir = os.path.dirname(os.path.realpath(__file__))
+	parentDir = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 	subDir = "Output"
 	fileName = setupName + " | " + str(setName(datetime.datetime.now()))
-	filePath = os.path.join(currentDir, subDir, fileName)
+	filePath = os.path.join(parentDir, subDir, fileName)
 
 	#Creating subdirectory
 	try:
-		os.mkdir(os.path.join(currentDir, subDir))
+		os.mkdir(os.path.join(parentDir, subDir))
 	except Exception as e:
 		pass
 
