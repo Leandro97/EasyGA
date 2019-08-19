@@ -627,7 +627,6 @@ class SimulationLayout(BoxLayout):
 	logIndex = 0
 	finalLog = []
 	nameList = []
-	currentGraph = 1
 	plotFitnessLog = None
 	plotGenerationLog = None
 	task = None
@@ -667,7 +666,7 @@ class SimulationLayout(BoxLayout):
 			self.popup.dismiss()
 			return
 
-		self.finalLog, self.plotFitnessLog, self.plotGenerationLog = mid.main(geneType, varList, func, self.task, setupList, nameList, 5) #Running genetic algorithm
+		self.finalLog, self.plotFitnessLog = mid.main(geneType, varList, func, self.task, setupList, nameList, 5) #Running genetic algorithm
 
 		#If finalLog == False, the function couldn't be evaluetad
 		if self.finalLog == False:
@@ -684,16 +683,8 @@ class SimulationLayout(BoxLayout):
 			target.ids.logScrollView.text = self.finalLog[self.logIndex]
 		self.nameList = nameList
 
-		#plotting graph on canvas
-		if(self.currentGraph == 1):
-			target.ids.graphButton1.state = "down"
-			target.ids.graphButton2.state = "normal"
-			self.makePlot1()
-		else:
-			target.ids.graphButton2.state = "down"
-			target.ids.graphButton1.state = "normal"
-			self.makePlot2()
 
+		self.makePlot()
 		self.popup.dismiss()
 
 	#Change to next log text 
@@ -726,8 +717,7 @@ class SimulationLayout(BoxLayout):
 		box.add_widget(Button(text = "Ok", on_press = lambda x : popup.dismiss()))
 		
 	#Plotting "Generations x Best fitness" graph
-	def makePlot1(self):
-		self.currentGraph = 1
+	def makePlot(self):
 		if not self.plotFitnessLog:
 			return
 
@@ -736,26 +726,13 @@ class SimulationLayout(BoxLayout):
 		target.ids.image.clear_widgets()
 		target.ids.image.add_widget(FigureCanvasKivyAgg(plt.pyplot.gcf()))
 
-	#Plotting "Simulations x Generations" graph
-	def makePlot2(self):
-		self.currentGraph = 2
-		if not self.plotGenerationLog:
-			return
-			
-		plt.plotGenerations(self.plotGenerationLog, self.task, self.nameList)
-		target = App.get_running_app().root
-		target.ids.image.clear_widgets()
-		target.ids.image.add_widget(FigureCanvasKivyAgg(plt.pyplot.gcf()))
 
 	#Triggered when the button "Expand graph" is pressed
 	def showPlot(self):
 		plt.matplotlib.use('TkAgg')
-		if(self.currentGraph == 1):
-			if not self.plotFitnessLog:
-				return
-			plt.plotFitness(self.plotFitnessLog, self.task, self.nameList) 
-		else:
-			plt.plotGenerations(self.plotGenerationLog, self.task, self.nameList)
+		if not self.plotFitnessLog:
+			return
+		plt.plotFitness(self.plotFitnessLog, self.task, self.nameList) 
 
 		plt.pyplot.show()
 		plt.matplotlib.use('Agg')

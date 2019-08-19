@@ -177,31 +177,15 @@
                             text_size: None, None
                             text: self.parent.text
                     Button:
-                        #size_hint_y: .12
                         size_hint_y: .1
                         text: "Evolve!"
-                        #on_press: self.parent.parent.evolve()
                         on_press: self.parent.parent.click()
                         disabled: not (root.validTab1 and root.validTab3)
 
                 #Right Layout        
                 BoxLayout:
                     orientation: "vertical"
-                    spacing: "5dp"
-                    BoxLayout:
-                        size_hint_y: .1
-                        ToggleButton:
-                            id: graphButton1
-                            text: "Fitness progression"
-                            group: "graph"
-                            allow_no_selection: False
-                            on_press: self.parent.parent.parent.makePlot1()
-                        ToggleButton:
-                            id: graphButton2
-                            text: "Generations reached"
-                            group: "graph"
-                            allow_no_selection: False
-                            on_press: self.parent.parent.parent.makePlot2()    
+                    spacing: "5dp"  
                     BoxLayout:
                         id: image
                     BoxLayout:

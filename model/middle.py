@@ -16,12 +16,10 @@ import random as rd
 
 log = [] #Progression of best individual. Its content is shown as a log file
 plotFitnessLog = [] #Stores (generation, fitness) pairs for the best individual of each setup
-plotGenerationLog = [] #Stores (simulation, generations) pairs for each setup
 
 '''Each time the user runs a scenario, this function is called'''
 def simulation(tests, su):
     global plotFitnessLog
-    global plotGenerationLog
     global log
 
     log = []
@@ -62,7 +60,6 @@ def simulation(tests, su):
 
     rec.record(bestIndividual, log, su) #Saving simulation report
     plotFitnessLog.append(bestIndividual['history']) #Saving individual progression for graph plotting
-    plotGenerationLog.append(generationHistory) #Saving number of generations for graph plotting
     return True
 
 '''Saving progression on log file'''
@@ -197,11 +194,9 @@ def init(su):
 """This function receives the parameters provided by the user, performs the evolutionary process and returns the results"""
 def main(geneType, varList, func, task, bruteSetups, nameList, simulationNumber):
     global plotFitnessLog
-    global plotGenerationLog
     global log
     
     plotFitnessLog = []
-    plotGenerationLog = []
     log = []
 
     setupList = suManager.createSetups(geneType, varList, func, task, bruteSetups)
@@ -227,4 +222,4 @@ def main(geneType, varList, func, task, bruteSetups, nameList, simulationNumber)
         i += 1
 
     print("Done!")
-    return textLog, plotFitnessLog, plotGenerationLog
+    return textLog, plotFitnessLog
