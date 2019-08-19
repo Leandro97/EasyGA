@@ -138,6 +138,7 @@
 
                 #Left Layout    
                 BoxLayout:
+                    spacing: "5dp"
                     size_hint_x: .65
                     orientation: "vertical"
                     BoxLayout:
@@ -176,6 +177,17 @@
                             height: self.texture_size[1]
                             text_size: None, None
                             text: self.parent.text
+                    BoxLayout:
+                        size_hint_y: .08
+                        spacing: "5dp"
+                        Label:
+                            color: 0, 0, 0, 1
+                            text: "Simulations"
+                        TextInput:
+                            id: simulationQnt
+                            text: "10"
+                            write_tab: False
+                            multiline: False
                     Button:
                         size_hint_y: .1
                         text: "Evolve!"

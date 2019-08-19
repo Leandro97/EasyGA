@@ -40,6 +40,7 @@ import plotter as plt
 
 TEXT_COLOR = (0, 0, 0, 1)
 
+Config.set('kivy', 'exit_on_escape', '0')
 Config.set('input', 'mouse', 'mouse,multitouch_on_demand')
 Config.set('graphics', 'width', '700dp')
 Config.set('graphics', 'height', '0dp')
@@ -511,9 +512,9 @@ class MyScreen(Screen):
 		parentLayout = GridLayout(cols = 2, spacing = "10dp")
 
 		self.add_widget(parentLayout)
-		self.makeTextInput(parentLayout, self.populationSize, "Population size", 10, 200, 0)
-		self.makeTextInput(parentLayout, self.maxGenerations, "Number of generations", 1, 200, 1)
-		self.makeTextInput(parentLayout, self.plateau, "Plateau", 1, 50, 2)
+		self.makeTextInput(parentLayout, self.populationSize, "Population size", 10, 500, 0)
+		self.makeTextInput(parentLayout, self.maxGenerations, "Number of generations", 1, 500, 1)
+		self.makeTextInput(parentLayout, self.plateau, "Plateau", 1, 500, 2)
 		self.makeTextInput(parentLayout, self.mutationRate, "Mutation rate", 0, 1, 3)
 		self.makeSpinner(parentLayout, self.selection, "Selection strategy", 4)
 		self.makeSpinner(parentLayout, self.crossover, "Crossover strategy", 5)
@@ -545,7 +546,7 @@ class MyScreen(Screen):
 		except Exception as e:
 			self.lockInputs(attIndex) #Locking inputs, obliging user to correct invalid parameter 
 			if(attIndex != 3):
-				self.validationLabel.invalid("{} must be a integer number!".format(self.inputNames[attIndex]))
+				self.validationLabel.invalid("{} must be an integer number!".format(self.inputNames[attIndex]))
 			else:
 				self.validationLabel.invalid("{} must be a float number!".format(self.inputNames[attIndex]))
 
@@ -638,7 +639,7 @@ class SimulationLayout(BoxLayout):
 	def evolvePopUp(self):
 		box = BoxLayout()
 		box.add_widget(Label(text = "Evolution in progress!"))
-		self.popup = Popup(title = "Wait a moment", content = box, size_hint = (.5, .18))
+		self.popup = Popup(title = "Wait a moment", content = box, size_hint = (.5, .18), auto_dismiss=False)
 		self.popup.open()
 
 	'''Function trigggered when \'Evolve!\' button is pressed'''
@@ -666,7 +667,14 @@ class SimulationLayout(BoxLayout):
 			self.popup.dismiss()
 			return
 
-		self.finalLog, self.plotFitnessLog = mid.main(geneType, varList, func, self.task, setupList, nameList, 5) #Running genetic algorithm
+		try:
+			simulations = int(target.ids.simulationQnt.text)
+		except:
+			warningPopup("Simulation number must be an integer number!") #check[1] contains the error message 
+			self.popup.dismiss()
+			return
+
+		self.finalLog, self.plotFitnessLog = mid.main(geneType, varList, func, self.task, setupList, nameList, simulations) #Running genetic algorithm
 
 		#If finalLog == False, the function couldn't be evaluetad
 		if self.finalLog == False:
