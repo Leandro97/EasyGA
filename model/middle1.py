@@ -9,7 +9,6 @@ import fitness as fit
 import operations as op
 import selection as sel 
 import record as rec  
-import plotter as plt  
 import setupManager as suManager
 import datetime
 import numpy as np
@@ -58,12 +57,7 @@ def simulation(tests, su):
                 break
 
     rec.record(bestIndividual, log, su) #Saving simulation report
-    
-    aux = []
-    for entry in simList:
-        aux.append(entry['history']) #Saving individual progression for graph plotting
-    plotFitnessLog.append(aux) 
-
+    plotFitnessLog.append(bestIndividual['history']) #Saving individual progression for graph plotting
     return True
 
 '''Saving progression on log file'''
@@ -193,54 +187,16 @@ def init(su):
 
     op.sort(su) #Sorting the individuals according to fitnessHistory
     su.currentGeneration = 1
-
     return True #All individuals were created and evaluated
-
-def prepareForPlot():
-    global plotFitnessLog #setup => simulation => generation
-    aux = []
-    auxDict = {}
-
-    i = 0
-    for setup in plotFitnessLog:
-        if not i in auxDict:
-            auxDict[i] = {}
-        for simulation in setup:
-            for pair in simulation:
-                if not pair[0] in auxDict[i]:
-                    auxDict[i][pair[0]] = []
-                auxDict[i][pair[0]].append(pair[1])
-        i += 1
-
-    parameters = []
-    for setup in auxDict:
-        x = list(auxDict[setup].keys())
-        mean = []
-        std = []
-
-        for generation in auxDict[setup]:
-            array = auxDict[setup][generation]
-            print(np.mean(array, axis=1))
-            print(np.std(array, axis=1))
-
-            #mean.append(np.mean(auxDict[setup][generation], axis=1))
-            #std.append(np.std(auxDict[setup][generation], axis=1))
-
-        #newList = []
-        #newList.append[x, mean, std]
-        #parameters.append(newList)
-
-    print(parameters)
-    #Dois setups
-    #[[x, m, e], [x, m, e]]
-    #
 
 """This function receives the parameters provided by the user, performs the evolutionary process and returns the results"""
 def main(geneType, varList, func, task, bruteSetups, nameList, simulationNumber):
     global plotFitnessLog
+    global plotGenerationLog
     global log
     
     plotFitnessLog = []
+    plotGenerationLog = []
     log = []
 
     setupList = suManager.createSetups(geneType, varList, func, task, bruteSetups)
@@ -250,9 +206,8 @@ def main(geneType, varList, func, task, bruteSetups, nameList, simulationNumber)
 
         #If there is any problem the function returns False
         if not check:
-            return False, False
+            return False, False, False
 
-    prepareForPlot()
     textLog = []
     i = 0
 
@@ -267,5 +222,4 @@ def main(geneType, varList, func, task, bruteSetups, nameList, simulationNumber)
         i += 1
 
     print("Done!")
-
     return textLog, plotFitnessLog

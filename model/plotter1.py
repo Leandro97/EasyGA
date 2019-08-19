@@ -25,7 +25,6 @@ def getLimits(history):
 '''Plotting the progression of best inidviual for each setup'''
 def plotFitness(history, task, nameList):	
 	pyplot.close()
-	aux = {}
 
 	#Creating panel
 	xTick = []

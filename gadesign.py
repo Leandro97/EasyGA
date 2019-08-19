@@ -737,11 +737,10 @@ class SimulationLayout(BoxLayout):
 
 	#Triggered when the button "Expand graph" is pressed
 	def showPlot(self):
-		plt.matplotlib.use('TkAgg')
 		if not self.plotFitnessLog:
 			return
+		plt.matplotlib.use('TkAgg')
 		plt.plotFitness(self.plotFitnessLog, self.task, self.nameList) 
-
 		plt.pyplot.show()
 		plt.matplotlib.use('Agg')
 
