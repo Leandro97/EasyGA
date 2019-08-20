@@ -328,16 +328,16 @@ class SetupBar(BoxLayout):
 
 	'''Popup used to choose a new name for the current setup'''
 	def changeNamePopUp(self):
-		box = BoxLayout(orientation = "vertical", spacing = "20dp")
-		insideBox = BoxLayout(spacing = "20dp", size_hint_y = .5)
+		box = BoxLayout(orientation = "vertical", spacing = "10dp")
+		insideBox = BoxLayout(spacing = "10dp", size_hint_y = .5)
 
 		popup = Popup(title = "New name for \"" + self.spinner.text + "\"", content = box, size_hint = (.5, .3))
 		popup.open()
 		
-		save = MyButton(text = "Save")
+		save = MyButton(text = "Save",  size_hint_y = 0.8)
 		save.bind(on_press = lambda x : self.changeName(newName.text, popup))
 
-		cancel = MyButton(text = "Cancel")
+		cancel = MyButton(text = "Cancel",  size_hint_y = 0.8)
 		cancel.bind(on_press = lambda x : popup.dismiss())
 
 		insideBox.add_widget(save)
@@ -392,15 +392,15 @@ class SetupBar(BoxLayout):
 		if(len(setupList) == 1):
 			return
 
-		box = BoxLayout(spacing = "20dp")
+		box = BoxLayout(spacing = "10dp")
 
 		popup = Popup(title = "Are you sure you want to delete " + nameList[currentSetup] + "?", content = box, size_hint = (.5, .18))
 		popup.open()
 		
-		delete = MyButton(text = "Delete")
+		delete = MyButton(text = "Delete", size_hint_y = 0.8)
 		delete.bind(on_press = lambda x : self.deleteSetup(popup))
 
-		cancel = MyButton(text = "Cancel")
+		cancel = MyButton(text = "Cancel",  size_hint_y = 0.8)
 		cancel.bind(on_press = lambda x : popup.dismiss())
 
 		box.add_widget(delete)
