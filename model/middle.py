@@ -61,7 +61,7 @@ def simulation(tests, su):
     
     aux = []
     for entry in simList:
-        aux.append(entry['history']) #Saving individual progression for graph plotting
+        aux.append([entry['last'], entry['champion'][-1]]) #Saving individual progression for graph plotting
     plotFitnessLog.append(aux) 
 
     return True
@@ -202,14 +202,15 @@ def prepareForPlot():
     auxDict = {}
 
     i = 0
+
     for setup in plotFitnessLog:
         if not i in auxDict:
             auxDict[i] = {}
-        for simulation in setup:
-            for pair in simulation:
-                if not pair[0] in auxDict[i]:
-                    auxDict[i][pair[0]] = []
-                auxDict[i][pair[0]].append(pair[1])
+
+        for pair in setup:
+            if not pair[0] in auxDict[i]:
+                auxDict[i][pair[0]] = []
+            auxDict[i][pair[0]].append(pair[1])
         i += 1
 
     parameters = []
@@ -220,20 +221,20 @@ def prepareForPlot():
 
         for generation in auxDict[setup]:
             array = auxDict[setup][generation]
-            print(np.mean(array, axis=1))
-            print(np.std(array, axis=1))
+            mean.append(np.mean(array))
+            std.append(np.std(array))
 
-            #mean.append(np.mean(auxDict[setup][generation], axis=1))
-            #std.append(np.std(auxDict[setup][generation], axis=1))
+        x2 = x.copy()
 
-        #newList = []
-        #newList.append[x, mean, std]
-        #parameters.append(newList)
+        x, mean = zip(*sorted(zip(x, mean)))
+        x2, std = zip(*sorted(zip(x2, std)))
 
-    print(parameters)
-    #Dois setups
-    #[[x, m, e], [x, m, e]]
-    #
+        newList = []
+        newList.append((x, mean, std))
+        print(newList)
+        parameters.append(newList)
+
+    plotFitnessLog = parameters
 
 """This function receives the parameters provided by the user, performs the evolutionary process and returns the results"""
 def main(geneType, varList, func, task, bruteSetups, nameList, simulationNumber):

@@ -12,9 +12,9 @@ def getLimits(history):
 	xb = xe = None
 
 	for entry in history:
-		x, y = zip(*entry)
+		x, y, e = zip(*entry)
 
-		for xEntry in x:
+		for xEntry in x[0]:
 			if xb == None or xEntry < xb:
 				xb = xEntry
 
@@ -24,6 +24,8 @@ def getLimits(history):
 
 '''Plotting the progression of best inidviual for each setup'''
 def plotFitness(history, task, nameList):	
+	print(history)
+
 	pyplot.close()
 	aux = {}
 
@@ -35,8 +37,10 @@ def plotFitness(history, task, nameList):
 	count = 0
 
 	for entry in history:
-		x, y = zip(*entry)
-		pyplot.plot(x, y, marker = marker[count % 5], label = "{}".format(nameList[count]))
+		x, y, e = zip(*entry)
+		#print(x)
+
+		pyplot.errorbar(x[0], y[0], e[0], capsize = 3, marker = marker[count % 5], label = "{}".format(nameList[count]))
 		count += 1
 
 	#Setting grid for better visualization
