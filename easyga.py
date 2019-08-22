@@ -744,8 +744,8 @@ class SimulationLayout(BoxLayout):
 		plt.pyplot.show()
 		plt.matplotlib.use('Agg')
 
-class GADesign(App):
+class EasyGA(App):
 	def build(self):
 		return TabPanel()
 
-GADesign().run()
+EasyGA().run()
