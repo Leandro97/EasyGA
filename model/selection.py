@@ -9,7 +9,6 @@ cumulativeProbability = 0
 '''Selection interface'''
 def selectParent(su):
 	if(su.selection == "Roulette"):
-		initSelection(su)
 		return roulette(su)
 	elif(su.selection == "Tournament"):
 		return tournament(su)
@@ -30,7 +29,7 @@ def initSelection(su):
 		minV, maxV = int(su.population[-1][-1]), int(su.population[0][-1])
 
 	#Normalizing fitness
-	for i in range(1, su.populationSize):
+	for i in range(su.populationSize):
 		value = int(su.population[i][-1])
 
 		if(minV != maxV):

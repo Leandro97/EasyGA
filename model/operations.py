@@ -72,6 +72,7 @@ def delta(currentGen, maxGen, value):
 '''Crossover management'''
 def crossover(su):
 	newPopulation = []
+	sel.initSelection(su)
 
 	#New childs are born until the current size of the population is equal to two times the initial size
 	while(su.currentPopulationSize <= 2 * su.populationSize):
