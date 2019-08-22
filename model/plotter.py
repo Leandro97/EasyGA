@@ -23,7 +23,7 @@ def getLimits(history):
 	return xb, xe
 
 '''Plotting the progression of best inidviual for each setup'''
-def plotFitness(history, task, nameList):	
+def plotFitness(history, task, nameList, errorbar):	
 	pyplot.close()
 	aux = {}
 
@@ -36,14 +36,18 @@ def plotFitness(history, task, nameList):
 
 	for entry in history:
 		x, y, e = zip(*entry)
-		pyplot.errorbar(x[0], y[0], e[0], capsize = 5, marker = marker[count % 5], label = "{}".format(nameList[count]))
+		if(errorbar):
+			pyplot.errorbar(x[0], y[0], e[0], capsize = 5, marker = marker[count % 5], label = "{}".format(nameList[count]))
+		else:
+			pyplot.plot(x[0], y[0], marker = marker[count % 5], label = "{}".format(nameList[count]))
+
 		count += 1
 
 	#Setting grid for better visualization
 	pyplot.gca().yaxis.grid(True, which="major")
 
 	#Setting title and subtitle
-	pyplot.suptitle("Progression of best individual", x = 0.43)
+	pyplot.suptitle("Average progression of best individual", x = 0.43)
 	if(task == "min"):
 		pyplot.title("Minimizing function", fontsize = 8)
 	else:

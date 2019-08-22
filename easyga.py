@@ -624,6 +624,7 @@ class SimulationLayout(BoxLayout):
 	global varList
 	global setupList
 	global func
+	currentGraph = 1
 
 	logIndex = 0
 	finalLog = []
@@ -691,8 +692,7 @@ class SimulationLayout(BoxLayout):
 			target.ids.logScrollView.text = self.finalLog[self.logIndex]
 		self.nameList = nameList
 
-
-		self.makePlot()
+		self.makePlot(target.ids.graphButton1.state == "down")
 		self.popup.dismiss()
 
 	#Change to next log text 
@@ -725,11 +725,22 @@ class SimulationLayout(BoxLayout):
 		box.add_widget(Button(text = "Ok", on_press = lambda x : popup.dismiss()))
 		
 	#Plotting "Generations x Best fitness" graph
-	def makePlot(self):
+	def makePlot(self, errorbar):
+		target = App.get_running_app().root
+
 		if not self.plotFitnessLog:
 			return
 
-		plt.plotFitness(self.plotFitnessLog, self.task, self.nameList)
+		if(errorbar):
+			target.ids.graphButton1.state = "down"
+			target.ids.graphButton2.state = "normal"
+			self.currentGraph = 1
+		else:
+			target.ids.graphButton1.state = "normal"
+			target.ids.graphButton2.state = "down"
+			self.currentGraph = 2
+
+		plt.plotFitness(self.plotFitnessLog, self.task, self.nameList, errorbar)
 		target = App.get_running_app().root
 		target.ids.image.clear_widgets()
 		target.ids.image.add_widget(FigureCanvasKivyAgg(plt.pyplot.gcf()))
@@ -739,8 +750,11 @@ class SimulationLayout(BoxLayout):
 	def showPlot(self):
 		if not self.plotFitnessLog:
 			return
+
+		errorbar = True if(self.currentGraph == 1) else False
+		
 		plt.matplotlib.use('TkAgg')
-		plt.plotFitness(self.plotFitnessLog, self.task, self.nameList) 
+		plt.plotFitness(self.plotFitnessLog, self.task, self.nameList, errorbar) 
 		plt.pyplot.show()
 		plt.matplotlib.use('Agg')
 
