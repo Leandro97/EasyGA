@@ -92,33 +92,38 @@ def crossover(su):
 		
 		parent2 = su.population[index2]
 
-		#Childs being born and mutated
-		if su.crossover == "One point":
-			child1, child2 = onePointCrossover(parent1, parent2, su)
-		elif su.crossover == "Two points":
-			child1, child2 = twoPointCrossover(parent1, parent2, su)
-		else:
-			child1, child2 = uniformCrossover(parent1, parent2, su)
+		chance = rd.random()
 
-		aux1 = mutation(child1, su)
-		aux2 = mutation(child2, su)
+		if(chance < su.crossoverProb):
+			#Childs being born and mutated
+			if su.crossover == "One point":
+				child1, child2 = onePointCrossover(parent1, parent2, su)
+			elif su.crossover == "Two points":
+				child1, child2 = twoPointCrossover(parent1, parent2, su)
+			else:
+				child1, child2 = uniformCrossover(parent1, parent2, su)
+
+			child1 = mutation(child1, su)
+			child2 = mutation(child2, su)
+		else:
+			child1, child2 = parent1, parent2
 
 		if su.geneType == "Float string":
-			if aux1[0]:
+			if child1[0]:
 				child1 = [round(float(value), 3) for value in child1] #rounding values
-			if aux2[0]:
+			if child2[0]:
 				child2 = [round(float(value), 3) for value in child2] #rounding values
 
 		counter = 0 
 
 		while True:
 			#Adding child to population 
-			if aux1:
+			if child1:
 				newPopulation.append(child1)
 				su.currentPopulationSize += 1
 				break
 
-			if aux2:
+			if child2:
 				newPopulation.append(child2)
 				su.currentPopulationSize += 1
 				break

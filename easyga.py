@@ -193,7 +193,7 @@ class TabPanel(TabbedPanel):
 		self.mutationValues = mutationArray
 
 		for setup in setupList:
-			setup[6] = mutationArray[0]
+			setup[7] = mutationArray[0]
 
 		if self.ids.geneType.text != "float":
 			for var in varList:
@@ -430,7 +430,7 @@ class ParamTextInput(TextInput):
 		super(ParamTextInput, self).__init__(**kwargs)
 		self.write_tab = False
 		self.multiline = False
-		self.size_hint_y = .55
+		self.size_hint_y = .8
 
 '''This label changes color to warn about invalid setups'''
 Builder.load_string('''
@@ -459,23 +459,24 @@ class MyScreen(Screen):
 	global setupNumber
 	global setupList
 
-	inputNames = {0: "Population size", 1: "Number of generations", 2: "Plateau", 3: "Mutation rate"}
+	inputNames = {0: "Population size", 1: "Number of generations", 2: "Plateau", 3: "Crossover probability", 4: "Mutation rate"}
 	
 	populationSize = ParamTextInput(text = "50")
 	maxGenerations = ParamTextInput(text = "50")
 	plateau = ParamTextInput(text = "20")
+	crossoverProb = ParamTextInput(text = "0.9")
 	mutationRate = ParamTextInput(text = "0.01")
 
-	selection = Spinner(text = "Roulette", size_hint_y = .7)
+	selection = Spinner(text = "Roulette", size_hint_y = .8)
 	selection.values = ["Roulette", "Tournament", "Rank"]
 
-	crossover = Spinner(text = "One point", size_hint_y = .7)
+	crossover = Spinner(text = "One point", size_hint_y = .8)
 	crossover.values = ["One point", "Two points", "Uniform"]
 
-	mutation = Spinner(text = "Flip", size_hint_y = .7) 
+	mutation = Spinner(text = "Flip", size_hint_y = .8) 
 	mutation.values = ["Flip"]
 
-	validationLabel = ValidationLabel(text = "Parameters are valid!", color = (0, 0, 0, 1))
+	validationLabel = ValidationLabel(text = "Parameters are valid!", color = (0, 0, 0, 1), size_hint_y = 0.15)
 
 	def newSetup(self):
 		global setupNumber
@@ -483,7 +484,7 @@ class MyScreen(Screen):
 		currentSetup += 1
 		setupNumber += 1
 
-		setupList.append(["50", "50", "20", "0.01", "Roulette", "One point", App.get_running_app().root.mutationValues[0]])
+		setupList.append(["50", "50", "20", "0.9", "0.01", "Roulette", "One point", App.get_running_app().root.mutationValues[0]])
 
 	def makeTextInput(self, layout, widget, labelText, minValue, maxValue, index):
 		paramLayout = BoxLayout(orientation = "vertical")
@@ -507,19 +508,24 @@ class MyScreen(Screen):
 
 	def __init__(self, **kwargs):
 		super(MyScreen, self).__init__(**kwargs)
-		setupList.append(["50", "50", "20", "0.01", "Roulette", "One point", "Flip"])
+		setupList.append(["50", "50", "20", "0.9", "0.01", "Roulette", "One point", "Flip"])
 		
-		parentLayout = GridLayout(cols = 2, spacing = "10dp")
+		parentLayout = BoxLayout(orientation = "vertical", spacing = "10dp")
+		gridLayout = GridLayout(cols = 2, spacing = "10dp")
 
 		self.add_widget(parentLayout)
-		self.makeTextInput(parentLayout, self.populationSize, "Population size", 10, 500, 0)
-		self.makeTextInput(parentLayout, self.maxGenerations, "Number of generations", 1, 500, 1)
-		self.makeTextInput(parentLayout, self.plateau, "Plateau", 1, 500, 2)
-		self.makeTextInput(parentLayout, self.mutationRate, "Mutation rate", 0, 1, 3)
-		self.makeSpinner(parentLayout, self.selection, "Selection strategy", 4)
-		self.makeSpinner(parentLayout, self.crossover, "Crossover strategy", 5)
-		self.makeSpinner(parentLayout, self.mutation, "Mutation strategy", 6)
+		self.makeTextInput(gridLayout, self.populationSize, "Population size", 10, 500, 0)
+		self.makeTextInput(gridLayout, self.maxGenerations, "Number of generations", 1, 500, 1)
+		self.makeTextInput(gridLayout, self.plateau, "Plateau", 1, 500, 2)
+		self.makeTextInput(gridLayout, self.crossoverProb, "Crossover probability", 0, 1, 3)
+		self.makeTextInput(gridLayout, self.mutationRate, "Mutation rate", 0, 1, 4)
+		self.makeSpinner(gridLayout, self.selection, "Selection strategy", 5)
+		self.makeSpinner(gridLayout, self.crossover, "Crossover strategy", 6)
+		self.makeSpinner(gridLayout, self.mutation, "Mutation strategy", 7)
+
+		parentLayout.add_widget(gridLayout)
 		parentLayout.add_widget(self.validationLabel)
+
 
 	'''Updating the current setup parameter'''
 	def updateFromSpinner(self, attIndex, aux, text):
@@ -530,7 +536,7 @@ class MyScreen(Screen):
 		global currentSetup
 
 		try: #Verifying input type and interval
-			if(attIndex != 3):
+			if(attIndex != 3 and attIndex != 4):
 				status = int(minValue) <= int(text) <= int(maxValue)
 			else:
 				status = float(minValue) <= float(text) <= float(maxValue)
@@ -545,7 +551,7 @@ class MyScreen(Screen):
 				self.validationLabel.invalid("{} must be between {} and {}!".format(self.inputNames[attIndex], minValue, maxValue))
 		except Exception as e:
 			self.lockInputs(attIndex) #Locking inputs, obliging user to correct invalid parameter 
-			if(attIndex != 3):
+			if(attIndex != 3 and attIndex != 4):
 				self.validationLabel.invalid("{} must be an integer number!".format(self.inputNames[attIndex]))
 			else:
 				self.validationLabel.invalid("{} must be a float number!".format(self.inputNames[attIndex]))
@@ -559,6 +565,8 @@ class MyScreen(Screen):
 		if(index != 2):
 			self.plateau.disabled = True
 		if(index != 3):
+			self.crossoverProb.disabled = True
+		if(index != 4):
 			self.mutationRate.disabled = True
 
 		self.parent.setupBar.spinner.disabled = True
@@ -570,6 +578,7 @@ class MyScreen(Screen):
 		self.populationSize.disabled = False
 		self.maxGenerations.disabled = False
 		self.plateau.disabled = False
+		self.crossoverProb.disabled = False
 		self.mutationRate.disabled = False
 		self.mutation.disabled = False
 		self.parent.setupBar.spinner.disabled = False
@@ -609,10 +618,11 @@ class SetupLayout(BoxLayout):
 		target.populationSize.text = setupList[index][0]
 		target.maxGenerations.text = setupList[index][1]
 		target.plateau.text = setupList[index][2]
-		target.mutationRate.text = setupList[index][3]
-		target.selection.text = setupList[index][4]
-		target.crossover.text = setupList[index][5]
-		target.mutation.text = setupList[index][6]
+		target.crossoverProb.text = setupList[index][3]
+		target.mutationRate.text = setupList[index][4]
+		target.selection.text = setupList[index][5]
+		target.crossover.text = setupList[index][6]
+		target.mutation.text = setupList[index][7]
 
 class Tab4(MyTab):
 	pass

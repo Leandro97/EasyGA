@@ -27,4 +27,5 @@ class Setup():
 	crossover = "Uniform" #"One point" | "Two Points" | "Uniform"
 	selection = "Roulette" #"Roulette" | "Tournament" | "Rank"
 	mutation = "Uniform" #"Flip" | "Uniform" | "Non-uniform"
+	crossoverProb: float = 0.9
 	mutationRate: float = 0.01

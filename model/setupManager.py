@@ -28,10 +28,11 @@ def createSetups(geneType, varList, func, task, bruteSetups):
 		newSetup.populationSize = int(entry[0])
 		newSetup.maxGenerations = int(entry[1])
 		newSetup.plateau = int(entry[2])
-		newSetup.mutationRate = float(entry[3])
-		newSetup.selection = entry[4]
-		newSetup.crossover = entry[5]
-		newSetup.mutation = entry[6]
+		newSetup.crossoverProb = float(entry[3])
+		newSetup.mutationRate = float(entry[4])
+		newSetup.selection = entry[5]
+		newSetup.crossover = entry[6]
+		newSetup.mutation = entry[7]
 
 		setupList.append(newSetup)
 	return setupList

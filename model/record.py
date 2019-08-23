@@ -68,6 +68,8 @@ def record(bestIndividual, log, su):
 	su.log.append(" Maximum population size: {}\n".format(su.populationSize))
 	su.log.append(" Maximum number of generations: {}\n".format(su.maxGenerations))
 	su.log.append(" Plateau: {}\n\n".format(su.plateau))
+	
+	su.log.append(" Crossover probability: {}\n".format(su.crossoverProb))
 	su.log.append(" Mutation rate: {}\n\n".format(su.mutationRate))
 
 	su.log.append(" Selection strategy: {}\n".format(su.selection))
