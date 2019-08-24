@@ -67,8 +67,7 @@ def record(bestIndividual, log, su):
 
 	su.log.append(" Maximum population size: {}\n".format(su.populationSize))
 	su.log.append(" Maximum number of generations: {}\n".format(su.maxGenerations))
-	su.log.append(" Plateau: {}\n\n".format(su.plateau))
-	
+	su.log.append(" Plateau: {}\n".format(su.plateau))
 	su.log.append(" Crossover probability: {}\n".format(su.crossoverProb))
 	su.log.append(" Mutation rate: {}\n\n".format(su.mutationRate))
 
@@ -95,7 +94,8 @@ def record(bestIndividual, log, su):
 			begin = end
 
 	su.log.append("\n -> Best simulation: #{}.".format(bestIndividual["id"]))
-	su.log.append("\n -> Champion: {}. Achieved in the {} generation.".format(champion, ordinal(bestIndividual["last"])))
+	su.log.append("\n -> Champion: {}.".format(champion))
+	su.log.append("\n -> Achieved in the {} generation.".format(ordinal(bestIndividual["last"])))
 	su.log.append("\n -> Average fitness: {0:.2f}\n\n".format(bestIndividual["average"]))
 	su.log.append(' {:#<40}'.format("") + "\n")
 

@@ -69,7 +69,7 @@ def simulation(tests, su):
 '''Saving progression on log file'''
 def logWriter(su, champion):
     if(su.geneType != "Binary string"):
-        log.append(" Generation " + str(su.currentGeneration) + " - Champion: " + str(champion) + "\n")
+        log.append(" Generation " + str(su.currentGeneration) + " -  " + str(champion) + "\n")
     else:
         champion2Int = [int(value) for value in champion[:-1]]
         champion2Int.append(champion[-1])
@@ -81,7 +81,7 @@ def logWriter(su, champion):
             end = begin + su.varLength[i]
             begin = end
 
-        log.append(" Generation " + str(su.currentGeneration) + " - Champion: " + str(champion2Int) + "\n")
+        log.append(" Generation " + str(su.currentGeneration) + " - " + str(champion2Int) + "\n")
 
 '''Here all the steps of the algorithm take place'''
 def evolve(su):
