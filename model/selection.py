@@ -63,9 +63,9 @@ def rank(su):
 	probabilityArray = []
 
 	for i in range(len(su.population)):
-		probabilityArray.append(su.population[i][-1] / (i + 1)) 
+		probabilityArray.append(1 / (i + 1)) 
 
-	chance = np.random.uniform(0, probabilityArray[0])
+	chance = np.random.uniform(0, 1)
 
 	#If the random number is lesser than the probability, the chromosome is chosen 
 	for i in reversed(range(su.populationSize)):
