@@ -55,7 +55,7 @@ def roulette(su):
 	#If the random number is lesser than the probability, the chromosome is chosen 
 	for i in range(su.populationSize):
 		if chance < probabilityArray[i]:
-			return i
+			return su.populationSize - i - 1
 	return 0
 
 '''Rank selection'''

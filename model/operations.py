@@ -137,7 +137,7 @@ def crossover(su):
 
 	#Saving best individual of current generation
 	best = su.population[0]
-	su.population = newPopulation
+	su.population = newPopulation[:su.populationSize - 1]
 	su.population.append(best)
 
 '''One point crossover'''

@@ -30,7 +30,7 @@ def plotFitness(history, task, nameList, errorbar):
 	#Creating panel
 	xTick = []
 	xb, xe = getLimits(history)
-	marker = ['o', 's', '^', 'd', 'P']
+	marker = ['d', 's', '^', 'o', 'P']
 	
 	count = 0
 

@@ -680,6 +680,12 @@ class SimulationLayout(BoxLayout):
 
 		try:
 			simulations = int(target.ids.simulationQnt.text)
+
+			if simulations <= 0:
+				warningPopup("Simulation number must be greater than 1!") #check[1] contains the error message 
+				self.popup.dismiss()
+				return
+
 		except:
 			warningPopup("Simulation number must be an integer number!") #check[1] contains the error message 
 			self.popup.dismiss()
