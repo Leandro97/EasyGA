@@ -96,7 +96,7 @@ def record(bestIndividual, log, su):
 	su.log.append("\n -> Best simulation: #{}.".format(bestIndividual["id"]))
 	su.log.append("\n -> Champion: {}.".format(champion))
 	su.log.append("\n -> Achieved in the {} generation.".format(ordinal(bestIndividual["last"])))
-	su.log.append("\n -> Average fitness: {0:.2f}\n\n".format(bestIndividual["average"]))
+	su.log.append("\n -> Population average fitness: {0:.2f}\n\n".format(bestIndividual["average"]))
 	su.log.append(' {:#<40}'.format("") + "\n")
 
 	for entry in log:

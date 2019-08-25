@@ -49,13 +49,15 @@ def simulation(tests, su):
     simByChampion = sorted(simList, key = lambda sim: float(sim['champion'][-1]), reverse = True if(su.task == 'max') else False)
     bestIndividual = simByChampion[0]
 
-    #Verifying champion reached with less generations
+    #Verifying simulation with best population average
     for i in range(1, tests):
         if(tests >= i + 1):
-            if(bestIndividual['champion'][-1] == simByChampion[i]['champion'][-1] and bestIndividual['last'] > simByChampion[i]['last']):
-                bestIndividual = simByChampion[i]
+            if su.task == "max":
+                if(bestIndividual['champion'][-1] == simByChampion[i]['champion'][-1] and bestIndividual['average'] < simByChampion[i]['average']):
+                    bestIndividual = simByChampion[i]
             else:
-                break
+                if(bestIndividual['champion'][-1] == simByChampion[i]['champion'][-1] and bestIndividual['average'] > simByChampion[i]['average']):
+                    bestIndividual = simByChampion[i]
 
     rec.record(bestIndividual, log, su) #Saving simulation report
     

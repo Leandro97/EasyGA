@@ -24,16 +24,16 @@ def initSelection(su):
 	probabilityArray = []
 	
 	if su.task == "min":
-		minV, maxV = int(su.population[0][-1]), int(su.population[-1][-1])
+		minV, maxV = su.population[0][-1], su.population[-1][-1]
 	else:
-		minV, maxV = int(su.population[-1][-1]), int(su.population[0][-1])
+		minV, maxV = su.population[-1][-1], su.population[0][-1]
 
-	#Normalizing fitness
+	#Normalizing fitness (best to worst)
 	for i in range(su.populationSize):
 		value = int(su.population[i][-1])
 
 		if(minV != maxV):
-			newValue = (value - minV) / (maxV - minV) if (su.task == "min") else (value - maxV) / (minV - maxV)
+			newValue = (value - minV) / (maxV - minV) if (su.task != "min") else (value - maxV) / (minV - maxV)
 		else:
 			newValue = 1.0
 
@@ -42,30 +42,30 @@ def initSelection(su):
 		#Calculating selection probability 
 		probabilityArray.append(round(newValue, 2))
 
-	cumulativeProbability = sum(probabilityArray)
-
 '''Roulette selection'''
 def roulette(su):
 	global probabilityArray
-	global cumulativeProbability
+	cumulativeProbability = sum(probabilityArray)
 
 	probabilityArray = [value/cumulativeProbability for value in probabilityArray] if cumulativeProbability != 0 else [1/len(probabilityArray) for value in probabilityArray]
-	chance = np.random.uniform(0, probabilityArray[-1])
+	chance = np.random.uniform(0, probabilityArray[0])
 
 	#If the random number is lesser than the probability, the chromosome is chosen 
-	for i in range(su.populationSize):
+	for i in reversed(range(su.populationSize)):
 		if chance < probabilityArray[i]:
-			return su.populationSize - i - 1
+			return i
 	return 0
 
 '''Rank selection'''
 def rank(su):
 	probabilityArray = []
 
-	for i in range(len(su.population)):
-		probabilityArray.append(1 / (i + 1)) 
+	for i in reversed(range(len(su.population))):
+		probabilityArray.append(i + 1) 
 
-	chance = np.random.uniform(0, 1)
+	cumulativeProbability = sum(probabilityArray)
+	probabilityArray = [value/cumulativeProbability for value in probabilityArray] if cumulativeProbability != 0 else [1/len(probabilityArray) for value in probabilityArray]
+	chance = np.random.uniform(0, probabilityArray[0])
 
 	#If the random number is lesser than the probability, the chromosome is chosen 
 	for i in reversed(range(su.populationSize)):
