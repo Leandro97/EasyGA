@@ -51,9 +51,10 @@ def roulette(su):
 	chance = np.random.uniform(0, probabilityArray[0])
 
 	#If the random number is lesser than the probability, the chromosome is chosen 
-	for i in reversed(range(su.populationSize)):
-		if chance < probabilityArray[i]:
-			return i
+	for i in range(su.populationSize):
+		index = rd.randint(0, su.populationSize - 1)
+		if chance < probabilityArray[index]:
+			return index
 	return 0
 
 '''Rank selection'''
