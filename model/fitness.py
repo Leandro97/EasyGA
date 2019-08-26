@@ -2,6 +2,13 @@ import math as math
 from math import *
 import random as rd
 import re
+import struct
+
+def float2bin(num):
+    return format(struct.unpack('!I', struct.pack('!f', num))[0], '032b')
+
+def bin2float(binary):
+    return struct.unpack('!f',struct.pack('!I', int(binary, 2)))[0]
 
 '''Checking syntax errors or unknow variables'''
 def checkFunction(func, varLength):
@@ -72,14 +79,12 @@ def binaryFitness(chrom, su):
         end = begin + su.varLength[i]
 
         aux = chrom[begin: end].copy()
-        value = int(''.join(aux), 2)
+        value = bin2float("".join(aux))
 
-        if(value < su.varDomain[i][0] or value > su.varDomain[i][1]):
-            value = rd.randint(su.varDomain[i][0], su.varDomain[i][1])
-            chrom[begin: end] = list(("{0:0" + str(su.varLength[i]) + "b}").format(value))
-
-        #Replacing values
-        chrom[begin] = '1' if (chrom[begin] == '-') else '0'
+        if(value < su.varDomain[i][0] or value > su.varDomain[i][1] or isnan(value)):
+            value = rd.uniform(su.varDomain[i][0], su.varDomain[i][1])
+            binaryValue = float2bin(round(value, 3))
+            chrom[begin: end] = list(binaryValue)
 
         func = re.sub(r"\b" + var + r"\b", '(' + str(value) + ')', func)
         begin = end

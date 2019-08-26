@@ -30,7 +30,7 @@ def initSelection(su):
 
 	#Normalizing fitness (best to worst)
 	for i in range(su.populationSize):
-		value = int(su.population[i][-1])
+		value = float(su.population[i][-1])
 
 		if(minV != maxV):
 			newValue = (value - minV) / (maxV - minV) if (su.task != "min") else (value - maxV) / (minV - maxV)

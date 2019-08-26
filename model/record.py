@@ -2,6 +2,10 @@
 import datetime
 import time
 import os
+import struct
+
+def bin2float(binary):
+    return struct.unpack('!f',struct.pack('!I', int(binary, 2)))[0]
 
 '''Each experiment is saved in a file which name is the moment of the experiment's execution'''
 def setName(now):
@@ -84,14 +88,16 @@ def record(bestIndividual, log, su):
 		champion = bestIndividual["champion"]
 		champion[-1] = round(champion[-1], 3)
 	else:
-		champion = [int(value) for value in bestIndividual['champion'][:-1]]
-		champion.append(round(bestIndividual["champion"][-1], 3))
-
+		champion = []
 		begin = 0
+
 		for i in range(len(su.varLength)):           
-			champion[begin] = '-' if (champion[begin] == 1) else '+'
+        	#Replacing values
 			end = begin + su.varLength[i]
+			value = bin2float("".join(bestIndividual["champion"][begin:end]))
+			champion.append(round(value, 3))
 			begin = end
+		champion.append(bestIndividual["champion"][-1])
 
 	su.log.append("\n -> Best simulation: #{}.".format(bestIndividual["id"]))
 	su.log.append("\n -> Champion: {}.".format(champion))

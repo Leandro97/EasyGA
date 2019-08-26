@@ -14,6 +14,13 @@ import setupManager as suManager
 import datetime
 import numpy as np
 import random as rd
+import struct
+
+def float2bin(num):
+    return format(struct.unpack('!I', struct.pack('!f', num))[0], '032b')
+
+def bin2float(binary):
+    return struct.unpack('!f',struct.pack('!I', int(binary, 2)))[0]
 
 log = [] #Progression of best individual. Its content is shown as a log file
 plotFitnessLog = [] #Stores (generation, fitness) pairs for the best individual of each setup
@@ -71,19 +78,19 @@ def simulation(tests, su):
 '''Saving progression on log file'''
 def logWriter(su, champion):
     if(su.geneType != "Binary string"):
-        log.append(" Generation " + str(su.currentGeneration) + " -  " + str(champion) + "\n")
+        log.append(" Generation " + str(su.currentGeneration) + " - " + str(champion) + "\n")
     else:
-        champion2Int = [int(value) for value in champion[:-1]]
-        champion2Int.append(champion[-1])
-
+        champion2float = []
         begin = 0
         for i in range(len(su.varLength)):           
             #Replacing values
-            champion2Int[begin] = '-' if (champion2Int[begin] == 1) else '+'
             end = begin + su.varLength[i]
+            value = bin2float("".join(champion[begin:end]))
+            champion2float.append(round(value, 3))
             begin = end
+        champion2float.append(champion[-1])
 
-        log.append(" Generation " + str(su.currentGeneration) + " - " + str(champion2Int) + "\n")
+        log.append(" Generation " + str(su.currentGeneration) + " - " + str(champion2float) + "\n")
 
 '''Here all the steps of the algorithm take place'''
 def evolve(su):
@@ -141,11 +148,7 @@ def init(su):
     #Setting the variables boundaries
     for domain in su.varDomain:
         if(su.geneType == "Binary string"):
-            minV = len(bin(abs(domain[0]))) - 1
-            maxV = len(bin(abs(domain[1]))) - 1
-
-            lengthAux = max(minV, maxV)
-            su.varLength.append(lengthAux)
+            su.varLength.append(32)
         else:
             su.varLength.append(1)
 
@@ -163,17 +166,11 @@ def init(su):
             return False
 
         su.population.append([])
-        aux = 0
         for domain in su.varDomain:
             if(su.geneType == "Binary string"):
-                #Generating new decimal individual 
-                intVar = rd.randint(domain[0], domain[1])
-
-                #Binary casting and formatting
-                binaryVar = list(("{0:0" + str(su.varLength[aux]) + "b}").format(intVar))
-
+                floatVar = round(rd.uniform(domain[0], domain[1]), 3)
+                binaryVar = float2bin(floatVar)
                 su.population[i].extend(binaryVar)
-                aux += 1
             elif(su.geneType == "Integer string"):
                 intVar = rd.randint(domain[0], domain[1])
                 su.population[i].append(intVar)
