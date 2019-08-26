@@ -30,9 +30,15 @@ def uniformMutation(chrom, su):
 
 		if(rand <= su.mutationRate):
 			if su.geneType == "Float string":
-				chrom[i] += rd.uniform(domain[0], domain[1])
+				if(rd.random() <= .5):
+					chrom[i] += rd.uniform(0, domain[1] - chrom[i])
+				else:
+					chrom[i] -= rd.uniform(0, chrom[i] - domain[0])
 			else:
-				chrom[i] += rd.randint(domain[0], domain[1])
+				if(rd.random() <= .5):
+					chrom[i] += rd.randint(0, domain[1] - chrom[i])
+				else:
+					chrom[i] -= rd.randint(0, chrom[i] - domain[0])
 		i += 1
 
 	return fit.getFitness(chrom, su)
