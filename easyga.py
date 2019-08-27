@@ -195,7 +195,7 @@ class TabPanel(TabbedPanel):
 		for setup in setupList:
 			setup[7] = mutationArray[0]
 
-		if self.ids.geneType.text != "float":
+		if self.ids.geneType.text == "Integer string":
 			for var in varList:
 				var[0].text = str(int(float(var[0].text)))
 				var[1].text = str(int(float(var[1].text)))
@@ -204,7 +204,7 @@ class TabPanel(TabbedPanel):
 	def validateVars(self, varIndex, valueIndex, aux, text):
 		global varList
 		try:
-			if(self.ids.geneType.text != "Float string"):
+			if(self.ids.geneType.text == "Integer string"):
 				int(varList[varIndex][valueIndex].text)
 			else:
 				float(varList[varIndex][valueIndex].text)

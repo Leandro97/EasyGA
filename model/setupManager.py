@@ -16,7 +16,7 @@ def createSetups(geneType, varList, func, task, bruteSetups):
 		newSetup.geneType = geneType
 
 		for var in varList:
-			if(geneType == "Float string"):
+			if(geneType != "Integer string"):
 				minValue = min(float(var[0].text), float(var[1].text))
 				maxValue = max(float(var[0].text), float(var[1].text))
 			else:
