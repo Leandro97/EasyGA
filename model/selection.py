@@ -80,20 +80,12 @@ def tournament(su):
 	index2 = rd.randint(0, su.populationSize - 1)
 
 	if(su.task == "max"):
-		if(su.population[index1][-1] < su.population[index2][-1]):
-			aux = index1
-			index1 = index2
-			index2 = aux
-	else:
 		if(su.population[index1][-1] > su.population[index2][-1]):
-			aux = index1
-			index1 = index2
-			index2 = aux
-
-	chance = rd.uniform(0, 1)
-
-	#The best individual has a 75% chance of being chosen
-	if(chance <= .75):
-		return index1
+			return index1
+		else:
+			return index2
 	else:
-		return index2	
+		if(su.population[index1][-1] < su.population[index2][-1]):
+			return index1
+		else:
+			return index2
