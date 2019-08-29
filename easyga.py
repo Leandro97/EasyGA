@@ -245,6 +245,7 @@ class TabPanel(TabbedPanel):
 class Tab1(MyTab):
 	global varList
 
+
 	def addVar(self):
 		global varCounter
 		varCounter += 1
@@ -254,11 +255,11 @@ class Tab1(MyTab):
 		newVar.setVar("x" + str(varCounter))
 
 		minValue = VarTextInput()
-		minValue.setVar("-10")
+		minValue.setVar(target.minValue.text)
 		minValue.bind(text = partial(self.parent.parent.validateVars, varCounter - 1, 0))
 
 		maxValue = VarTextInput()
-		maxValue.setVar("10")
+		maxValue.setVar(target.maxValue.text)
 		maxValue.bind(text = partial(self.parent.parent.validateVars, varCounter - 1, 1))
 
 		target.ids.varScrollView.add_widget(newVar)
@@ -358,7 +359,7 @@ class SetupBar(BoxLayout):
 			return
 
 		for entry in nameList:
-			if(entry == text):
+			if(entry == text and self.spinner.values[currentSetup] != text):
 				popup.dismiss()
 				warningPopup("Name already taken!")
 				return
