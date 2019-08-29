@@ -39,7 +39,7 @@ def plotFitness(history, task, nameList, errorbar):
 		if(errorbar):
 			pyplot.errorbar(x[0], y[0], e[0], capsize = 5, marker = marker[count % 5], label = "{}".format(nameList[count]))
 		else:
-			pyplot.plot(x[0], y[0], marker = marker[count % 5], label = "{}".format(nameList[count]))
+			pyplot.errorbar(x[0], y[0], marker = marker[count % 5], label = "{}".format(nameList[count]))
 
 		count += 1
 
@@ -47,7 +47,7 @@ def plotFitness(history, task, nameList, errorbar):
 	pyplot.gca().yaxis.grid(True, which="major")
 
 	#Setting title and subtitle
-	pyplot.suptitle("Average progression of best individual", x = 0.43)
+	pyplot.suptitle("Average progression of best individual", x = 0.5)
 	if(task == "min"):
 		pyplot.title("Minimizing function", fontsize = 8)
 	else:
@@ -65,7 +65,12 @@ def plotFitness(history, task, nameList, errorbar):
 	xTick.append(xe)
 
 	#Setting legend position
-	box = pyplot.gca().get_position()
-	pyplot.gca().set_position([box.x0, box.y0, box.width * 0.8, box.height])
-	pyplot.legend(loc = 'upper left', bbox_to_anchor = (1, 1), fancybox=True, shadow=True)
+	#box = pyplot.gca().get_position()
+	#pyplot.gca().set_position([box.x0, box.y0, box.width * 0.8, box.height])
+
+	if(task == "max"):
+		pyplot.legend(loc = 'lower center', fancybox=True, shadow=True)
+	else:
+		pyplot.legend(loc = 'upper center', fancybox=True, shadow=True)
+
 	pyplot.xticks(xTick)
