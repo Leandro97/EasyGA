@@ -23,6 +23,7 @@ Now follow the steps:
 	
 - Install needed libraries
 	>$ pip install kivy matplotlib six 
+	
 	>$ garden install matplotlib
 	
 - Clone the EasyGA repository
