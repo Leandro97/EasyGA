@@ -3,9 +3,13 @@ import datetime
 import time
 import os
 import struct
+import math
 
 def bin2float(binary):
     return struct.unpack('!f',struct.pack('!I', int(binary, 2)))[0]
+
+def truncate(f, n = 3):
+    return math.floor(f * 10 ** n) / 10 ** n
 
 '''Each experiment is saved in a file which name is the moment of the experiment's execution'''
 def setName(now):
@@ -83,10 +87,10 @@ def record(bestIndividual, log, su):
 	'''Simulation result'''
 	if su.geneType == "Integer string":
 		champion = [int(value) for value in bestIndividual['champion'][:-1]]
-		champion.append(round(bestIndividual["champion"][-1], 3))
+		champion.append(truncate(bestIndividual["champion"][-1]))
 	elif su.geneType == "Float string":
 		champion = bestIndividual["champion"]
-		champion[-1] = round(champion[-1], 3)
+		champion = [truncate(gene) for gene in champion]
 	else:
 		champion = []
 		begin = 0
@@ -95,9 +99,9 @@ def record(bestIndividual, log, su):
         	#Replacing values
 			end = begin + su.varLength[i]
 			value = bin2float("".join(bestIndividual["champion"][begin:end]))
-			champion.append(round(value, 3))
+			champion.append(truncate(value))
 			begin = end
-		champion.append(bestIndividual["champion"][-1])
+		champion.append(truncate(bestIndividual["champion"][-1]))
 
 	su.log.append("\n -> Best simulation: #{}.".format(bestIndividual["id"]))
 	su.log.append("\n -> Champion: {}.".format(champion))

@@ -10,6 +10,10 @@ def float2bin(num):
 def bin2float(binary):
     return struct.unpack('!f',struct.pack('!I', int(binary, 2)))[0]
 
+def truncate(f, n = 3):
+    return math.floor(f * 10 ** n) / 10 ** n
+
+
 '''Checking syntax errors or unknow variables'''
 def checkFunction(func, varLength):
     aux = func
@@ -49,11 +53,9 @@ def getFitness(chrom, su):
         if(aux < su.varDomain[i][0] or aux > su.varDomain[i][1]):
             lower = su.varDomain[i][0]
             upper = su.varDomain[i][1]
-            value = rd.randint(lower, upper) if (su.geneType == "Integer string") else round(rd.uniform(lower, upper), 3)
+            value = rd.randint(lower, upper) if (su.geneType == "Integer string") else rd.uniform(lower, upper)
             chrom[i] = value
 
-        if(su.geneType == "Float string"):
-            chrom[i] = round(chrom[i], 3)
 
         func = re.sub(r"\b" + var + r"\b", '(' + str(value) + ')', func)
     
@@ -64,7 +66,7 @@ def getFitness(chrom, su):
     except:
         return (False, False)
 
-    chrom[-1] = round(result, 3) 
+    chrom[-1] = truncate(result)
 
     return chrom
 
@@ -83,7 +85,7 @@ def binaryFitness(chrom, su):
 
         if(value < su.varDomain[i][0] or value > su.varDomain[i][1] or isnan(value)):
             value = rd.uniform(su.varDomain[i][0], su.varDomain[i][1])
-            binaryValue = float2bin(round(value, 3))
+            binaryValue = float2bin(value)
             chrom[begin: end] = list(binaryValue)
 
         func = re.sub(r"\b" + var + r"\b", '(' + str(value) + ')', func)
@@ -95,5 +97,6 @@ def binaryFitness(chrom, su):
     except:
         return (False, False)
 
-    chrom[-1] =  round(result, 3) 
+    chrom[-1] = truncate(result)
+
     return chrom
