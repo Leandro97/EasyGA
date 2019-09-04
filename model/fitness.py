@@ -79,11 +79,11 @@ def binaryFitness(chrom, su):
         end = begin + su.varLength[i]
 
         aux = chrom[begin: end].copy()
-        value = bin2float("".join(aux))
+        value = round(float(bin2float("".join(aux))), 3)
 
         if(value < su.varDomain[i][0] or value > su.varDomain[i][1] or isnan(value)):
-            value = rd.uniform(su.varDomain[i][0], su.varDomain[i][1])
-            binaryValue = float2bin(round(value, 3))
+            value = round(rd.uniform(su.varDomain[i][0], su.varDomain[i][1]), 3)
+            binaryValue = float2bin(value)
             chrom[begin: end] = list(binaryValue)
 
         func = re.sub(r"\b" + var + r"\b", '(' + str(value) + ')', func)

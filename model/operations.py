@@ -14,49 +14,63 @@ def mutation(chrom, su):
 
 '''Used only on binary representations'''
 def flipMutation(chrom, su):
+	aux = chrom.copy()
 	for i in range(len(chrom) - 1):
 		rand = rd.random()
 		if(rand <= su.mutationRate):
-			chrom[i] = '0' if chrom[i] == '1' else '1' #Bit inversion
+			aux[i] = '0' if aux[i] == '1' else '1' #Bit inversion
 
-	return fit.getFitness(chrom, su)
-
+	aux = fit.getFitness(aux, su)
+	if aux[0]:
+		chrom = aux	
+	
+	return chrom
+	
 '''Used on float and integer representations'''
 def uniformMutation(chrom, su):
 	i = 0
-
+	aux = chrom.copy()
 	for domain in su.varDomain:
 		rand = rd.random()
 
 		if(rand <= su.mutationRate):
 			if su.geneType == "Float string":
-				chrom[i] = rd.uniform(domain[0], domain[1])
+				aux[i] = rd.uniform(domain[0], domain[1])
 			else:
-				chrom[i] = rd.randint(domain[0], domain[1])
+				aux[i] = rd.randint(domain[0], domain[1])
 		i += 1
 
-	return fit.getFitness(chrom, su)
+	aux = fit.getFitness(aux, su)
+	if aux[0]:
+		chrom = aux	
+	
+	return chrom
 
 '''Used on float and integer representations'''
 def nonUniformMutation(chrom, su):
 	i = 0
 
+	aux = chrom.copy()
 	for domain in su.varDomain:
 		rand = rd.random()
 		if(rand <= su.mutationRate):
 			if su.geneType == "Float string":
 				if(rd.random() <= .5):
-					chrom[i] += delta(su.currentGeneration, su.maxGenerations, domain[1] - chrom[i])
+					aux[i] += delta(su.currentGeneration, su.maxGenerations, domain[1] - aux[i])
 				else:
-					chrom[i] -= delta(su.currentGeneration, su.maxGenerations, chrom[i] - domain[0])
+					aux[i] -= delta(su.currentGeneration, su.maxGenerations, aux[i] - domain[0])
 			else:
 				if(rd.random() <= .5):
-					chrom[i] += int(delta(su.currentGeneration, su.maxGenerations, domain[1] - chrom[i]))
+					aux[i] += int(delta(su.currentGeneration, su.maxGenerations, domain[1] - aux[i]))
 				else:
-					chrom[i] -= int(delta(su.currentGeneration, su.maxGenerations, chrom[i] - domain[0]))
+					aux[i] -= int(delta(su.currentGeneration, su.maxGenerations, aux[i] - domain[0]))
 		i += 1
 
-	return fit.getFitness(chrom, su)
+	aux = fit.getFitness(aux, su)
+	if aux[0]:
+		chrom = aux	
+	
+	return chrom
 
 '''Auxiliar function for non-uniform mutation. The higher the generation, the lower the value added to the gene'''
 def delta(currentGen, maxGen, value):
