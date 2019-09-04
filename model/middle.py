@@ -133,7 +133,7 @@ def evolve(su):
         if(counter == su.plateau): break
 
     aux = [value[-1] for value in su.population]
-    average = round(sum(aux)/su.populationSize, 3)
+    average = round(sum(aux)/su.populationSize, 5)
     return last, champion, fitnessHistory, average
 
 '''

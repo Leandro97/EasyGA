@@ -64,7 +64,7 @@ def getFitness(chrom, su):
     except:
         return (False, False)
 
-    chrom[-1] = round(result, 3) 
+    chrom[-1] = round(result, 5) 
 
     return chrom
 
@@ -81,6 +81,11 @@ def binaryFitness(chrom, su):
         aux = chrom[begin: end].copy()
         value = round(float(bin2float("".join(aux))), 3)
 
+        if value == 0:
+            value = 0.0
+
+        chrom[begin: end] = float2bin(value)
+
         if(value < su.varDomain[i][0] or value > su.varDomain[i][1] or isnan(value)):
             value = round(rd.uniform(su.varDomain[i][0], su.varDomain[i][1]), 3)
             binaryValue = float2bin(value)
@@ -95,5 +100,5 @@ def binaryFitness(chrom, su):
     except:
         return (False, False)
 
-    chrom[-1] =  round(result, 3) 
+    chrom[-1] =  round(result, 5) 
     return chrom
