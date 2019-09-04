@@ -15,16 +15,12 @@ import datetime
 import numpy as np
 import random as rd
 import struct
-import math
 
 def float2bin(num):
     return format(struct.unpack('!I', struct.pack('!f', num))[0], '032b')
 
 def bin2float(binary):
     return struct.unpack('!f',struct.pack('!I', int(binary, 2)))[0]
-
-def truncate(f, n = 3):
-    return math.floor(f * 10 ** n) / 10 ** n
 
 log = [] #Progression of best individual. Its content is shown as a log file
 plotFitnessLog = [] #Stores (generation, fitness) pairs for the best individual of each setup
@@ -81,25 +77,20 @@ def simulation(tests, su):
 
 '''Saving progression on log file'''
 def logWriter(su, champion):
-    if(su.geneType == "Integer string"):
+    if(su.geneType != "Binary string"):
         log.append(" Generation " + str(su.currentGeneration) + " - " + str(champion) + "\n")
-    elif(su.geneType == "Binary string"):
+    else:
         champion2float = []
         begin = 0
         for i in range(len(su.varLength)):           
             #Replacing values
             end = begin + su.varLength[i]
             value = bin2float("".join(champion[begin:end]))
-            champion2float.append(value)
+            champion2float.append(round(value, 3))
             begin = end
         champion2float.append(champion[-1])
 
-        champion2float = [truncate(gene) for gene in champion2float]
         log.append(" Generation " + str(su.currentGeneration) + " - " + str(champion2float) + "\n")
-    else:
-        champion = [truncate(gene) for gene in champion]
-        log.append(" Generation " + str(su.currentGeneration) + " - " + str(champion) + "\n")
-        
 
 '''Here all the steps of the algorithm take place'''
 def evolve(su):
@@ -177,7 +168,7 @@ def init(su):
         su.population.append([])
         for domain in su.varDomain:
             if(su.geneType == "Binary string"):
-                floatVar = rd.uniform(domain[0], domain[1])
+                floatVar = round(rd.uniform(domain[0], domain[1]), 3)
                 binaryVar = float2bin(floatVar)
                 su.population[i].extend(binaryVar)
             elif(su.geneType == "Integer string"):
@@ -185,7 +176,7 @@ def init(su):
                 su.population[i].append(intVar)
             else:
                 floatVar = rd.uniform(domain[0], domain[1])
-                su.population[i].append(floatVar)
+                su.population[i].append(round(floatVar, 3))
 
         su.population[i].append(None) #Appending fitness value
     
